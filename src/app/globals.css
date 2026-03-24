@@ -40,7 +40,7 @@ textarea:focus-visible,
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
   border-radius: 1.5rem;
   padding: 1.6rem;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(6px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
 }
 
@@ -60,11 +60,11 @@ textarea:focus-visible,
 
 .cursor-spotlight {
   position: fixed;
-  width: 160px;
-  height: 160px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02) 60%, transparent);
-  filter: blur(40px);
+  filter: blur(12px);
   pointer-events: none;
   z-index: 1;
   mix-blend-mode: screen;
@@ -95,21 +95,20 @@ textarea:focus-visible,
 .floating-page {
   border-radius: 1.7rem;
   box-shadow: 0 22px 70px rgba(0, 0, 0, 0.5);
-  transition: transform 90ms linear, box-shadow 90ms linear;
-  will-change: transform, box-shadow;
+  transition: box-shadow 120ms linear;
 }
 
 .floating-page:hover {
-  transform: translateY(-9px);
   box-shadow: 0 22px 70px rgba(0, 0, 0, 0.5);
 }
 
 .panel {
-  transition: border-color 90ms linear;
+  transition: border-color 90ms linear, background 90ms linear;
 }
 
 .floating-page:hover .panel {
   border-color: var(--panel-border);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
 }
 
 @keyframes floatGlow {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowUpRight, Download, Github, Linkedin, Mail, ChevronDown } from "lucide-react";
 
@@ -72,13 +72,16 @@ const sectionOptions: Array<{ key: SectionKey; label: string }> = [
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
-  const [showOptions, setShowOptions] = useState(false);
+  const [menuEligible, setMenuEligible] = useState(false);
+  const [hideMenuWhileScrolling, setHideMenuWhileScrolling] = useState(false);
   const [showScrollIcon, setShowScrollIcon] = useState(true);
   const [landingComplete, setLandingComplete] = useState(false);
   const [currentViewSection, setCurrentViewSection] = useState<SectionKey | null>(null);
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("Portfolio inquiry");
   const [message, setMessage] = useState("");
+  const scrollStopTimerRef = useRef<number | undefined>(undefined);
+  const scrollRafRef = useRef<number | undefined>(undefined);
   const prefersReducedMotion = useReducedMotion();
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
@@ -114,39 +117,72 @@ export default function Home() {
   useEffect(() => {
     if (!landingComplete) return;
 
-    const onScroll = () => {
-      setShowScrollIcon(window.scrollY <= 50);
-      setShowOptions(window.scrollY > 40);
+    const aboutElement = document.getElementById("section-about");
+    const projectsElement = document.getElementById("section-projects");
+    const connectElement = document.getElementById("section-connect");
 
-      // Detect which section is in view
-      const aboutElement = document.getElementById("section-about");
-      const projectsElement = document.getElementById("section-projects");
-      const connectElement = document.getElementById("section-connect");
+    const updateFromScroll = () => {
+      scrollRafRef.current = undefined;
+
+      const scrollY = window.scrollY;
+      const nearBottom = window.innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+      const canShowMenu = scrollY > 40;
+
+      setShowScrollIcon(scrollY <= 50);
+      setMenuEligible(canShowMenu);
+      // Hide while actively scrolling, except at very bottom.
+      setHideMenuWhileScrolling(canShowMenu && !nearBottom);
+
+      if (scrollStopTimerRef.current) {
+        window.clearTimeout(scrollStopTimerRef.current);
+      }
+
+      scrollStopTimerRef.current = window.setTimeout(() => {
+        setHideMenuWhileScrolling(false);
+      }, 280);
 
       const viewportCenter = window.innerHeight / 2;
+      let nextSection: SectionKey | null = null;
 
       if (aboutElement) {
         const rect = aboutElement.getBoundingClientRect();
         if (rect.top < viewportCenter && rect.bottom > viewportCenter) {
-          setCurrentViewSection("about");
+          nextSection = "about";
         }
       }
       if (projectsElement) {
         const rect = projectsElement.getBoundingClientRect();
         if (rect.top < viewportCenter && rect.bottom > viewportCenter) {
-          setCurrentViewSection("projects");
+          nextSection = "projects";
         }
       }
       if (connectElement) {
         const rect = connectElement.getBoundingClientRect();
         if (rect.top < viewportCenter && rect.bottom > viewportCenter) {
-          setCurrentViewSection("connect");
+          nextSection = "connect";
         }
       }
+
+      setCurrentViewSection((prev) => (prev === nextSection ? prev : nextSection));
+    };
+
+    const onScroll = () => {
+      if (scrollRafRef.current) return;
+      scrollRafRef.current = window.requestAnimationFrame(updateFromScroll);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    onScroll();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (scrollStopTimerRef.current) {
+        window.clearTimeout(scrollStopTimerRef.current);
+      }
+      if (scrollRafRef.current) {
+        window.cancelAnimationFrame(scrollRafRef.current);
+      }
+    };
   }, [landingComplete]);
 
   useEffect(() => {
@@ -195,11 +231,11 @@ export default function Home() {
   const sectionHoverMotion = prefersReducedMotion
     ? undefined
     : {
-        y: -8,
-        scale: 1.005,
-        rotateX: -0.6,
-        rotateY: 0.6,
+        y: -6,
       };
+
+  const showOptions = landingComplete && menuEligible;
+  const isMenuVisible = showOptions && !hideMenuWhileScrolling;
 
   return (
     <div className="relative min-h-screen overflow-x-clip px-6 pb-20 pt-8 sm:px-10">
@@ -246,34 +282,32 @@ export default function Home() {
 
       <div className="h-[18vh]" />
 
-      <AnimatePresence>
-        {showOptions && (
-          <motion.div
-            initial={{ opacity: 0, y: 26 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 26 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            className="fixed bottom-8 left-1/2 z-30 w-[calc(100%-2rem)] max-w-3xl -translate-x-1/2 rounded-2xl border border-white/15 bg-black/65 p-3 backdrop-blur-2xl"
-          >
-            <div className="grid gap-2 sm:grid-cols-3">
-              {sectionOptions.map((option) => (
-                <button
-                  key={option.key}
-                  type="button"
-                  onClick={() => selectSection(option.key)}
-                  className={`rounded-xl px-3 py-2.5 text-sm transition ${
-                    currentViewSection === option.key
-                      ? "bg-white text-black"
-                      : "bg-white/5 text-white hover:bg-white/12"
-                  }`}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {showOptions && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isMenuVisible ? 1 : 0, y: isMenuVisible ? 0 : 12 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          style={{ pointerEvents: isMenuVisible ? "auto" : "none" }}
+          className="fixed bottom-8 left-1/2 z-30 w-[calc(100%-2rem)] max-w-3xl -translate-x-1/2 rounded-2xl border border-white/15 bg-black/65 p-3 backdrop-blur-md"
+        >
+          <div className="grid gap-2 sm:grid-cols-3">
+            {sectionOptions.map((option) => (
+              <button
+                key={option.key}
+                type="button"
+                onClick={() => selectSection(option.key)}
+                className={`rounded-xl px-3 py-2.5 text-sm transition ${
+                  currentViewSection === option.key
+                    ? "bg-white text-black"
+                    : "bg-white/5 text-white hover:bg-white/12"
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       <main className="mx-auto flex w-full max-w-5xl flex-col gap-12">
         {/* About Me Section */}
