@@ -1,26 +1,153 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #08090d;
+  --foreground: #f7f8fb;
+  --muted: #a7adbb;
+  --panel: rgba(255, 255, 255, 0.04);
+  --panel-border: rgba(255, 255, 255, 0.14);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-sora);
+  --font-mono: var(--font-space-grotesk);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sora), sans-serif;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 15% 18%, rgba(255, 255, 255, 0.1), transparent 38%),
+    radial-gradient(circle at 80% 4%, rgba(170, 178, 200, 0.16), transparent 32%),
+    linear-gradient(180deg, #0b0d12 0%, #08090d 45%, #06070a 100%);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid rgba(247, 248, 251, 0.9);
+  outline-offset: 2px;
+}
+
+.panel {
+  border: 1px solid var(--panel-border);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border-radius: 1.5rem;
+  padding: 1.6rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.hero-glow {
+  position: fixed;
+  inset: -240px auto auto 50%;
+  transform: translateX(-50%);
+  width: min(85vw, 980px);
+  height: 460px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.05) 42%, transparent 72%);
+  filter: blur(12px);
+  pointer-events: none;
+  z-index: -1;
+  animation: floatGlow 12s ease-in-out infinite alternate;
+}
+
+.cursor-spotlight {
+  position: fixed;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02) 60%, transparent);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+
+@media (pointer: coarse) {
+  .cursor-spotlight {
+    display: none;
+  }
+}
+
+.backdrop-layer {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(8px);
+  background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.08), rgba(10, 11, 14, 0.45));
+  z-index: 5;
+  pointer-events: none;
+}
+
+.menu-trigger,
+.menu-dropdown,
+.floating-page {
+  position: relative;
+  z-index: 20;
+}
+
+.floating-page {
+  border-radius: 1.7rem;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.5);
+  transition: transform 90ms linear, box-shadow 90ms linear;
+  will-change: transform, box-shadow;
+}
+
+.floating-page:hover {
+  transform: translateY(-9px);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.5);
+}
+
+.panel {
+  transition: border-color 90ms linear;
+}
+
+.floating-page:hover .panel {
+  border-color: var(--panel-border);
+}
+
+@keyframes floatGlow {
+  from {
+    transform: translateX(-50%) translateY(-6px) scale(0.95);
+  }
+  to {
+    transform: translateX(-50%) translateY(12px) scale(1.08);
+  }
+}
+
+.animate-blink {
+  animation: blink 0.6s infinite;
+  font-weight: 600;
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .cursor-spotlight {
+    display: none;
+  }
 }
