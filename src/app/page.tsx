@@ -17,6 +17,15 @@ type SectionKey = "about" | "projects" | "connect";
 
 const workItems: ProjectItem[] = [
   {
+    title: "RatibBuilds Portfolio",
+    summary:
+      "My personal portfolio website featuring modern motion UI, interactive sections, and project showcases.",
+    tag: "Project",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    liveUrl: "https://ratibbuilds.vercel.app/",
+    repoUrl: "https://github.com/son1cleo/portfolio_yey",
+  },
+  {
     title: "SouthForge",
     summary:
       "An offline-first, browser-based IDE with local AI support, in-browser runtime execution, workspace persistence, and terminal-driven Git and GitHub flows.",
