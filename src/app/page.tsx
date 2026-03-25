@@ -3,6 +3,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowUpRight, Download, Github, Linkedin, Mail, ChevronDown } from "lucide-react";
+import {
+  getLatestCompletedForPortfolio,
+  getPinnedSkillsForPortfolio,
+  getSummaryForPortfolio,
+  type TrackerSkill,
+  type TrackerSummary,
+} from "../data/tracker-store";
 
 type ProjectItem = {
   title: string;
@@ -60,7 +67,7 @@ const workItems: ProjectItem[] = [
     summary:
       "After evaluating 6,000+ questions and applying targeted refinements, improved overall chatbot accuracy.",
     tag: "Contribution",
-    stack: ["NLP", "spaCy", "Evaluation", "Data Analysis"],
+    stack: ["spaCy", "Evaluation", "Data Analysis"],
   },
 ];
 
@@ -80,6 +87,14 @@ export default function Home() {
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("Portfolio inquiry");
   const [message, setMessage] = useState("");
+  const [trackerSummary, setTrackerSummary] = useState<TrackerSummary>({
+    total: 0,
+    inProgress: 0,
+    completed: 0,
+    pinned: 0,
+  });
+  const [pinnedSkills, setPinnedSkills] = useState<TrackerSkill[]>([]);
+  const [latestCompleted, setLatestCompleted] = useState<TrackerSkill | null>(null);
   const scrollStopTimerRef = useRef<number | undefined>(undefined);
   const scrollRafRef = useRef<number | undefined>(undefined);
   const prefersReducedMotion = useReducedMotion();
@@ -199,6 +214,18 @@ export default function Home() {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [cursorX, cursorY, prefersReducedMotion]);
+
+  useEffect(() => {
+    const syncTrackerData = () => {
+      setTrackerSummary(getSummaryForPortfolio());
+      setPinnedSkills(getPinnedSkillsForPortfolio().slice(0, 3));
+      setLatestCompleted(getLatestCompletedForPortfolio());
+    };
+
+    syncTrackerData();
+    window.addEventListener("storage", syncTrackerData);
+    return () => window.removeEventListener("storage", syncTrackerData);
+  }, []);
 
   const mailtoLink = useMemo(() => {
     const body = [
@@ -370,12 +397,51 @@ export default function Home() {
               </article>
 
               <article className="rounded-2xl border border-white/15 bg-white/5 p-5">
-                <h3 className="text-sm font-medium tracking-wide text-white uppercase">Interests</h3>
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-medium tracking-wide text-white uppercase">Learning Progress</h3>
+                  <a
+                    href="/tracker"
+                    onClick={(event) => event.stopPropagation()}
+                    className="inline-flex items-center gap-1 rounded-full border border-white/30 bg-black/25 px-2.5 py-1 text-[11px] text-zinc-100 transition hover:bg-white/10"
+                  >
+                    Open Tracker <ArrowUpRight size={13} />
+                  </a>
+                </div>
                 <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-                  AI Research, especially Large Language Models (LLMs) and Small Language Model (SLM) optimization.
+                  Ongoing structured upskilling across analytics, ML, and Python workflows.
                 </p>
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">
+                    <p className="text-[10px] uppercase tracking-wide text-zinc-400">Completed</p>
+                    <p className="mt-0.5 text-lg font-semibold text-white">{trackerSummary.completed}</p>
+                  </div>
+                  <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">
+                    <p className="text-[10px] uppercase tracking-wide text-zinc-400">In Progress</p>
+                    <p className="mt-0.5 text-lg font-semibold text-white">{trackerSummary.inProgress}</p>
+                  </div>
+                </div>
+                {latestCompleted && (
+                  <div className="mt-4 rounded-lg border border-white/10 bg-black/20 p-3">
+                    <p className="text-[10px] uppercase tracking-wide text-zinc-400">Latest Completed</p>
+                    <p className="mt-1 text-sm font-medium text-white">{latestCompleted.title}</p>
+                    <p className="mt-0.5 text-[11px] text-zinc-400">{latestCompleted.category}</p>
+                  </div>
+                )}
               </article>
             </div>
+
+            {pinnedSkills.length > 0 && (
+              <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-5">
+                <h3 className="text-sm font-medium tracking-wide text-white uppercase">Pinned Learnings</h3>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {pinnedSkills.map((skill) => (
+                    <span key={skill.id} className="rounded-full border border-white/20 bg-black/30 px-3 py-1 text-[11px] text-zinc-200">
+                      {skill.title}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="mt-7 flex flex-wrap gap-3">
               <a
@@ -414,54 +480,41 @@ export default function Home() {
         >
           <div className="panel">
             <p className="text-xs tracking-[0.22em] text-white/60 uppercase">Projects and Contributions</p>
-            <div className="mt-5 grid gap-4 md:grid-cols-2">
-              <article className="rounded-2xl border border-white/15 bg-white/5 p-5">
-                <h3 className="text-base font-semibold text-white">Projects</h3>
-                <div className="mt-4 space-y-4">
-                  {workItems
-                    .filter((item) => item.tag === "Project")
-                    .map((item) => (
-                      <div key={item.title} className="rounded-xl border border-white/10 bg-black/20 p-4">
-                        <h4 className="text-sm font-medium text-white">{item.title}</h4>
-                        <p className="mt-2 text-sm leading-relaxed text-zinc-300">{item.summary}</p>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {item.stack.map((tech) => (
-                            <span key={tech} className="rounded-full border border-white/20 bg-black/30 px-2 py-0.5 text-[10px] text-zinc-300">
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="mt-3 flex flex-wrap gap-3">
-                          {item.liveUrl && (
-                            <a href={item.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-white/90 hover:text-white">
-                              Live <ArrowUpRight size={13} />
-                            </a>
-                          )}
-                          {item.repoUrl && (
-                            <a href={item.repoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-white/90 hover:text-white">
-                              Repo <ArrowUpRight size={13} />
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </article>
-
-              <article className="rounded-2xl border border-white/15 bg-white/5 p-5">
-                <h3 className="text-base font-semibold text-white">Contributions</h3>
-                <div className="mt-4 space-y-4">
-                  {workItems
-                    .filter((item) => item.tag === "Contribution")
-                    .map((item) => (
-                      <div key={item.title} className="rounded-xl border border-white/10 bg-black/20 p-4">
-                        <h4 className="text-sm font-medium text-white">{item.title}</h4>
-                        <p className="mt-2 text-sm leading-relaxed text-zinc-300">{item.summary}</p>
-                      </div>
-                    ))}
-                </div>
-              </article>
-            </div>
+            <article className="mt-5 rounded-2xl border border-white/15 bg-white/5 p-5">
+              <h3 className="text-base font-semibold text-white">Work Highlights</h3>
+              <div className="mt-4 space-y-4">
+                {workItems.map((item) => (
+                  <div key={item.title} className="rounded-xl border border-white/10 bg-black/20 p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <h4 className="text-sm font-medium text-white">{item.title}</h4>
+                      <span className="rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] text-zinc-200">
+                        {item.tag}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-zinc-300">{item.summary}</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {item.stack.map((tech) => (
+                        <span key={tech} className="rounded-full border border-white/20 bg-black/30 px-2 py-0.5 text-[10px] text-zinc-300">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-3">
+                      {item.liveUrl && (
+                        <a href={item.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-white/90 hover:text-white">
+                          Live <ArrowUpRight size={13} />
+                        </a>
+                      )}
+                      {item.repoUrl && (
+                        <a href={item.repoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-white/90 hover:text-white">
+                          Repo <ArrowUpRight size={13} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
           </div>
         </motion.section>
 
