@@ -125,6 +125,23 @@ textarea:focus-visible,
   font-weight: 600;
 }
 
+@media (max-width: 640px) {
+  .panel {
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
+  .floating-page {
+    border-radius: 1.2rem;
+  }
+
+  .hero-glow {
+    width: 120vw;
+    height: 320px;
+    inset: -180px auto auto 50%;
+  }
+}
+
 @keyframes blink {
   0%,
   49% {

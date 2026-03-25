@@ -265,16 +265,16 @@ export default function Home() {
   const isMenuVisible = showOptions && !hideMenuWhileScrolling;
 
   return (
-    <div className="relative min-h-screen overflow-x-clip px-6 pb-20 pt-8 sm:px-10">
+    <div className="relative min-h-screen overflow-x-clip px-4 pb-20 pt-7 sm:px-8 sm:pt-8 md:px-10">
       <div className="hero-glow" aria-hidden />
       {!prefersReducedMotion && <motion.div className="cursor-spotlight" style={{ x: smoothCursorX, y: smoothCursorY }} aria-hidden />}
 
-      <section className="relative flex min-h-screen flex-col items-center justify-center">
+      <section className="relative flex min-h-screen flex-col items-center justify-center px-1">
         <motion.h1
           initial={{ opacity: 0, width: 0 }}
           animate={{ opacity: 1, width: "auto" }}
           transition={{ duration: 2.2, ease: "easeOut" }}
-          className="text-3xl font-mono tracking-tight text-white sm:text-5xl overflow-hidden whitespace-nowrap drop-shadow-2xl"
+          className="max-w-[19ch] overflow-hidden text-center text-3xl leading-tight tracking-tight text-white drop-shadow-2xl sm:max-w-none sm:whitespace-nowrap sm:text-5xl"
           style={{ 
             fontFamily: "var(--font-type-machine)",
             textShadow: "0 0 30px rgba(255, 255, 255, 0.2)"
@@ -315,7 +315,7 @@ export default function Home() {
           animate={{ opacity: isMenuVisible ? 1 : 0, y: isMenuVisible ? 0 : 12 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           style={{ pointerEvents: isMenuVisible ? "auto" : "none" }}
-          className="fixed bottom-8 left-1/2 z-30 w-[calc(100%-2rem)] max-w-3xl -translate-x-1/2 rounded-2xl border border-white/15 bg-black/65 p-3 backdrop-blur-md"
+          className="fixed bottom-5 left-1/2 z-30 w-[calc(100%-1rem)] max-w-3xl -translate-x-1/2 rounded-2xl border border-white/15 bg-black/65 p-2 backdrop-blur-md sm:bottom-8 sm:w-[calc(100%-2rem)] sm:p-3"
         >
           <div className="grid gap-2 sm:grid-cols-3">
             {sectionOptions.map((option) => (
@@ -323,7 +323,7 @@ export default function Home() {
                 key={option.key}
                 type="button"
                 onClick={() => selectSection(option.key)}
-                className={`rounded-xl px-3 py-2.5 text-sm transition ${
+                className={`rounded-xl px-3 py-2 text-xs transition sm:py-2.5 sm:text-sm ${
                   currentViewSection === option.key
                     ? "bg-white text-black"
                     : "bg-white/5 text-white hover:bg-white/12"
@@ -397,7 +397,7 @@ export default function Home() {
               </article>
 
               <article className="rounded-2xl border border-white/15 bg-white/5 p-5">
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3">
                   <h3 className="text-sm font-medium tracking-wide text-white uppercase">Learning Progress</h3>
                   <a
                     href="/tracker"
@@ -488,7 +488,7 @@ export default function Home() {
               <div className="mt-4 space-y-4">
                 {workItems.map((item) => (
                   <div key={item.title} className="rounded-xl border border-white/10 bg-black/20 p-4">
-                    <div className="flex items-center justify-between gap-3">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
                       <h4 className="text-sm font-medium text-white">{item.title}</h4>
                       <span className="rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] text-zinc-200">
                         {item.tag}

@@ -122,12 +122,12 @@ export default function TrackerPage() {
   };
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-6xl px-6 pb-20 pt-8 sm:px-10">
+    <main className="mx-auto min-h-screen w-full max-w-6xl px-4 pb-20 pt-7 sm:px-8 sm:pt-8 md:px-10">
       <div className="panel">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.22em] text-white/60">Tracker Dashboard</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-4xl">
               Skill Accountability System
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-300 sm:text-base">
@@ -158,17 +158,17 @@ export default function TrackerPage() {
         {mode === "visitor" ? (
           <div className="mt-6 rounded-xl border border-white/10 bg-black/25 p-4">
             <p className="text-xs uppercase tracking-wide text-zinc-400">Owner access</p>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-col gap-2 sm:flex-row">
               <input
                 value={ownerCode}
                 onChange={(event) => setOwnerCode(event.target.value)}
                 placeholder="Enter owner code"
-                className="min-w-[220px] rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-white/30"
+                className="w-full min-w-0 rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-white/30 sm:w-auto sm:min-w-[220px]"
               />
               <button
                 type="button"
                 onClick={handleUnlockOwner}
-                className="rounded-lg bg-white px-3 py-2 text-sm font-medium text-black transition hover:bg-zinc-200"
+                className="w-full rounded-lg bg-white px-3 py-2 text-sm font-medium text-black transition hover:bg-zinc-200 sm:w-auto"
               >
                 Unlock My Tracker
               </button>
@@ -232,7 +232,7 @@ export default function TrackerPage() {
             placeholder="Category"
             className="rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-white/30"
           />
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <label className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-xs text-zinc-200">
               <input
                 type="checkbox"
@@ -244,7 +244,7 @@ export default function TrackerPage() {
             <button
               type="submit"
               disabled={adding}
-              className="inline-flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-medium text-black transition hover:bg-zinc-200 disabled:opacity-60"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-medium text-black transition hover:bg-zinc-200 disabled:opacity-60 sm:w-auto"
             >
               <Plus size={15} /> {adding ? "Adding..." : "Add Skill"}
             </button>
@@ -252,7 +252,7 @@ export default function TrackerPage() {
         </form>
       </div>
 
-      <section className="mt-8 rounded-2xl border border-white/15 bg-white/5 p-5">
+      <section className="mt-8 rounded-2xl border border-white/15 bg-white/5 p-4 sm:p-5">
         <h2 className="text-base font-semibold text-white">Live Skill Timeline</h2>
         <p className="mt-1 text-xs text-zinc-400">
           Non-removable by design. Add, complete, and pin skills in real-time.
@@ -262,7 +262,7 @@ export default function TrackerPage() {
           {skills.length === 0 ? <p className="text-sm text-zinc-400">No skills added yet.</p> : null}
 
           {skills.map((item) => (
-            <article key={item.id} className="rounded-xl border border-white/10 bg-black/25 p-4">
+            <article key={item.id} className="rounded-xl border border-white/10 bg-black/25 p-3 sm:p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <h3 className="text-sm font-medium text-white">{item.title}</h3>
@@ -285,7 +285,7 @@ export default function TrackerPage() {
                 </div>
               </div>
 
-              <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+              <div className="mt-3 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
                 <p className="text-[11px] text-zinc-400">
                   Started: {new Date(item.createdAt).toLocaleDateString()}
                   {item.completedAt ? ` · Completed: ${new Date(item.completedAt).toLocaleDateString()}` : ""}
