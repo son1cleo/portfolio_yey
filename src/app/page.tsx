@@ -410,6 +410,9 @@ export default function Home() {
                 <p className="mt-3 text-sm leading-relaxed text-zinc-300">
                   Ongoing structured upskilling across analytics, ML, and Python workflows.
                 </p>
+                <p className="mt-2 rounded-lg border border-sky-300/25 bg-sky-300/10 px-3 py-2 text-xs text-sky-100">
+                  Demo version on portfolio. Full tracker product with advanced dashboard is on the way.
+                </p>
                 <div className="mt-4 grid grid-cols-2 gap-2">
                   <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">
                     <p className="text-[10px] uppercase tracking-wide text-zinc-400">Completed</p>
