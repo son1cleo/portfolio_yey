@@ -22,6 +22,15 @@ type ProjectItem = {
 
 type SectionKey = "about" | "projects" | "connect";
 
+type RoleProfile = {
+  key: "ae" | "fs" | "da";
+  title: string;
+  shortTitle: string;
+  summary: string;
+  highlights: string[];
+  cvHref: string;
+};
+
 const workItems: ProjectItem[] = [
   {
     title: "RatibBuilds Portfolio",
@@ -77,6 +86,42 @@ const sectionOptions: Array<{ key: SectionKey; label: string }> = [
   { key: "connect", label: "Let's get connected" },
 ];
 
+const roleProfiles: RoleProfile[] = [
+  {
+    key: "ae",
+    title: "AI Engineer",
+    shortTitle: "AE",
+    summary:
+      "Build AI products, evaluation pipelines, and decision support systems that turn messy data into usable intelligence.",
+    highlights: ["LLM workflows", "Model evaluation", "Automation with real outcomes"],
+    cvHref: "/resume/MidhatRatibCV_AE.pdf",
+  },
+  {
+    key: "fs",
+    title: "Full Stack Dev",
+    shortTitle: "FS",
+    summary:
+      "Design and ship polished websites and web apps from frontend motion to backend integration and deployment.",
+    highlights: ["Next.js products", "Client portals", "Clean delivery under deadlines"],
+    cvHref: "/resume/MidhatRatibCV_FS.pdf",
+  },
+  {
+    key: "da",
+    title: "Data Analyst",
+    shortTitle: "DA",
+    summary:
+      "Translate raw data into clear dashboards, insights, and process improvements that clients can act on fast.",
+    highlights: ["Reporting", "Insight generation", "Business-facing analysis"],
+    cvHref: "/resume/MidhatRatibCV_DA.pdf",
+  },
+];
+
+const roleIntroLines = [
+  { key: "ae", label: "AE", text: "I make AI actually work." },
+  { key: "fs", label: "FS", text: "Pixel to database no handoff needed." },
+  { key: "da", label: "DA", text: "I turn noise into decisions." },
+] as const;
+
 export default function Home() {
   const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
   const [menuEligible, setMenuEligible] = useState(false);
@@ -95,8 +140,12 @@ export default function Home() {
   });
   const [pinnedSkills, setPinnedSkills] = useState<TrackerSkill[]>([]);
   const [latestCompleted, setLatestCompleted] = useState<TrackerSkill | null>(null);
+  const [heroLine, setHeroLine] = useState(roleIntroLines[0].text);
+  const [heroLineIndex, setHeroLineIndex] = useState(0);
+  const [heroIsDeleting, setHeroIsDeleting] = useState(false);
   const scrollStopTimerRef = useRef<number | undefined>(undefined);
   const scrollRafRef = useRef<number | undefined>(undefined);
+  const heroTimerRef = useRef<number | undefined>(undefined);
   const prefersReducedMotion = useReducedMotion();
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
@@ -128,6 +177,54 @@ export default function Home() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (heroTimerRef.current) {
+      window.clearTimeout(heroTimerRef.current);
+    }
+
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    const currentText = roleIntroLines[heroLineIndex].text;
+    const typingSpeed = heroIsDeleting ? 36 : 42;
+
+    if (!heroIsDeleting && heroLine === currentText) {
+      heroTimerRef.current = window.setTimeout(() => {
+        setHeroIsDeleting(true);
+      }, 1150);
+      return () => {
+        if (heroTimerRef.current) window.clearTimeout(heroTimerRef.current);
+      };
+    }
+
+    if (heroIsDeleting && heroLine === "") {
+      heroTimerRef.current = window.setTimeout(() => {
+        setHeroIsDeleting(false);
+        setHeroLineIndex((current) => (current + 1) % roleIntroLines.length);
+      }, 220);
+      return () => {
+        if (heroTimerRef.current) window.clearTimeout(heroTimerRef.current);
+      };
+    }
+
+    heroTimerRef.current = window.setTimeout(() => {
+      setHeroLine((current) => {
+        if (heroIsDeleting) {
+          return current.slice(0, -1);
+        }
+
+        return currentText.slice(0, current.length + 1);
+      });
+    }, typingSpeed);
+
+    return () => {
+      if (heroTimerRef.current) {
+        window.clearTimeout(heroTimerRef.current);
+      }
+    };
+  }, [heroIsDeleting, heroLine, heroLineIndex, prefersReducedMotion]);
 
   useEffect(() => {
     if (!landingComplete) return;
@@ -270,19 +367,43 @@ export default function Home() {
       {!prefersReducedMotion && <motion.div className="cursor-spotlight" style={{ x: smoothCursorX, y: smoothCursorY }} aria-hidden />}
 
       <section className="relative flex min-h-screen flex-col items-center justify-center px-1">
-        <motion.h1
-          initial={{ opacity: 0, width: 0 }}
-          animate={{ opacity: 1, width: "auto" }}
-          transition={{ duration: 2.2, ease: "easeOut" }}
-          className="max-w-[19ch] overflow-hidden text-center text-3xl leading-tight tracking-tight text-white drop-shadow-2xl sm:max-w-none sm:whitespace-nowrap sm:text-5xl"
-          style={{ 
+        <motion.p
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="text-center text-2xl font-semibold tracking-[0.28em] text-white drop-shadow-2xl sm:text-4xl"
+          style={{
             fontFamily: "var(--font-type-machine)",
-            textShadow: "0 0 30px rgba(255, 255, 255, 0.2)"
+            textShadow: "0 0 24px rgba(255, 255, 255, 0.2)",
           }}
         >
-          Hello World, I&apos;m Midhat Ratib Khan
-          <span className="animate-blink">|</span>
-        </motion.h1>
+          Midhat Ratib Khan
+        </motion.p>
+
+        <div className="mt-6 min-h-[14rem] w-full max-w-3xl">
+          <div className="mx-auto flex max-w-xl flex-col items-center text-center">
+            <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-zinc-200">
+              {roleIntroLines[heroLineIndex].label}
+            </span>
+            <motion.p
+              key={roleIntroLines[heroLineIndex].key}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="mt-5 max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-white drop-shadow-2xl sm:text-5xl"
+              style={{ fontFamily: "var(--font-type-machine)", textShadow: "0 0 30px rgba(255, 255, 255, 0.2)" }}
+            >
+              {heroLine}
+              <span className="animate-blink">|</span>
+            </motion.p>
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-xs uppercase tracking-[0.18em] text-zinc-300 sm:text-[11px]">
+          <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5">AI Engineer</span>
+          <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5">Full Stack Dev</span>
+          <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5">Data Analyst</span>
+        </div>
 
         <AnimatePresence>
           {showScrollIcon && (
@@ -354,10 +475,44 @@ export default function Home() {
         >
           <div className="panel relative overflow-hidden">
             <p className="text-xs tracking-[0.22em] text-white/60 uppercase">About me</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">AI Engineer</h2>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Client-ready across three roles</h2>
             <p className="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
-              Computer Science graduate focused on AI and machine learning systems, building products that balance real-world utility with strong technical depth.
+              Computer Science graduate focused on AI, full-stack delivery, and data work. I now present the portfolio in role-specific tracks so clients can quickly match needs to the right CV.
             </p>
+
+            <div className="mt-7 grid gap-4 lg:grid-cols-3">
+              {roleProfiles.map((role) => (
+                <article key={role.key} className="rounded-2xl border border-white/15 bg-white/5 p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.22em] text-zinc-400">{role.shortTitle}</p>
+                      <h3 className="mt-1 text-lg font-semibold text-white">{role.title}</h3>
+                    </div>
+                    <span className="rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[10px] uppercase tracking-wide text-zinc-200">
+                      CV
+                    </span>
+                  </div>
+
+                  <p className="mt-3 text-sm leading-relaxed text-zinc-300">{role.summary}</p>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {role.highlights.map((item) => (
+                      <span key={item} className="rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[11px] text-zinc-200">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+
+                  <a
+                    href={role.cvHref}
+                    download
+                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium text-black transition hover:bg-zinc-200"
+                  >
+                    <Download size={15} /> Download {role.shortTitle} CV
+                  </a>
+                </article>
+              ))}
+            </div>
 
             <div className="mt-7 grid gap-5 md:grid-cols-2">
               <article className="rounded-2xl border border-white/15 bg-white/5 p-5">
@@ -398,7 +553,7 @@ export default function Home() {
 
               <article className="rounded-2xl border border-white/15 bg-white/5 p-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h3 className="text-sm font-medium tracking-wide text-white uppercase">Learning Progress</h3>
+                  <h3 className="text-sm font-medium tracking-wide text-white uppercase">Learning + credibility</h3>
                   <a
                     href="/tracker"
                     onClick={(event) => event.stopPropagation()}
@@ -408,10 +563,10 @@ export default function Home() {
                   </a>
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-                  Ongoing structured upskilling across analytics, ML, and Python workflows.
+                  Ongoing structured upskilling across analytics, ML, product delivery, and Python workflows.
                 </p>
                 <p className="mt-2 rounded-lg border border-sky-300/25 bg-sky-300/10 px-3 py-2 text-xs text-sky-100">
-                  Demo version on portfolio. Full tracker product with advanced dashboard is on the way.
+                  Demo version on portfolio. The full tracker product is on the way, but this site is now optimized to convert clients.
                 </p>
                 <div className="mt-4 grid grid-cols-2 gap-2">
                   <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">
@@ -448,11 +603,25 @@ export default function Home() {
 
             <div className="mt-7 flex flex-wrap gap-3">
               <a
-                href="/resume/MidhatRatibCV_5.pdf"
+                href="/resume/MidhatRatibCV_AE.pdf"
                 download
                 className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-black transition hover:bg-zinc-200"
               >
-                <Download size={16} /> Download CV
+                <Download size={16} /> Download AE CV
+              </a>
+              <a
+                href="/resume/MidhatRatibCV_FS.pdf"
+                download
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
+              >
+                <Download size={16} /> Download FS CV
+              </a>
+              <a
+                href="/resume/MidhatRatibCV_DA.pdf"
+                download
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
+              >
+                <Download size={16} /> Download DA CV
               </a>
               <a
                 href="https://github.com/son1cleo"
@@ -484,7 +653,7 @@ export default function Home() {
           <div className="panel">
             <p className="text-xs tracking-[0.22em] text-white/60 uppercase">Projects and Contributions</p>
             <article className="mt-5 rounded-2xl border border-white/15 bg-white/5 p-5">
-              <h3 className="text-base font-semibold text-white">Work Highlights</h3>
+              <h3 className="text-base font-semibold text-white">Selected work that supports client trust</h3>
               <div className="mt-4 space-y-4">
                 {workItems.map((item) => (
                   <div key={item.title} className="rounded-xl border border-white/10 bg-black/20 p-4">
@@ -540,9 +709,9 @@ export default function Home() {
             <p className="text-xs tracking-[0.22em] text-white/60 uppercase">Let&apos;s get connected</p>
             <div className="mt-4 grid gap-8 md:grid-cols-[1.1fr_1fr]">
               <div>
-                <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Let&apos;s build something meaningful</h2>
+                <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Let&apos;s build something that gets hired</h2>
                 <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-300">
-                  Share your idea and send me a message. I&apos;ll receive it directly in my inbox.
+                  If you need AI implementation, a full-stack product, or data analysis support, send me the brief and I&apos;ll reply with the best-fit CV and next steps.
                 </p>
                 <div className="mt-5 flex flex-wrap gap-3">
                   <a
@@ -605,7 +774,7 @@ export default function Home() {
                     href={mailtoLink}
                     className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium text-black transition hover:bg-zinc-200"
                   >
-                    <Mail size={15} /> Send Message
+                    <Mail size={15} /> Start a Project
                   </a>
                 </div>
               </form>
