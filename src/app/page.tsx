@@ -140,7 +140,7 @@ export default function Home() {
   });
   const [pinnedSkills, setPinnedSkills] = useState<TrackerSkill[]>([]);
   const [latestCompleted, setLatestCompleted] = useState<TrackerSkill | null>(null);
-  const [heroLine, setHeroLine] = useState(roleIntroLines[0].text);
+  const [heroLine, setHeroLine] = useState<string>(roleIntroLines[0].text);
   const [heroLineIndex, setHeroLineIndex] = useState(0);
   const [heroIsDeleting, setHeroIsDeleting] = useState(false);
   const scrollStopTimerRef = useRef<number | undefined>(undefined);
