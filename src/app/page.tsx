@@ -125,6 +125,8 @@ const workItems: ProjectItem[] = [
   },
 ];
 
+const HERO_INTRO_TEXT = "I'm Midhat Ratib Khan";
+
 const sectionOptions: Array<{ key: SectionKey; label: string }> = [
   { key: "about", label: "About" },
   { key: "projects", label: "Work" },
@@ -193,6 +195,7 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
   const [currentViewSection, setCurrentViewSection] = useState<SectionKey | null>(null);
   const [showScrollIcon, setShowScrollIcon] = useState(true);
+  const [typedIntro, setTypedIntro] = useState("");
   const isDesktop = useSyncExternalStore(subscribeToDesktopQuery, getDesktopSnapshot, getDesktopServerSnapshot);
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("Portfolio inquiry");
@@ -228,6 +231,26 @@ export default function Home() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!introDone) return;
+
+    if (prefersReducedMotion) {
+      const immediate = window.setTimeout(() => setTypedIntro(HERO_INTRO_TEXT), 0);
+      return () => window.clearTimeout(immediate);
+    }
+
+    let index = 0;
+    const timer = window.setInterval(() => {
+      index += 1;
+      setTypedIntro(HERO_INTRO_TEXT.slice(0, index));
+      if (index >= HERO_INTRO_TEXT.length) {
+        window.clearInterval(timer);
+      }
+    }, 45);
+
+    return () => window.clearInterval(timer);
+  }, [introDone, prefersReducedMotion]);
 
   useEffect(() => {
     const aboutElement = document.getElementById("section-about");
@@ -421,10 +444,14 @@ export default function Home() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-10 text-xs font-medium uppercase tracking-[0.3em] text-teal-300/80"
-          style={{ fontFamily: "var(--font-jetbrains), monospace" }}
+          className="relative z-10 min-h-[1em] text-xs font-semibold uppercase tracking-[0.3em] text-teal-200"
+          style={{
+            fontFamily: "var(--font-jetbrains), monospace",
+            textShadow: "0 0 18px rgba(45, 212, 191, 0.55), 0 1px 3px rgba(0, 0, 0, 0.8)",
+          }}
         >
-          I&apos;m Midhat Ratib Khan
+          {typedIntro}
+          {typedIntro.length < HERO_INTRO_TEXT.length && <span className="animate-pulse">|</span>}
         </motion.p>
 
         <div className="relative z-10 mt-4 text-center">
