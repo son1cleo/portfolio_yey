@@ -52,7 +52,7 @@ function Spiral({ interactive }: { interactive: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const pointsRef = useRef<THREE.Points>(null);
 
-  const { positions, colors } = useMemo(() => buildSpiral(2600, 4, 1.9, 0.32, 3.4), []);
+  const { positions, colors } = useMemo(() => buildSpiral(2200, 4, 1.9, 0.28, 2.3), []);
 
   useFrame((state, delta) => {
     if (pointsRef.current) {
@@ -67,14 +67,14 @@ function Spiral({ interactive }: { interactive: boolean }) {
   });
 
   return (
-    <group ref={groupRef} rotation={[-0.62, 0, 0.08]}>
+    <group ref={groupRef} position={[0, -0.9, 0]} rotation={[-0.62, 0, 0.08]}>
       <points ref={pointsRef}>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
           <bufferAttribute attach="attributes-color" args={[colors, 3]} />
         </bufferGeometry>
         <pointsMaterial
-          size={0.05}
+          size={0.045}
           sizeAttenuation
           vertexColors
           transparent
@@ -90,7 +90,7 @@ function Spiral({ interactive }: { interactive: boolean }) {
 export default function HeroScene({ interactive = true }: { interactive?: boolean }) {
   return (
     <Canvas
-      camera={{ position: [0, 1.1, 6.8], fov: 45 }}
+      camera={{ position: [0, 0.4, 7.6], fov: 42 }}
       dpr={[1, 1.6]}
       gl={{ antialias: true, alpha: true }}
       style={{ width: "100%", height: "100%" }}

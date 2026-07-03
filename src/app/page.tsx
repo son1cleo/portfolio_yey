@@ -2,15 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-} from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowUpRight, Download, Github, Linkedin, Mail, ChevronDown } from "lucide-react";
 import {
   SiPython,
@@ -47,6 +39,9 @@ import {
 } from "../data/tracker-store";
 import { Preloader } from "../components/Preloader";
 import { GhostHeading } from "../components/GhostHeading";
+import { ProjectCard, type ProjectItem } from "../components/ProjectCard";
+import { FocusGrid } from "../components/FocusGrid";
+import { GithubActivity } from "../components/GithubActivity";
 
 const HeroScene = dynamic(() => import("../components/HeroScene"), { ssr: false });
 
@@ -63,15 +58,6 @@ function getDesktopSnapshot() {
 function getDesktopServerSnapshot() {
   return false;
 }
-
-type ProjectItem = {
-  title: string;
-  summary: string;
-  tag: "Project" | "Contribution";
-  stack: string[];
-  repoUrl?: string;
-  liveUrl?: string;
-};
 
 type SectionKey = "about" | "projects" | "connect";
 
@@ -91,6 +77,7 @@ const workItems: ProjectItem[] = [
       "Production SaaS that turns raw CSV/Excel datasets into narrative analytical reports (PDF, DOCX, PPTX) with a 6-type statistical analysis engine, question-aware column selection, and LLM-generated narration. Async infrastructure with multi-tenant row-level security and fallback template narration for LLM outages.",
     tag: "Project",
     stack: ["FastAPI", "Celery", "Redis", "PostgreSQL", "LLM Narration", "Docker"],
+    image: "/projects/databrief.webp",
     liveUrl: "https://databrief-six.vercel.app/",
   },
   {
@@ -99,6 +86,7 @@ const workItems: ProjectItem[] = [
       "My personal portfolio website featuring modern motion UI, interactive sections, and project showcases.",
     tag: "Project",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    image: "/projects/ratibbuilds.webp",
     liveUrl: "https://ratibbuilds.vercel.app/",
     repoUrl: "https://github.com/son1cleo/portfolio_yey",
   },
@@ -108,6 +96,7 @@ const workItems: ProjectItem[] = [
       "An offline-first, browser-based IDE with local AI support, in-browser runtime execution, workspace persistence, and terminal-driven Git and GitHub flows.",
     tag: "Project",
     stack: ["React", "Vite", "Monaco", "WebContainers", "WebLLM", "IndexedDB"],
+    image: "/projects/southforge.webp",
     liveUrl: "https://offlineide.vercel.app/",
     repoUrl: "https://github.com/son1cleo/offlineide",
   },
@@ -116,6 +105,7 @@ const workItems: ProjectItem[] = [
     summary: "A Flutter-based web app built for streamlined scheduling and planning workflows.",
     tag: "Project",
     stack: ["Flutter", "Dart", "Web App"],
+    image: "/projects/schedulease.webp",
     repoUrl: "https://github.com/son1cleo/SchedulEase",
   },
   {
@@ -141,7 +131,6 @@ const workItems: ProjectItem[] = [
   },
 ];
 
-const HERO_INTRO_TEXT = "Midhat Ratib Khan";
 const heroRoleSequence = ["Data Scientist", "AI Engineer", "Full Stack Dev"] as const;
 
 function SidebarLogo({ size, failed, onError }: { size: number; failed: boolean; onError: () => void }) {
@@ -236,10 +225,11 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
   const [currentViewSection, setCurrentViewSection] = useState<SectionKey | null>(null);
   const [showScrollIcon, setShowScrollIcon] = useState(true);
-  const [typedIntro, setTypedIntro] = useState("");
-  const [activeRoleIndex, setActiveRoleIndex] = useState(0);
+  const [heroLine, setHeroLine] = useState("");
+  const [heroLineIndex, setHeroLineIndex] = useState(0);
+  const [heroIsDeleting, setHeroIsDeleting] = useState(false);
   const [logoPhotoFailed, setLogoPhotoFailed] = useState(false);
-  const heroScrollRef = useRef<HTMLElement>(null);
+  const heroTimerRef = useRef<number | undefined>(undefined);
   const isDesktop = useSyncExternalStore(subscribeToDesktopQuery, getDesktopSnapshot, getDesktopServerSnapshot);
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("Portfolio inquiry");
@@ -258,15 +248,6 @@ export default function Home() {
   const cursorY = useMotionValue(-200);
   const smoothCursorX = useSpring(cursorX, { damping: 24, stiffness: 420, mass: 0.24 });
   const smoothCursorY = useSpring(cursorY, { damping: 24, stiffness: 420, mass: 0.24 });
-  const { scrollYProgress: heroScrollProgress } = useScroll({
-    target: heroScrollRef,
-    offset: ["start start", "end start"],
-  });
-
-  useMotionValueEvent(heroScrollProgress, "change", (value) => {
-    const nextIndex = Math.min(heroRoleSequence.length - 1, Math.floor(value * heroRoleSequence.length));
-    setActiveRoleIndex((current) => (current === nextIndex ? current : nextIndex));
-  });
 
   useEffect(() => {
     const previousScrollRestoration =
@@ -286,24 +267,43 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (heroTimerRef.current) {
+      window.clearTimeout(heroTimerRef.current);
+    }
+
     if (!introDone) return;
 
     if (prefersReducedMotion) {
-      const immediate = window.setTimeout(() => setTypedIntro(HERO_INTRO_TEXT), 0);
+      const immediate = window.setTimeout(() => setHeroLine(heroRoleSequence[0]), 0);
       return () => window.clearTimeout(immediate);
     }
 
-    let index = 0;
-    const timer = window.setInterval(() => {
-      index += 1;
-      setTypedIntro(HERO_INTRO_TEXT.slice(0, index));
-      if (index >= HERO_INTRO_TEXT.length) {
-        window.clearInterval(timer);
-      }
-    }, 45);
+    const currentRole = heroRoleSequence[heroLineIndex];
+    const typingSpeed = heroIsDeleting ? 36 : 55;
 
-    return () => window.clearInterval(timer);
-  }, [introDone, prefersReducedMotion]);
+    if (!heroIsDeleting && heroLine === currentRole) {
+      heroTimerRef.current = window.setTimeout(() => {
+        setHeroIsDeleting(true);
+      }, 1300);
+      return () => window.clearTimeout(heroTimerRef.current);
+    }
+
+    if (heroIsDeleting && heroLine === "") {
+      heroTimerRef.current = window.setTimeout(() => {
+        setHeroIsDeleting(false);
+        setHeroLineIndex((current) => (current + 1) % heroRoleSequence.length);
+      }, 260);
+      return () => window.clearTimeout(heroTimerRef.current);
+    }
+
+    heroTimerRef.current = window.setTimeout(() => {
+      setHeroLine((current) =>
+        heroIsDeleting ? current.slice(0, -1) : currentRole.slice(0, current.length + 1)
+      );
+    }, typingSpeed);
+
+    return () => window.clearTimeout(heroTimerRef.current);
+  }, [introDone, heroLine, heroLineIndex, heroIsDeleting, prefersReducedMotion]);
 
   useEffect(() => {
     const aboutElement = document.getElementById("section-about");
@@ -486,93 +486,78 @@ export default function Home() {
         </button>
       </div>
 
-      <section ref={heroScrollRef} className="relative" style={{ height: "240vh" }}>
-        <div className="sticky top-0 flex min-h-screen flex-col items-center justify-center overflow-hidden px-1 pt-20">
-          {isDesktop && !prefersReducedMotion && (
-            <div className="hero-scene-wrap">
-              <HeroScene interactive />
-            </div>
-          )}
-
-          <motion.h1
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="relative z-10 min-h-[1em] px-4 text-center font-serif text-4xl font-bold tracking-tight text-white sm:text-6xl"
-            style={{ textShadow: "0 0 34px rgba(45, 212, 191, 0.4), 0 2px 12px rgba(0, 0, 0, 0.75)" }}
-          >
-            {typedIntro}
-            {typedIntro.length < HERO_INTRO_TEXT.length && <span className="animate-pulse text-teal-300">|</span>}
-          </motion.h1>
-
-          <div className="relative z-10 mt-6 flex h-14 items-center justify-center sm:h-16">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={heroRoleSequence[activeRoleIndex]}
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -18 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="text-2xl font-semibold uppercase tracking-[0.2em] text-teal-300 sm:text-3xl"
-              >
-                {heroRoleSequence[activeRoleIndex]}
-              </motion.p>
-            </AnimatePresence>
+      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-1 pt-20">
+        {isDesktop && !prefersReducedMotion && (
+          <div className="hero-scene-wrap">
+            <HeroScene interactive />
           </div>
+        )}
 
-          <div className="relative z-10 mt-3 flex items-center justify-center gap-1.5">
-            {heroRoleSequence.map((role, index) => (
-              <span
-                key={role}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  index === activeRoleIndex ? "w-6 bg-teal-300" : "w-1.5 bg-white/20"
-                }`}
-              />
-            ))}
-          </div>
+        <motion.h1
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="relative z-10 px-4 text-center font-serif text-5xl font-bold tracking-tight text-white sm:text-7xl"
+          style={{ textShadow: "0 0 34px rgba(45, 212, 191, 0.4), 0 2px 12px rgba(0, 0, 0, 0.75)" }}
+        >
+          Midhat Ratib Khan
+        </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
-            className="relative z-10 mt-9 flex flex-wrap items-center justify-center gap-3"
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
+          className="relative z-10 mt-5 min-h-[1.6em] text-center text-lg font-medium text-zinc-200 sm:text-2xl"
+        >
+          I&apos;m a <span className="text-teal-300">{heroLine}</span>
+          <span className="animate-pulse text-teal-300">|</span>
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
+          className="relative z-10 mt-9 flex flex-wrap items-center justify-center gap-3"
+        >
+          <button
+            type="button"
+            onClick={() => selectSection("projects")}
+            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:bg-zinc-200"
           >
-            <button
-              type="button"
-              onClick={() => selectSection("projects")}
-              className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:bg-zinc-200"
-            >
-              View Projects <ArrowUpRight size={16} />
-            </button>
-            <button
-              type="button"
-              onClick={() => selectSection("connect")}
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white/10"
-            >
-              Let&apos;s Talk
-            </button>
-          </motion.div>
+            View Projects <ArrowUpRight size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={() => selectSection("connect")}
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white/10"
+          >
+            Let&apos;s Talk
+          </button>
+        </motion.div>
 
-          {showScrollIcon && (
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.4, duration: 1 }}
-              className="absolute bottom-16 z-10 animate-bounce cursor-pointer"
-              type="button"
-              aria-label="Scroll to About section"
-              onClick={() => {
-                const aboutElement = document.getElementById("section-about");
-                aboutElement?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.96 }}
-            >
-              <ChevronDown size={32} className="text-white/50 transition hover:text-white" />
-            </motion.button>
-          )}
-        </div>
+        {showScrollIcon && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.4, duration: 1 }}
+            className="absolute bottom-16 z-10 animate-bounce cursor-pointer"
+            type="button"
+            aria-label="Scroll to About section"
+            onClick={() => {
+              const aboutElement = document.getElementById("section-about");
+              aboutElement?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.96 }}
+          >
+            <ChevronDown size={32} className="text-white/50 transition hover:text-white" />
+          </motion.button>
+        )}
       </section>
+
+      <div className="mx-auto w-full max-w-5xl px-1 pb-6">
+        <FocusGrid />
+      </div>
 
       <div className="marquee mx-auto -mt-6 mb-16 w-full max-w-4xl">
         <div className="marquee-track">
@@ -774,46 +759,31 @@ export default function Home() {
               as="h2"
               className="font-serif text-3xl font-bold tracking-tight text-white sm:text-4xl"
             />
-            <div className="mt-7 space-y-3">
+            <div className="mt-7 grid gap-4 sm:grid-cols-2">
               {workItems.map((item, index) => (
-                <div key={item.title} className="flex gap-4 rounded-xl border border-white/10 bg-black/20 p-4 sm:gap-6 sm:p-5">
-                  <span
-                    className="mt-0.5 shrink-0 text-sm font-semibold text-teal-400"
-                    style={{ fontFamily: "var(--font-jetbrains), monospace" }}
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <h4 className="text-sm font-medium text-white sm:text-base">{item.title}</h4>
-                      <span className="rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] text-zinc-200">
-                        {item.tag}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-sm leading-relaxed text-zinc-300">{item.summary}</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {item.stack.map((tech) => (
-                        <span key={tech} className="rounded-full border border-white/20 bg-black/30 px-2 py-0.5 text-[10px] text-zinc-300">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-3 flex flex-wrap gap-3">
-                      {item.liveUrl && (
-                        <a href={item.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-white/90 hover:text-white">
-                          Live <ArrowUpRight size={13} />
-                        </a>
-                      )}
-                      {item.repoUrl && (
-                        <a href={item.repoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-white/90 hover:text-white">
-                          Repo <ArrowUpRight size={13} />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                <ProjectCard key={item.title} item={item} index={index} />
               ))}
             </div>
+          </div>
+        </motion.section>
+
+        {/* GitHub Activity Section */}
+        <motion.section
+          id="section-activity"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          whileHover={sectionHoverMotion}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          className="floating-page"
+        >
+          <div className="panel">
+            <GhostHeading
+              text="Activity"
+              as="h2"
+              className="font-serif text-3xl font-bold tracking-tight text-white sm:text-4xl"
+            />
+            <GithubActivity />
           </div>
         </motion.section>
 

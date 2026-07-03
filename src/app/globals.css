@@ -186,8 +186,8 @@ textarea:focus-visible,
   position: absolute;
   inset: 0;
   z-index: 0;
-  mask-image: radial-gradient(circle at 62% 45%, black 0%, black 35%, transparent 72%);
-  -webkit-mask-image: radial-gradient(circle at 62% 45%, black 0%, black 35%, transparent 72%);
+  mask-image: radial-gradient(circle at 50% 52%, black 0%, black 22%, transparent 52%);
+  -webkit-mask-image: radial-gradient(circle at 50% 52%, black 0%, black 22%, transparent 52%);
   opacity: 0.9;
 }
 
