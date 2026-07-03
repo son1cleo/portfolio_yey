@@ -16,85 +16,73 @@ function createRng(seed: number) {
   };
 }
 
-function buildParticlePositions(count: number) {
-  const rng = createRng(1337);
-  const arr = new Float32Array(count * 3);
+const INSIDE_COLOR = new THREE.Color("#99f6e4");
+const OUTSIDE_COLOR = new THREE.Color("#0f3d38");
+
+function buildSpiral(count: number, arms: number, spin: number, randomness: number, maxRadius: number) {
+  const rng = createRng(2024);
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+
   for (let i = 0; i < count; i++) {
-    const radius = 2.6 + rng() * 1.6;
-    const theta = rng() * Math.PI * 2;
-    const phi = Math.acos(2 * rng() - 1);
-    arr[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-    arr[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-    arr[i * 3 + 2] = radius * Math.cos(phi);
+    const radius = rng() * maxRadius;
+    const armAngle = ((i % arms) / arms) * Math.PI * 2;
+    const spinAngle = radius * spin;
+    const angle = armAngle + spinAngle;
+
+    const spread = randomness * radius;
+    const randX = (rng() - 0.5) * spread;
+    const randY = (rng() - 0.5) * spread * 0.3;
+    const randZ = (rng() - 0.5) * spread;
+
+    positions[i * 3] = Math.cos(angle) * radius + randX;
+    positions[i * 3 + 1] = randY;
+    positions[i * 3 + 2] = Math.sin(angle) * radius + randZ;
+
+    const mixed = INSIDE_COLOR.clone().lerp(OUTSIDE_COLOR, radius / maxRadius);
+    colors[i * 3] = mixed.r;
+    colors[i * 3 + 1] = mixed.g;
+    colors[i * 3 + 2] = mixed.b;
   }
-  return arr;
+
+  return { positions, colors };
 }
 
-function ParticleField({ count = 600 }: { count?: number }) {
+function Spiral({ interactive }: { interactive: boolean }) {
+  const groupRef = useRef<THREE.Group>(null);
   const pointsRef = useRef<THREE.Points>(null);
 
-  const positions = useMemo(() => buildParticlePositions(count), [count]);
+  const { positions, colors } = useMemo(() => buildSpiral(2600, 4, 1.9, 0.32, 3.4), []);
 
-  useFrame((_, delta) => {
-    if (!pointsRef.current) return;
-    pointsRef.current.rotation.y += delta * 0.03;
+  useFrame((state, delta) => {
+    if (pointsRef.current) {
+      pointsRef.current.rotation.y += delta * 0.09;
+    }
+    if (groupRef.current && interactive) {
+      const targetY = state.pointer.x * 0.25;
+      const targetX = -0.62 - state.pointer.y * 0.12;
+      groupRef.current.rotation.y += (targetY - groupRef.current.rotation.y) * 0.03;
+      groupRef.current.rotation.x += (targetX - groupRef.current.rotation.x) * 0.03;
+    }
   });
 
   return (
-    <points ref={pointsRef}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-      </bufferGeometry>
-      <pointsMaterial color="#5eead4" size={0.028} transparent opacity={0.75} sizeAttenuation />
-    </points>
-  );
-}
-
-function WireSphere({
-  radius,
-  detail,
-  color,
-  opacity,
-  speed,
-}: {
-  radius: number;
-  detail: number;
-  color: string;
-  opacity: number;
-  speed: number;
-}) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((_, delta) => {
-    if (!meshRef.current) return;
-    meshRef.current.rotation.y += delta * speed;
-    meshRef.current.rotation.x += delta * speed * 0.4;
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <icosahedronGeometry args={[radius, detail]} />
-      <meshBasicMaterial color={color} wireframe transparent opacity={opacity} />
-    </mesh>
-  );
-}
-
-function Scene({ parallax }: { parallax: boolean }) {
-  const groupRef = useRef<THREE.Group>(null);
-
-  useFrame((state) => {
-    if (!groupRef.current || !parallax) return;
-    const targetY = state.pointer.x * 0.35;
-    const targetX = -state.pointer.y * 0.25;
-    groupRef.current.rotation.y += (targetY - groupRef.current.rotation.y) * 0.03;
-    groupRef.current.rotation.x += (targetX - groupRef.current.rotation.x) * 0.03;
-  });
-
-  return (
-    <group ref={groupRef}>
-      <WireSphere radius={2.5} detail={2} color="#2dd4bf" opacity={0.32} speed={0.06} />
-      <WireSphere radius={1.5} detail={1} color="#5eead4" opacity={0.22} speed={-0.09} />
-      <ParticleField />
+    <group ref={groupRef} rotation={[-0.62, 0, 0.08]}>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          <bufferAttribute attach="attributes-color" args={[colors, 3]} />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.05}
+          sizeAttenuation
+          vertexColors
+          transparent
+          opacity={0.85}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
     </group>
   );
 }
@@ -102,12 +90,12 @@ function Scene({ parallax }: { parallax: boolean }) {
 export default function HeroScene({ interactive = true }: { interactive?: boolean }) {
   return (
     <Canvas
-      camera={{ position: [0, 0, 6.5], fov: 45 }}
+      camera={{ position: [0, 1.1, 6.8], fov: 45 }}
       dpr={[1, 1.6]}
       gl={{ antialias: true, alpha: true }}
       style={{ width: "100%", height: "100%" }}
     >
-      <Scene parallax={interactive} />
+      <Spiral interactive={interactive} />
     </Canvas>
   );
 }
