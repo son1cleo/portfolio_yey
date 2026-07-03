@@ -2,7 +2,15 @@
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
-import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "framer-motion";
 import { ArrowUpRight, Download, Github, Linkedin, Mail, ChevronDown } from "lucide-react";
 import {
   SiPython,
@@ -83,6 +91,7 @@ const workItems: ProjectItem[] = [
       "Production SaaS that turns raw CSV/Excel datasets into narrative analytical reports (PDF, DOCX, PPTX) with a 6-type statistical analysis engine, question-aware column selection, and LLM-generated narration. Async infrastructure with multi-tenant row-level security and fallback template narration for LLM outages.",
     tag: "Project",
     stack: ["FastAPI", "Celery", "Redis", "PostgreSQL", "LLM Narration", "Docker"],
+    liveUrl: "https://databrief-six.vercel.app/",
   },
   {
     title: "RatibBuilds Portfolio",
@@ -132,7 +141,32 @@ const workItems: ProjectItem[] = [
   },
 ];
 
-const HERO_INTRO_TEXT = "I'm Midhat Ratib Khan";
+const HERO_INTRO_TEXT = "Midhat Ratib Khan";
+const heroRoleSequence = ["Data Scientist", "AI Engineer", "Full Stack Dev"] as const;
+
+function SidebarLogo({ size, failed, onError }: { size: number; failed: boolean; onError: () => void }) {
+  if (failed) {
+    return (
+      <span
+        className="flex items-center justify-center rounded-full border border-white/15 bg-black/40 font-bold text-white"
+        style={{ width: size, height: size, fontSize: size * 0.36 }}
+      >
+        M
+      </span>
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/profile.jpg"
+      alt="Midhat Ratib Khan"
+      onError={onError}
+      className="rounded-full border border-white/15 object-cover"
+      style={{ width: size, height: size }}
+    />
+  );
+}
 
 const sectionOptions: Array<{ key: SectionKey; label: string }> = [
   { key: "about", label: "About" },
@@ -203,6 +237,9 @@ export default function Home() {
   const [currentViewSection, setCurrentViewSection] = useState<SectionKey | null>(null);
   const [showScrollIcon, setShowScrollIcon] = useState(true);
   const [typedIntro, setTypedIntro] = useState("");
+  const [activeRoleIndex, setActiveRoleIndex] = useState(0);
+  const [logoPhotoFailed, setLogoPhotoFailed] = useState(false);
+  const heroScrollRef = useRef<HTMLElement>(null);
   const isDesktop = useSyncExternalStore(subscribeToDesktopQuery, getDesktopSnapshot, getDesktopServerSnapshot);
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("Portfolio inquiry");
@@ -221,6 +258,15 @@ export default function Home() {
   const cursorY = useMotionValue(-200);
   const smoothCursorX = useSpring(cursorX, { damping: 24, stiffness: 420, mass: 0.24 });
   const smoothCursorY = useSpring(cursorY, { damping: 24, stiffness: 420, mass: 0.24 });
+  const { scrollYProgress: heroScrollProgress } = useScroll({
+    target: heroScrollRef,
+    offset: ["start start", "end start"],
+  });
+
+  useMotionValueEvent(heroScrollProgress, "change", (value) => {
+    const nextIndex = Math.min(heroRoleSequence.length - 1, Math.floor(value * heroRoleSequence.length));
+    setActiveRoleIndex((current) => (current === nextIndex ? current : nextIndex));
+  });
 
   useEffect(() => {
     const previousScrollRestoration =
@@ -380,7 +426,7 @@ export default function Home() {
 
       {/* Fixed left sidebar (desktop) */}
       <aside className="sidebar">
-        <span className="text-sm font-bold tracking-tight text-white">M<span className="text-teal-400">.</span></span>
+        <SidebarLogo size={34} failed={logoPhotoFailed} onError={() => setLogoPhotoFailed(true)} />
 
         <nav className="sidebar-links">
           {sectionOptions.map((option) => (
@@ -414,7 +460,7 @@ export default function Home() {
 
       {/* Compact mobile nav */}
       <div className="fixed left-4 top-4 z-50 flex items-center gap-2 rounded-full border border-white/10 bg-black/60 px-3 py-1.5 backdrop-blur-md lg:hidden">
-        <span className="text-sm font-bold text-white">M<span className="text-teal-400">.</span></span>
+        <SidebarLogo size={26} failed={logoPhotoFailed} onError={() => setLogoPhotoFailed(true)} />
         <div className="h-4 w-px bg-white/15" />
         {sectionOptions.map((option) => (
           <button
@@ -440,94 +486,92 @@ export default function Home() {
         </button>
       </div>
 
-      <section className="relative flex min-h-screen flex-col items-center justify-center px-1 pt-20">
-        {isDesktop && !prefersReducedMotion && (
-          <div className="hero-scene-wrap">
-            <HeroScene interactive />
+      <section ref={heroScrollRef} className="relative" style={{ height: "240vh" }}>
+        <div className="sticky top-0 flex min-h-screen flex-col items-center justify-center overflow-hidden px-1 pt-20">
+          {isDesktop && !prefersReducedMotion && (
+            <div className="hero-scene-wrap">
+              <HeroScene interactive />
+            </div>
+          )}
+
+          <motion.h1
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="relative z-10 min-h-[1em] px-4 text-center text-4xl font-extrabold tracking-tight text-white sm:text-6xl"
+            style={{ textShadow: "0 0 34px rgba(45, 212, 191, 0.4), 0 2px 12px rgba(0, 0, 0, 0.75)" }}
+          >
+            {typedIntro}
+            {typedIntro.length < HERO_INTRO_TEXT.length && <span className="animate-pulse text-teal-300">|</span>}
+          </motion.h1>
+
+          <div className="relative z-10 mt-6 flex h-14 items-center justify-center sm:h-16">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={heroRoleSequence[activeRoleIndex]}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -18 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="text-2xl font-semibold uppercase tracking-[0.2em] text-teal-300 sm:text-3xl"
+              >
+                {heroRoleSequence[activeRoleIndex]}
+              </motion.p>
+            </AnimatePresence>
           </div>
-        )}
 
-        <motion.p
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-10 min-h-[1em] text-xs font-semibold uppercase tracking-[0.3em] text-teal-200"
-          style={{
-            fontFamily: "var(--font-jetbrains), monospace",
-            textShadow: "0 0 18px rgba(45, 212, 191, 0.55), 0 1px 3px rgba(0, 0, 0, 0.8)",
-          }}
-        >
-          {typedIntro}
-          {typedIntro.length < HERO_INTRO_TEXT.length && <span className="animate-pulse">|</span>}
-        </motion.p>
+          <div className="relative z-10 mt-3 flex items-center justify-center gap-1.5">
+            {heroRoleSequence.map((role, index) => (
+              <span
+                key={role}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  index === activeRoleIndex ? "w-6 bg-teal-300" : "w-1.5 bg-white/20"
+                }`}
+              />
+            ))}
+          </div>
 
-        <div className="relative z-10 mt-4 text-center">
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
-            className="text-4xl font-bold tracking-tight text-white sm:text-6xl"
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
+            className="relative z-10 mt-9 flex flex-wrap items-center justify-center gap-3"
           >
-            Data Scientist
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.18 }}
-            className="text-4xl font-bold tracking-tight text-teal-300/80 sm:text-6xl"
-          >
-            AI Engineer
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.28 }}
-            className="text-4xl font-bold tracking-tight text-teal-300/35 sm:text-6xl"
-          >
-            Full Stack Dev
-          </motion.p>
+            <button
+              type="button"
+              onClick={() => selectSection("projects")}
+              className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:bg-zinc-200"
+            >
+              View Projects <ArrowUpRight size={16} />
+            </button>
+            <button
+              type="button"
+              onClick={() => selectSection("connect")}
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white/10"
+            >
+              Let&apos;s Talk
+            </button>
+          </motion.div>
+
+          {showScrollIcon && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.4, duration: 1 }}
+              className="absolute bottom-16 z-10 animate-bounce cursor-pointer"
+              type="button"
+              aria-label="Scroll to About section"
+              onClick={() => {
+                const aboutElement = document.getElementById("section-about");
+                aboutElement?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.96 }}
+            >
+              <ChevronDown size={32} className="text-white/50 transition hover:text-white" />
+            </motion.button>
+          )}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
-          className="relative z-10 mt-9 flex flex-wrap items-center justify-center gap-3"
-        >
-          <button
-            type="button"
-            onClick={() => selectSection("projects")}
-            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:bg-zinc-200"
-          >
-            View Projects <ArrowUpRight size={16} />
-          </button>
-          <button
-            type="button"
-            onClick={() => selectSection("connect")}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white/10"
-          >
-            Let&apos;s Talk
-          </button>
-        </motion.div>
-
-        {showScrollIcon && (
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.4, duration: 1 }}
-            className="absolute bottom-16 z-10 animate-bounce cursor-pointer"
-            type="button"
-            aria-label="Scroll to About section"
-            onClick={() => {
-              const aboutElement = document.getElementById("section-about");
-              aboutElement?.scrollIntoView({ behavior: "smooth", block: "start" });
-            }}
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.96 }}
-          >
-            <ChevronDown size={32} className="text-white/50 transition hover:text-white" />
-          </motion.button>
-        )}
       </section>
 
       <div className="marquee mx-auto -mt-6 mb-16 w-full max-w-4xl">
