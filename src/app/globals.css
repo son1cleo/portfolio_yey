@@ -1,43 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050806;
-  --foreground: #6bffa0;
-  --muted: #4f9468;
-  --panel: rgba(61, 255, 122, 0.045);
-  --panel-border: rgba(61, 255, 122, 0.28);
-  --pixel-ink: 61, 255, 122;
-  --pixel-deep: 4, 8, 6;
+  --background: #0a0d0c;
+  --foreground: #f3f6f4;
+  --muted: #9aa5a0;
+  --accent: #34d399;
+  --panel-border: rgba(255, 255, 255, 0.1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sora);
-  --font-mono: var(--font-space-grotesk);
-
-  /* Recolor Tailwind's base palette so every existing white/black/zinc
-     utility in the app resolves to the phosphor-green terminal theme. */
-  --color-white: #3dff7a;
-  --color-black: #050806;
-  --color-zinc-100: #d4ffe2;
-  --color-zinc-200: #a3ffc0;
-  --color-zinc-300: #7fe3a0;
-  --color-zinc-400: #4f9468;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sora), monospace;
-  font-size: 1.0625rem;
+  font-family: var(--font-sora), sans-serif;
   min-height: 100vh;
   background-image:
-    repeating-linear-gradient(0deg, rgba(61, 255, 122, 0.016) 0px, rgba(61, 255, 122, 0.016) 1px, transparent 1px, transparent 40px),
-    repeating-linear-gradient(90deg, rgba(61, 255, 122, 0.016) 0px, rgba(61, 255, 122, 0.016) 1px, transparent 1px, transparent 40px),
-    radial-gradient(circle at 15% 18%, rgba(61, 255, 122, 0.06), transparent 40%),
-    radial-gradient(circle at 80% 4%, rgba(61, 255, 122, 0.04), transparent 34%),
-    linear-gradient(180deg, #060907 0%, #040604 45%, #020302 100%);
+    radial-gradient(circle at 18% 12%, rgba(52, 211, 153, 0.14), transparent 42%),
+    radial-gradient(circle at 82% 6%, rgba(96, 165, 250, 0.08), transparent 38%),
+    radial-gradient(circle at 50% 100%, rgba(52, 211, 153, 0.06), transparent 45%),
+    linear-gradient(180deg, #0c0f0e 0%, #0a0d0c 45%, #080b0a 100%);
 }
 
 a:focus-visible,
@@ -45,48 +31,8 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 [role="button"]:focus-visible {
-  outline: 2px solid rgba(61, 255, 122, 0.9);
+  outline: 2px solid rgba(52, 211, 153, 0.85);
   outline-offset: 2px;
-}
-
-/* CRT scanline + flicker overlay */
-.scanlines {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.18) 0px,
-    rgba(0, 0, 0, 0.18) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  mix-blend-mode: multiply;
-  opacity: 0.5;
-  animation: crtFlicker 6s steps(60) infinite;
-}
-
-@keyframes crtFlicker {
-  0%, 96%, 100% { opacity: 0.5; }
-  97% { opacity: 0.38; }
-  98% { opacity: 0.55; }
-  99% { opacity: 0.42; }
-}
-
-.panel {
-  --notch: 10px;
-  border: 2px solid var(--panel-border);
-  background: linear-gradient(135deg, rgba(61, 255, 122, 0.07), rgba(61, 255, 122, 0.015));
-  border-radius: 0;
-  padding: 1.6rem;
-  box-shadow: 0 0 0 1px rgba(61, 255, 122, 0.08), 0 18px 0 -14px rgba(0, 0, 0, 0.6);
-  clip-path: polygon(
-    0 var(--notch), var(--notch) var(--notch), var(--notch) 0,
-    calc(100% - var(--notch)) 0, calc(100% - var(--notch)) var(--notch), 100% var(--notch),
-    100% calc(100% - var(--notch)), calc(100% - var(--notch)) calc(100% - var(--notch)), calc(100% - var(--notch)) 100%,
-    var(--notch) 100%, var(--notch) calc(100% - var(--notch)), 0 calc(100% - var(--notch))
-  );
 }
 
 .hero-glow {
@@ -96,20 +42,20 @@ textarea:focus-visible,
   width: min(85vw, 980px);
   height: 460px;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(61, 255, 122, 0.22), rgba(61, 255, 122, 0.05) 42%, transparent 72%);
-  filter: blur(4px);
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.16), rgba(52, 211, 153, 0.03) 42%, transparent 72%);
+  filter: blur(40px);
   pointer-events: none;
   z-index: -1;
-  animation: floatGlow 12s steps(24) infinite alternate;
+  animation: floatGlow 14s ease-in-out infinite alternate;
 }
 
 .cursor-spotlight {
   position: fixed;
-  width: 140px;
-  height: 140px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(61, 255, 122, 0.18), rgba(61, 255, 122, 0.02) 60%, transparent);
-  filter: blur(6px);
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.12), rgba(52, 211, 153, 0.02) 60%, transparent);
+  filter: blur(16px);
   pointer-events: none;
   z-index: 1;
   mix-blend-mode: screen;
@@ -121,39 +67,48 @@ textarea:focus-visible,
   }
 }
 
-.backdrop-layer {
-  position: fixed;
-  inset: 0;
-  backdrop-filter: blur(8px);
-  background: radial-gradient(circle at 50% 20%, rgba(61, 255, 122, 0.08), rgba(3, 4, 2, 0.45));
-  z-index: 5;
-  pointer-events: none;
+/* Glass card used for all major content panels */
+.panel {
+  border: 1px solid var(--panel-border);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
+  border-radius: 1.75rem;
+  padding: 1.75rem;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.06);
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
 }
 
-.menu-trigger,
-.menu-dropdown,
 .floating-page {
   position: relative;
   z-index: 20;
 }
 
 .floating-page {
-  border-radius: 0;
-  filter: drop-shadow(6px 6px 0 rgba(0, 0, 0, 0.55));
-  transition: filter 120ms linear;
-}
-
-.floating-page:hover {
-  filter: drop-shadow(8px 8px 0 rgba(61, 255, 122, 0.2));
-}
-
-.panel {
-  transition: border-color 90ms linear, background 90ms linear;
+  border-radius: 1.75rem;
+  transition: transform 160ms ease;
 }
 
 .floating-page:hover .panel {
-  border-color: rgba(61, 255, 122, 0.5);
-  background: linear-gradient(135deg, rgba(61, 255, 122, 0.1), rgba(61, 255, 122, 0.02));
+  border-color: rgba(52, 211, 153, 0.35);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+}
+
+/* Top floating nav */
+.nav-float {
+  position: fixed;
+  top: 1.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 13, 12, 0.66);
+  backdrop-filter: blur(16px);
+  border-radius: 9999px;
+  padding: 0.55rem 0.6rem 0.55rem 1.15rem;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes floatGlow {
@@ -165,133 +120,64 @@ textarea:focus-visible,
   }
 }
 
-.animate-blink {
-  animation: blink 0.6s steps(1) infinite;
-  font-weight: 600;
-}
-
-/* Chunky 8-bit button: hard offset shadow, presses flat on click */
-.pixel-btn {
-  border-radius: 0 !important;
-  box-shadow: 3px 3px 0 rgba(61, 255, 122, 0.35);
-  transition: transform 80ms steps(2), box-shadow 80ms steps(2);
-}
-
-.pixel-btn:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 rgba(61, 255, 122, 0.45);
-}
-
-.pixel-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 0 0 0 rgba(61, 255, 122, 0.45);
-}
-
-.pixel-avatar-frame {
+/* Arch-cutout photo frame */
+.arch-frame {
   position: relative;
-  z-index: 2;
-  isolation: isolate;
   overflow: hidden;
-  border: 3px solid rgba(61, 255, 122, 0.55);
-  box-shadow: 5px 5px 0 rgba(61, 255, 122, 0.22), 0 0 28px rgba(61, 255, 122, 0.14);
-  background: #05070a;
-  image-rendering: pixelated;
+  border-radius: 999px 999px 28px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  background: #101512;
 }
 
-.pixel-avatar-canvas {
+.arch-photo {
   display: block;
   width: 100%;
   height: 100%;
-  image-rendering: pixelated;
-  opacity: 0;
-  transition: opacity 0.5s ease;
+  object-fit: cover;
+  object-position: center 18%;
 }
 
-.pixel-avatar-canvas.is-ready {
-  opacity: 1;
-}
-
-.pixel-avatar-fallback {
+.arch-fallback {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-space-grotesk), monospace;
-  font-size: 0.9rem;
-  color: rgba(61, 255, 122, 0.85);
-  letter-spacing: 0.08em;
-  text-align: center;
-  padding: 0.5rem;
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(52, 211, 153, 0.85);
+  background: radial-gradient(circle at 50% 30%, rgba(52, 211, 153, 0.16), transparent 70%);
 }
 
-.pixel-avatar-scan {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0px, rgba(0, 0, 0, 0.35) 1px, transparent 1px, transparent 3px);
-  pointer-events: none;
-  mix-blend-mode: multiply;
-  opacity: 0.45;
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.18);
+  animation: statusPulse 2.4s ease-in-out infinite;
 }
 
-.pixel-avatar-loading {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  background: #05070a;
-}
-
-.pixel-avatar-loading-dots {
-  display: flex;
-  gap: 6px;
-}
-
-.pixel-avatar-loading-dots span {
-  width: 8px;
-  height: 8px;
-  background: rgba(61, 255, 122, 0.85);
-  animation: pixelLoadPulse 1s steps(1) infinite;
-}
-
-.pixel-avatar-loading-dots span:nth-child(2) {
-  animation-delay: 0.12s;
-}
-
-.pixel-avatar-loading-dots span:nth-child(3) {
-  animation-delay: 0.24s;
-}
-
-.pixel-avatar-loading-dots span:nth-child(4) {
-  animation-delay: 0.36s;
-}
-
-.pixel-avatar-loading-label {
-  font-family: var(--font-space-grotesk), monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.18em;
-  color: rgba(61, 255, 122, 0.6);
-}
-
-@keyframes pixelLoadPulse {
+@keyframes statusPulse {
   0%, 100% {
-    opacity: 0.2;
-    transform: translateY(0);
+    opacity: 1;
   }
   50% {
-    opacity: 1;
-    transform: translateY(-3px);
+    opacity: 0.45;
   }
 }
 
 @media (max-width: 640px) {
   .panel {
-    --notch: 6px;
-    padding: 1rem;
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+  }
+
+  .floating-page {
+    border-radius: 1.25rem;
   }
 
   .hero-glow {
@@ -299,16 +185,10 @@ textarea:focus-visible,
     height: 320px;
     inset: -180px auto auto 50%;
   }
-}
 
-@keyframes blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0.3;
+  .nav-float {
+    gap: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.9rem;
   }
 }
 
