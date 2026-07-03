@@ -27,6 +27,7 @@ export function PixelAvatar({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [aspect, setAspect] = useState(1);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -38,11 +39,12 @@ export function PixelAvatar({
       const canvas = canvasRef.current;
       if (!canvas) return;
 
-      const aspect = img.naturalWidth / img.naturalHeight;
+      const aspectRatio = img.naturalWidth / img.naturalHeight;
       const cols = PIXEL_COLS;
-      const rows = Math.max(1, Math.round(cols / aspect));
+      const rows = Math.max(1, Math.round(cols / aspectRatio));
       canvas.width = cols;
       canvas.height = rows;
+      setAspect(aspectRatio);
 
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
@@ -76,7 +78,7 @@ export function PixelAvatar({
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
       className="pixel-avatar-frame"
-      style={{ width: size, height: size }}
+      style={{ width: size, aspectRatio: aspect }}
     >
       {!failed ? (
         <canvas
