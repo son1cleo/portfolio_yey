@@ -1,9 +1,35 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import dynamic from "next/dynamic";
 import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowUpRight, Download, Github, Linkedin, Mail, ChevronDown } from "lucide-react";
+import {
+  SiPython,
+  SiC,
+  SiCplusplus,
+  SiDart,
+  SiGo,
+  SiJavascript,
+  SiTypescript,
+  SiNextdotjs,
+  SiReact,
+  SiNodedotjs,
+  SiExpress,
+  SiDjango,
+  SiFlask,
+  SiFlutter,
+  SiTailwindcss,
+  SiFramer,
+  SiMysql,
+  SiPostgresql,
+  SiMongodb,
+  SiSupabase,
+  SiLangchain,
+  SiLanggraph,
+  SiTensorflow,
+} from "react-icons/si";
+import { FaJava } from "react-icons/fa6";
 import {
   getLatestCompletedForPortfolio,
   getPinnedSkillsForPortfolio,
@@ -11,6 +37,24 @@ import {
   type TrackerSkill,
   type TrackerSummary,
 } from "../data/tracker-store";
+import { Preloader } from "../components/Preloader";
+import { GhostHeading } from "../components/GhostHeading";
+
+const HeroScene = dynamic(() => import("../components/HeroScene"), { ssr: false });
+
+function subscribeToDesktopQuery(callback: () => void) {
+  const mql = window.matchMedia("(min-width: 768px)");
+  mql.addEventListener("change", callback);
+  return () => mql.removeEventListener("change", callback);
+}
+
+function getDesktopSnapshot() {
+  return window.matchMedia("(min-width: 768px)").matches;
+}
+
+function getDesktopServerSnapshot() {
+  return false;
+}
 
 type ProjectItem = {
   title: string;
@@ -83,8 +127,8 @@ const workItems: ProjectItem[] = [
 
 const sectionOptions: Array<{ key: SectionKey; label: string }> = [
   { key: "about", label: "About" },
-  { key: "projects", label: "Projects" },
-  { key: "connect", label: "Connect" },
+  { key: "projects", label: "Work" },
+  { key: "connect", label: "Contact" },
 ];
 
 const roleProfiles: RoleProfile[] = [
@@ -117,22 +161,39 @@ const roleProfiles: RoleProfile[] = [
   },
 ];
 
-const stackStrip = [
-  "Python",
-  "pandas",
-  "scikit-learn",
-  "LangChain",
-  "FastAPI",
-  "Next.js",
-  "PostgreSQL",
-  "Docker",
+const techStack = [
+  { name: "Python", Icon: SiPython },
+  { name: "C", Icon: SiC },
+  { name: "C++", Icon: SiCplusplus },
+  { name: "Java", Icon: FaJava },
+  { name: "Dart", Icon: SiDart },
+  { name: "Go", Icon: SiGo },
+  { name: "JavaScript", Icon: SiJavascript },
+  { name: "TypeScript", Icon: SiTypescript },
+  { name: "Next.js", Icon: SiNextdotjs },
+  { name: "React", Icon: SiReact },
+  { name: "Node.js", Icon: SiNodedotjs },
+  { name: "Express", Icon: SiExpress },
+  { name: "Django", Icon: SiDjango },
+  { name: "Flask", Icon: SiFlask },
+  { name: "Flutter", Icon: SiFlutter },
+  { name: "TailwindCSS", Icon: SiTailwindcss },
+  { name: "Framer Motion", Icon: SiFramer },
+  { name: "MySQL", Icon: SiMysql },
+  { name: "PostgreSQL", Icon: SiPostgresql },
+  { name: "MongoDB", Icon: SiMongodb },
+  { name: "Supabase", Icon: SiSupabase },
+  { name: "LangChain", Icon: SiLangchain },
+  { name: "LangGraph", Icon: SiLanggraph },
+  { name: "TensorFlow", Icon: SiTensorflow },
 ];
 
 export default function Home() {
+  const [introDone, setIntroDone] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
   const [currentViewSection, setCurrentViewSection] = useState<SectionKey | null>(null);
   const [showScrollIcon, setShowScrollIcon] = useState(true);
-  const [photoFailed, setPhotoFailed] = useState(false);
+  const isDesktop = useSyncExternalStore(subscribeToDesktopQuery, getDesktopSnapshot, getDesktopServerSnapshot);
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("Portfolio inquiry");
   const [message, setMessage] = useState("");
@@ -282,100 +343,122 @@ export default function Home() {
       };
 
   return (
-    <div className="relative min-h-screen overflow-x-clip px-4 pb-20 pt-7 sm:px-8 sm:pt-8 md:px-10">
-      <div className="hero-glow" aria-hidden />
+    <div className="relative min-h-screen overflow-x-clip px-4 pb-20 pt-7 sm:px-8 sm:pt-8 md:px-10 lg:pl-28">
+      {!introDone && <Preloader onDone={() => setIntroDone(true)} />}
+
       {!prefersReducedMotion && <motion.div className="cursor-spotlight" style={{ x: smoothCursorX, y: smoothCursorY }} aria-hidden />}
 
-      <motion.nav
-        initial={{ opacity: 0, y: -16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="nav-float"
-      >
-        <span className="pl-1 text-sm font-semibold tracking-tight text-white">Midhat<span className="text-emerald-400">.</span></span>
-        <div className="hidden items-center gap-1 sm:flex">
+      {/* Fixed left sidebar (desktop) */}
+      <aside className="sidebar">
+        <span className="text-sm font-bold tracking-tight text-white">M<span className="text-teal-400">.</span></span>
+
+        <nav className="sidebar-links">
           {sectionOptions.map((option) => (
             <button
               key={option.key}
               type="button"
               onClick={() => selectSection(option.key)}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition ${
-                currentViewSection === option.key
-                  ? "bg-white/12 text-white"
-                  : "text-zinc-400 hover:text-white"
-              }`}
+              className={`sidebar-link ${currentViewSection === option.key ? "is-active" : ""}`}
             >
               {option.label}
             </button>
           ))}
+          <a href="/resume/MidhatRatibCV_DS.pdf" download className="sidebar-link">
+            Resume
+          </a>
+        </nav>
+
+        <div className="sidebar-social">
+          <div className="sidebar-rule" aria-hidden />
+          <a href="https://github.com/son1cleo" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <Github size={16} />
+          </a>
+          <a href="https://linkedin.com/in/midhat-ratib-khan-9969012bb" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <Linkedin size={16} />
+          </a>
+          <a href={mailtoLink} aria-label="Email">
+            <Mail size={16} />
+          </a>
         </div>
-        <a
-          href="/resume/MidhatRatibCV_DS.pdf"
-          download
-          className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400 px-4 py-1.5 text-xs font-semibold text-black transition hover:bg-emerald-300"
+      </aside>
+
+      {/* Compact mobile nav */}
+      <div className="fixed left-4 top-4 z-50 flex items-center gap-2 rounded-full border border-white/10 bg-black/60 px-3 py-1.5 backdrop-blur-md lg:hidden">
+        <span className="text-sm font-bold text-white">M<span className="text-teal-400">.</span></span>
+        <div className="h-4 w-px bg-white/15" />
+        {sectionOptions.map((option) => (
+          <button
+            key={option.key}
+            type="button"
+            onClick={() => selectSection(option.key)}
+            className={`text-[11px] font-medium uppercase tracking-wide transition ${
+              currentViewSection === option.key ? "text-teal-300" : "text-zinc-400"
+            }`}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="nav-float">
+        <button
+          type="button"
+          onClick={() => selectSection("connect")}
+          className="rounded-full border border-white/15 bg-black/50 px-4 py-2 text-xs font-medium text-white backdrop-blur-md transition hover:bg-white/10"
         >
-          Resume <Download size={13} />
-        </a>
-      </motion.nav>
+          Contact
+        </button>
+      </div>
 
       <section className="relative flex min-h-screen flex-col items-center justify-center px-1 pt-20">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative"
-        >
-          {!prefersReducedMotion && (
-            <motion.div
-              className="absolute -inset-5 rounded-full border border-dashed border-emerald-400/25"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 44, repeat: Infinity, ease: "linear" }}
-              aria-hidden
-            />
-          )}
-          <div className="arch-frame relative h-[220px] w-[180px] sm:h-[260px] sm:w-[210px]">
-            {!photoFailed ? (
-              <Image
-                src="/profile.jpg"
-                alt="Midhat Ratib Khan"
-                fill
-                sizes="(max-width: 640px) 180px, 210px"
-                className="arch-photo"
-                priority
-                onError={() => setPhotoFailed(true)}
-              />
-            ) : (
-              <div className="arch-fallback">MRK</div>
-            )}
+        {isDesktop && !prefersReducedMotion && (
+          <div className="hero-scene-wrap">
+            <HeroScene interactive />
           </div>
-          <div className="absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/15 bg-black/70 px-3 py-1.5 text-[11px] font-medium text-zinc-200 backdrop-blur-md">
-            <span className="status-dot" /> Open to work
-          </div>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: "easeOut", delay: 0.1 }}
-          className="mt-10 text-center text-4xl font-bold tracking-tight text-white sm:text-6xl"
-        >
-          Midhat Ratib Khan
-        </motion.h1>
+        )}
 
         <motion.p
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="mt-4 text-center text-sm font-medium uppercase tracking-[0.2em] text-emerald-300/90 sm:text-base"
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="relative z-10 text-xs font-medium uppercase tracking-[0.3em] text-teal-300/80"
+          style={{ fontFamily: "var(--font-jetbrains), monospace" }}
         >
-          Data Scientist <span className="text-zinc-600">{"//"}</span> AI Engineer <span className="text-zinc-600">{"//"}</span> Full Stack Dev
+          I&apos;m Midhat Ratib Khan
         </motion.p>
+
+        <div className="relative z-10 mt-4 text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
+            className="text-4xl font-bold tracking-tight text-white sm:text-6xl"
+          >
+            Data Scientist
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.18 }}
+            className="text-4xl font-bold tracking-tight text-teal-300/80 sm:text-6xl"
+          >
+            AI Engineer
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.28 }}
+            className="text-4xl font-bold tracking-tight text-teal-300/35 sm:text-6xl"
+          >
+            Full Stack Dev
+          </motion.p>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-3"
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
+          className="relative z-10 mt-9 flex flex-wrap items-center justify-center gap-3"
         >
           <button
             type="button"
@@ -398,7 +481,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.4, duration: 1 }}
-            className="absolute bottom-16 animate-bounce cursor-pointer"
+            className="absolute bottom-16 z-10 animate-bounce cursor-pointer"
             type="button"
             aria-label="Scroll to About section"
             onClick={() => {
@@ -413,19 +496,15 @@ export default function Home() {
         )}
       </section>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="mx-auto -mt-6 mb-16 flex w-full max-w-4xl flex-wrap items-center justify-center gap-x-8 gap-y-3"
-      >
-        {stackStrip.map((item) => (
-          <span key={item} className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">
-            {item}
-          </span>
-        ))}
-      </motion.div>
+      <div className="marquee mx-auto -mt-6 mb-16 w-full max-w-4xl">
+        <div className="marquee-track">
+          {[...techStack, ...techStack].map(({ name, Icon }, index) => (
+            <span key={`${name}-${index}`} title={name} className="flex items-center justify-center text-zinc-500 transition hover:text-teal-300">
+              <Icon size={26} />
+            </span>
+          ))}
+        </div>
+      </div>
 
       <main className="mx-auto flex w-full max-w-5xl flex-col gap-12">
         {/* About Me Section */}
@@ -444,8 +523,11 @@ export default function Home() {
           onKeyDown={(event) => handleSectionKeyDown(event, "about")}
         >
           <div className="panel relative overflow-hidden">
-            <p className="text-xs tracking-[0.22em] text-white/60 uppercase">About me</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Data science-led, engineering-backed</h2>
+            <GhostHeading
+              text="About"
+              as="h2"
+              className="text-3xl font-bold tracking-tight text-white sm:text-4xl"
+            />
             <p className="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
               Computer Science graduate primarily focused on data science and AI engineering, backed by full-stack delivery experience. I present the portfolio in role-specific tracks so clients can quickly match needs to the right CV.
             </p>
@@ -455,7 +537,7 @@ export default function Home() {
                 <article
                   key={role.key}
                   className={`rounded-2xl border p-5 ${
-                    index === 0 ? "border-emerald-400/40 bg-emerald-400/[0.07]" : "border-white/15 bg-white/5"
+                    index === 0 ? "border-teal-400/40 bg-teal-400/[0.07]" : "border-white/15 bg-white/5"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-3">
@@ -465,7 +547,7 @@ export default function Home() {
                     </div>
                     <span
                       className={`rounded-full border px-2.5 py-1 text-[10px] uppercase tracking-wide ${
-                        index === 0 ? "border-emerald-400/40 bg-emerald-400/15 text-emerald-300" : "border-white/20 bg-black/30 text-zinc-200"
+                        index === 0 ? "border-teal-400/40 bg-teal-400/15 text-teal-300" : "border-white/20 bg-black/30 text-zinc-200"
                       }`}
                     >
                       {index === 0 ? "Focus" : "CV"}
@@ -496,35 +578,14 @@ export default function Home() {
             <div className="mt-7 grid gap-5 md:grid-cols-2">
               <article className="rounded-2xl border border-white/15 bg-white/5 p-5">
                 <h3 className="text-sm font-medium tracking-wide text-white uppercase">Tech Stack</h3>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {[
-                    "Python",
-                    "C",
-                    "C++",
-                    "Java",
-                    "Dart",
-                    "Go",
-                    "JavaScript",
-                    "TypeScript",
-                    "Next.js",
-                    "React",
-                    "Node.js",
-                    "Express",
-                    "Django",
-                    "Flask",
-                    "Flutter",
-                    "TailwindCSS",
-                    "Framer Motion",
-                    "MySQL",
-                    "PostgreSQL",
-                    "MongoDB",
-                    "Supabase",
-                    "LangChain",
-                    "LangGraph",
-                    "TensorFlow",
-                  ].map((item) => (
-                    <span key={item} className="rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[11px] text-zinc-200">
-                      {item}
+                <div className="mt-3 flex flex-wrap gap-3">
+                  {techStack.map(({ name, Icon }) => (
+                    <span
+                      key={name}
+                      title={name}
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 bg-black/30 text-zinc-300 transition hover:border-teal-400/40 hover:text-teal-300"
+                    >
+                      <Icon size={17} />
                     </span>
                   ))}
                 </div>
@@ -584,7 +645,7 @@ export default function Home() {
               <a
                 href="/resume/MidhatRatibCV_DS.pdf"
                 download
-                className="inline-flex items-center gap-2 rounded-full bg-emerald-400 px-5 py-3 text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:bg-emerald-300"
+                className="inline-flex items-center gap-2 rounded-full bg-teal-400 px-5 py-3 text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:bg-teal-300"
               >
                 <Download size={16} /> Download DS CV
               </a>
@@ -630,14 +691,23 @@ export default function Home() {
           onKeyDown={(event) => handleSectionKeyDown(event, "projects")}
         >
           <div className="panel">
-            <p className="text-xs tracking-[0.22em] text-white/60 uppercase">Projects and Contributions</p>
-            <article className="mt-5 rounded-2xl border border-white/15 bg-white/5 p-5">
-              <h3 className="text-base font-semibold text-white">Selected work that supports client trust</h3>
-              <div className="mt-4 space-y-4">
-                {workItems.map((item) => (
-                  <div key={item.title} className="rounded-xl border border-white/10 bg-black/20 p-4">
+            <GhostHeading
+              text="Work"
+              as="h2"
+              className="text-3xl font-bold tracking-tight text-white sm:text-4xl"
+            />
+            <div className="mt-7 space-y-3">
+              {workItems.map((item, index) => (
+                <div key={item.title} className="flex gap-4 rounded-xl border border-white/10 bg-black/20 p-4 sm:gap-6 sm:p-5">
+                  <span
+                    className="mt-0.5 shrink-0 text-sm font-semibold text-teal-400"
+                    style={{ fontFamily: "var(--font-jetbrains), monospace" }}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <h4 className="text-sm font-medium text-white">{item.title}</h4>
+                      <h4 className="text-sm font-medium text-white sm:text-base">{item.title}</h4>
                       <span className="rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] text-zinc-200">
                         {item.tag}
                       </span>
@@ -663,9 +733,9 @@ export default function Home() {
                       )}
                     </div>
                   </div>
-                ))}
-              </div>
-            </article>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.section>
 
@@ -685,10 +755,14 @@ export default function Home() {
           onKeyDown={(event) => handleSectionKeyDown(event, "connect")}
         >
           <div className="panel">
-            <p className="text-xs tracking-[0.22em] text-white/60 uppercase">Let&apos;s get connected</p>
-            <div className="mt-4 grid gap-8 md:grid-cols-[1.1fr_1fr]">
+            <GhostHeading
+              text="Contact"
+              as="h2"
+              className="text-3xl font-bold tracking-tight text-white sm:text-4xl"
+            />
+            <div className="mt-6 grid gap-8 md:grid-cols-[1.1fr_1fr]">
               <div>
-                <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Let&apos;s build something that gets hired</h2>
+                <h3 className="text-xl font-semibold tracking-tight text-white sm:text-2xl">Let&apos;s build something that gets hired</h3>
                 <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-300">
                   If you need data science work, an AI implementation, or a full-stack product, send me the brief and I&apos;ll reply with the best-fit CV and next steps.
                 </p>
@@ -724,7 +798,7 @@ export default function Home() {
                   <input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
-                    className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-emerald-400/50"
+                    className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-teal-400/50"
                     placeholder="Name"
                   />
                 </label>
@@ -733,7 +807,7 @@ export default function Home() {
                   <input
                     value={subject}
                     onChange={(event) => setSubject(event.target.value)}
-                    className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-emerald-400/50"
+                    className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-teal-400/50"
                     placeholder="Subject"
                   />
                 </label>
@@ -743,7 +817,7 @@ export default function Home() {
                     rows={5}
                     value={message}
                     onChange={(event) => setMessage(event.target.value)}
-                    className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-emerald-400/50"
+                    className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-teal-400/50"
                     placeholder="I visited your portfolio and would like to connect."
                   />
                 </label>
@@ -751,7 +825,7 @@ export default function Home() {
                 <div className="mt-2 flex flex-wrap gap-3">
                   <a
                     href={mailtoLink}
-                    className="inline-flex items-center gap-2 rounded-full bg-emerald-400 px-4 py-2.5 text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:bg-emerald-300"
+                    className="inline-flex items-center gap-2 rounded-full bg-teal-400 px-4 py-2.5 text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:bg-teal-300"
                   >
                     <Mail size={15} /> Start a Project
                   </a>

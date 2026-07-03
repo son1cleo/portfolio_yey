@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { Sora } from "next/font/google";
+import { Sora, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const sora = Sora({
   variable: "--font-sora",
+  subsets: ["latin"],
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
 });
 
@@ -20,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sora.variable} antialiased`}>{children}</body>
+      <body className={`${sora.variable} ${jetBrainsMono.variable} antialiased`}>{children}</body>
     </html>
   );
 }

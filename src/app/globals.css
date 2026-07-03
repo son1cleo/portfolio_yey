@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0d0c;
-  --foreground: #f3f6f4;
-  --muted: #9aa5a0;
-  --accent: #34d399;
-  --panel-border: rgba(255, 255, 255, 0.1);
+  --background: #05070a;
+  --foreground: #eef4f3;
+  --muted: #8b98a0;
+  --accent: #2dd4bf;
+  --panel-border: rgba(255, 255, 255, 0.08);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sora);
+  --font-mono: var(--font-jetbrains);
 }
 
 body {
@@ -20,10 +21,9 @@ body {
   font-family: var(--font-sora), sans-serif;
   min-height: 100vh;
   background-image:
-    radial-gradient(circle at 18% 12%, rgba(52, 211, 153, 0.14), transparent 42%),
-    radial-gradient(circle at 82% 6%, rgba(96, 165, 250, 0.08), transparent 38%),
-    radial-gradient(circle at 50% 100%, rgba(52, 211, 153, 0.06), transparent 45%),
-    linear-gradient(180deg, #0c0f0e 0%, #0a0d0c 45%, #080b0a 100%);
+    radial-gradient(circle at 78% 8%, rgba(45, 212, 191, 0.12), transparent 42%),
+    radial-gradient(circle at 15% 85%, rgba(45, 212, 191, 0.06), transparent 40%),
+    linear-gradient(180deg, #06090b 0%, #05070a 45%, #040607 100%);
 }
 
 a:focus-visible,
@@ -31,22 +31,8 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 [role="button"]:focus-visible {
-  outline: 2px solid rgba(52, 211, 153, 0.85);
+  outline: 2px solid rgba(45, 212, 191, 0.85);
   outline-offset: 2px;
-}
-
-.hero-glow {
-  position: fixed;
-  inset: -240px auto auto 50%;
-  transform: translateX(-50%);
-  width: min(85vw, 980px);
-  height: 460px;
-  border-radius: 9999px;
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.16), rgba(52, 211, 153, 0.03) 42%, transparent 72%);
-  filter: blur(40px);
-  pointer-events: none;
-  z-index: -1;
-  animation: floatGlow 14s ease-in-out infinite alternate;
 }
 
 .cursor-spotlight {
@@ -54,7 +40,7 @@ textarea:focus-visible,
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.12), rgba(52, 211, 153, 0.02) 60%, transparent);
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.1), rgba(45, 212, 191, 0.02) 60%, transparent);
   filter: blur(16px);
   pointer-events: none;
   z-index: 1;
@@ -70,85 +56,166 @@ textarea:focus-visible,
 /* Glass card used for all major content panels */
 .panel {
   border: 1px solid var(--panel-border);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
   border-radius: 1.75rem;
   padding: 1.75rem;
   backdrop-filter: blur(14px);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.06);
-  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+  transition: border-color 160ms ease, background 160ms ease;
 }
 
 .floating-page {
   position: relative;
   z-index: 20;
-}
-
-.floating-page {
   border-radius: 1.75rem;
-  transition: transform 160ms ease;
 }
 
 .floating-page:hover .panel {
-  border-color: rgba(52, 211, 153, 0.35);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border-color: rgba(45, 212, 191, 0.3);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02));
 }
 
-/* Top floating nav */
+/* Fixed left sidebar nav (desktop) */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 5.5rem;
+  z-index: 50;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.75rem 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(5, 7, 10, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    display: flex;
+  }
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.25rem;
+}
+
+.sidebar-link {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  transition: color 160ms ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.sidebar-link:hover,
+.sidebar-link.is-active {
+  color: var(--accent);
+}
+
+.sidebar-rule {
+  width: 1px;
+  height: 3rem;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.sidebar-social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.sidebar-social a {
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.sidebar-social a:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* Top-right floating contact pill */
 .nav-float {
   position: fixed;
   top: 1.1rem;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 1.1rem;
   z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(10, 13, 12, 0.66);
-  backdrop-filter: blur(16px);
-  border-radius: 9999px;
-  padding: 0.55rem 0.6rem 0.55rem 1.15rem;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
 }
 
-@keyframes floatGlow {
+/* Ghost / echo stacked heading */
+.ghost-heading {
+  position: relative;
+  line-height: 0.92;
+}
+
+.ghost-heading-main {
+  position: relative;
+  z-index: 2;
+  display: block;
+}
+
+.ghost-heading-echo {
+  display: block;
+  margin-top: -0.12em;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  color: rgba(255, 255, 255, 0.055);
+  user-select: none;
+  z-index: 1;
+}
+
+/* Hero 3D scene wrapper */
+.hero-scene-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  mask-image: radial-gradient(circle at 62% 45%, black 0%, black 35%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at 62% 45%, black 0%, black 35%, transparent 72%);
+  opacity: 0.9;
+}
+
+/* Auto-scrolling tech icon marquee */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 2.75rem;
+  width: max-content;
+  animation: marqueeScroll 26s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
   from {
-    transform: translateX(-50%) translateY(-6px) scale(0.95);
+    transform: translateX(0);
   }
   to {
-    transform: translateX(-50%) translateY(12px) scale(1.08);
+    transform: translateX(-50%);
   }
-}
-
-/* Arch-cutout photo frame */
-.arch-frame {
-  position: relative;
-  overflow: hidden;
-  border-radius: 999px 999px 28px 28px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.12);
-  background: #101512;
-}
-
-.arch-photo {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 18%;
-}
-
-.arch-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.4rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: rgba(52, 211, 153, 0.85);
-  background: radial-gradient(circle at 50% 30%, rgba(52, 211, 153, 0.16), transparent 70%);
 }
 
 .status-dot {
@@ -157,7 +224,7 @@ textarea:focus-visible,
   height: 7px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.18);
+  box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.18);
   animation: statusPulse 2.4s ease-in-out infinite;
 }
 
@@ -179,17 +246,6 @@ textarea:focus-visible,
   .floating-page {
     border-radius: 1.25rem;
   }
-
-  .hero-glow {
-    width: 120vw;
-    height: 320px;
-    inset: -180px auto auto 50%;
-  }
-
-  .nav-float {
-    gap: 0.5rem;
-    padding: 0.5rem 0.5rem 0.5rem 0.9rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -204,5 +260,9 @@ textarea:focus-visible,
 
   .cursor-spotlight {
     display: none;
+  }
+
+  .marquee-track {
+    animation: none;
   }
 }
