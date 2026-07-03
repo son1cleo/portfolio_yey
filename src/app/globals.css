@@ -33,11 +33,11 @@ body {
   font-size: 1.0625rem;
   min-height: 100vh;
   background-image:
-    repeating-linear-gradient(0deg, rgba(61, 255, 122, 0.05) 0px, rgba(61, 255, 122, 0.05) 1px, transparent 1px, transparent 24px),
-    repeating-linear-gradient(90deg, rgba(61, 255, 122, 0.05) 0px, rgba(61, 255, 122, 0.05) 1px, transparent 1px, transparent 24px),
-    radial-gradient(circle at 15% 18%, rgba(61, 255, 122, 0.12), transparent 38%),
-    radial-gradient(circle at 80% 4%, rgba(61, 255, 122, 0.08), transparent 32%),
-    linear-gradient(180deg, #070a08 0%, #050806 45%, #030402 100%);
+    repeating-linear-gradient(0deg, rgba(61, 255, 122, 0.016) 0px, rgba(61, 255, 122, 0.016) 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(90deg, rgba(61, 255, 122, 0.016) 0px, rgba(61, 255, 122, 0.016) 1px, transparent 1px, transparent 40px),
+    radial-gradient(circle at 15% 18%, rgba(61, 255, 122, 0.06), transparent 40%),
+    radial-gradient(circle at 80% 4%, rgba(61, 255, 122, 0.04), transparent 34%),
+    linear-gradient(180deg, #060907 0%, #040604 45%, #020302 100%);
 }
 
 a:focus-visible,
@@ -189,6 +189,8 @@ textarea:focus-visible,
 
 .pixel-avatar-frame {
   position: relative;
+  z-index: 2;
+  isolation: isolate;
   overflow: hidden;
   border: 3px solid rgba(61, 255, 122, 0.55);
   box-shadow: 5px 5px 0 rgba(61, 255, 122, 0.22), 0 0 28px rgba(61, 255, 122, 0.14);
@@ -230,6 +232,60 @@ textarea:focus-visible,
   pointer-events: none;
   mix-blend-mode: multiply;
   opacity: 0.45;
+}
+
+.pixel-avatar-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: #05070a;
+}
+
+.pixel-avatar-loading-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.pixel-avatar-loading-dots span {
+  width: 8px;
+  height: 8px;
+  background: rgba(61, 255, 122, 0.85);
+  animation: pixelLoadPulse 1s steps(1) infinite;
+}
+
+.pixel-avatar-loading-dots span:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.pixel-avatar-loading-dots span:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+.pixel-avatar-loading-dots span:nth-child(4) {
+  animation-delay: 0.36s;
+}
+
+.pixel-avatar-loading-label {
+  font-family: var(--font-space-grotesk), monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  color: rgba(61, 255, 122, 0.6);
+}
+
+@keyframes pixelLoadPulse {
+  0%, 100% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
 }
 
 @media (max-width: 640px) {

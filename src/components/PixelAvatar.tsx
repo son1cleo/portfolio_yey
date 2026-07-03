@@ -90,6 +90,17 @@ export function PixelAvatar({
           <span>{initials}</span>
         </div>
       )}
+      {!ready && !failed && (
+        <div className="pixel-avatar-loading" aria-hidden>
+          <div className="pixel-avatar-loading-dots">
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+          <p className="pixel-avatar-loading-label">LOADING</p>
+        </div>
+      )}
       <span className="pixel-avatar-scan" aria-hidden />
     </motion.div>
   );
