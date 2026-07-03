@@ -78,6 +78,13 @@ type RoleProfile = {
 
 const workItems: ProjectItem[] = [
   {
+    title: "DataBrief",
+    summary:
+      "Production SaaS that turns raw CSV/Excel datasets into narrative analytical reports (PDF, DOCX, PPTX) with a 6-type statistical analysis engine, question-aware column selection, and LLM-generated narration. Async infrastructure with multi-tenant row-level security and fallback template narration for LLM outages.",
+    tag: "Project",
+    stack: ["FastAPI", "Celery", "Redis", "PostgreSQL", "LLM Narration", "Docker"],
+  },
+  {
     title: "RatibBuilds Portfolio",
     summary:
       "My personal portfolio website featuring modern motion UI, interactive sections, and project showcases.",
