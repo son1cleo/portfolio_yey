@@ -10,6 +10,7 @@ import {
   type TrackerSkill,
   type TrackerSummary,
 } from "../data/tracker-store";
+import { PixelAvatar } from "../components/PixelAvatar";
 
 type ProjectItem = {
   title: string;
@@ -23,7 +24,7 @@ type ProjectItem = {
 type SectionKey = "about" | "projects" | "connect";
 
 type RoleProfile = {
-  key: "ae" | "fs" | "da";
+  key: "ds" | "ae" | "fs";
   title: string;
   shortTitle: string;
   summary: string;
@@ -88,6 +89,15 @@ const sectionOptions: Array<{ key: SectionKey; label: string }> = [
 
 const roleProfiles: RoleProfile[] = [
   {
+    key: "ds",
+    title: "Data Scientist",
+    shortTitle: "DS",
+    summary:
+      "Turn messy, raw datasets into statistically-grounded insight and production analytics systems — from EDA and hypothesis testing to LLM-powered reporting pipelines.",
+    highlights: ["Statistical analysis & EDA", "Production data pipelines", "LLM-narrated reporting"],
+    cvHref: "/resume/MidhatRatibCV_DS.pdf",
+  },
+  {
     key: "ae",
     title: "AI Engineer",
     shortTitle: "AE",
@@ -105,21 +115,12 @@ const roleProfiles: RoleProfile[] = [
     highlights: ["Next.js products", "Client portals", "Clean delivery under deadlines"],
     cvHref: "/resume/MidhatRatibCV_FS.pdf",
   },
-  {
-    key: "da",
-    title: "Data Analyst",
-    shortTitle: "DA",
-    summary:
-      "Translate raw data into clear dashboards, insights, and process improvements that clients can act on fast.",
-    highlights: ["Reporting", "Insight generation", "Business-facing analysis"],
-    cvHref: "/resume/MidhatRatibCV_DA.pdf",
-  },
 ];
 
 const roleIntroLines = [
+  { key: "ds", label: "DS", text: "I turn raw data into decisions." },
   { key: "ae", label: "AE", text: "I make AI actually work." },
   { key: "fs", label: "FS", text: "Pixel to database no handoff needed." },
-  { key: "da", label: "DA", text: "I turn noise into decisions." },
 ] as const;
 
 export default function Home() {
@@ -364,17 +365,20 @@ export default function Home() {
   return (
     <div className="relative min-h-screen overflow-x-clip px-4 pb-20 pt-7 sm:px-8 sm:pt-8 md:px-10">
       <div className="hero-glow" aria-hidden />
+      <div className="scanlines" aria-hidden />
       {!prefersReducedMotion && <motion.div className="cursor-spotlight" style={{ x: smoothCursorX, y: smoothCursorY }} aria-hidden />}
 
       <section className="relative flex min-h-screen flex-col items-center justify-center px-1">
+        <PixelAvatar />
+
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
-          className="text-center text-2xl font-semibold tracking-[0.28em] text-white drop-shadow-2xl sm:text-4xl"
+          className="mt-6 text-center text-2xl font-semibold tracking-[0.28em] text-white drop-shadow-2xl sm:text-4xl"
           style={{
             fontFamily: "var(--font-type-machine)",
-            textShadow: "0 0 24px rgba(255, 255, 255, 0.2)",
+            textShadow: "0 0 24px rgba(61, 255, 122, 0.35)",
           }}
         >
           Midhat Ratib Khan
@@ -382,7 +386,7 @@ export default function Home() {
 
         <div className="mt-6 min-h-[14rem] w-full max-w-3xl">
           <div className="mx-auto flex max-w-xl flex-col items-center text-center">
-            <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-zinc-200">
+            <span className="rounded-none border border-white/15 bg-white/5 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-zinc-200">
               {roleIntroLines[heroLineIndex].label}
             </span>
             <motion.p
@@ -391,7 +395,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
               className="mt-5 max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-white drop-shadow-2xl sm:text-5xl"
-              style={{ fontFamily: "var(--font-type-machine)", textShadow: "0 0 30px rgba(255, 255, 255, 0.2)" }}
+              style={{ fontFamily: "var(--font-type-machine)", textShadow: "0 0 30px rgba(61, 255, 122, 0.35)" }}
             >
               {heroLine}
               <span className="animate-blink">|</span>
@@ -400,9 +404,9 @@ export default function Home() {
         </div>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-xs uppercase tracking-[0.18em] text-zinc-300 sm:text-[11px]">
-          <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5">AI Engineer</span>
-          <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5">Full Stack Dev</span>
-          <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5">Data Analyst</span>
+          <span className="rounded-none border border-white/30 bg-white/10 px-3 py-1.5">Data Scientist</span>
+          <span className="rounded-none border border-white/15 bg-white/5 px-3 py-1.5">AI Engineer</span>
+          <span className="rounded-none border border-white/15 bg-white/5 px-3 py-1.5">Full Stack Dev</span>
         </div>
 
         <AnimatePresence>
@@ -436,7 +440,7 @@ export default function Home() {
           animate={{ opacity: isMenuVisible ? 1 : 0, y: isMenuVisible ? 0 : 12 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           style={{ pointerEvents: isMenuVisible ? "auto" : "none" }}
-          className="fixed bottom-5 left-1/2 z-30 w-[calc(100%-1rem)] max-w-3xl -translate-x-1/2 rounded-2xl border border-white/15 bg-black/65 p-2 backdrop-blur-md sm:bottom-8 sm:w-[calc(100%-2rem)] sm:p-3"
+          className="fixed bottom-5 left-1/2 z-30 w-[calc(100%-1rem)] max-w-3xl -translate-x-1/2 rounded-none border border-white/15 bg-black/65 p-2 backdrop-blur-md sm:bottom-8 sm:w-[calc(100%-2rem)] sm:p-3"
         >
           <div className="grid gap-2 sm:grid-cols-3">
             {sectionOptions.map((option) => (
@@ -444,7 +448,7 @@ export default function Home() {
                 key={option.key}
                 type="button"
                 onClick={() => selectSection(option.key)}
-                className={`rounded-xl px-3 py-2 text-xs transition sm:py-2.5 sm:text-sm ${
+                className={`rounded-none px-3 py-2 text-xs transition sm:py-2.5 sm:text-sm ${
                   currentViewSection === option.key
                     ? "bg-white text-black"
                     : "bg-white/5 text-white hover:bg-white/12"
@@ -475,21 +479,30 @@ export default function Home() {
         >
           <div className="panel relative overflow-hidden">
             <p className="text-xs tracking-[0.22em] text-white/60 uppercase">About me</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Client-ready across three roles</h2>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Data science-led, engineering-backed</h2>
             <p className="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
-              Computer Science graduate focused on AI, full-stack delivery, and data work. I now present the portfolio in role-specific tracks so clients can quickly match needs to the right CV.
+              Computer Science graduate primarily focused on data science and AI engineering, backed by full-stack delivery experience. I present the portfolio in role-specific tracks so clients can quickly match needs to the right CV.
             </p>
 
             <div className="mt-7 grid gap-4 lg:grid-cols-3">
-              {roleProfiles.map((role) => (
-                <article key={role.key} className="rounded-2xl border border-white/15 bg-white/5 p-5">
+              {roleProfiles.map((role, index) => (
+                <article
+                  key={role.key}
+                  className={`rounded-none border p-5 ${
+                    index === 0 ? "border-white/40 bg-white/10 shadow-[3px_3px_0_rgba(61,255,122,0.2)]" : "border-white/15 bg-white/5"
+                  }`}
+                >
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-[11px] uppercase tracking-[0.22em] text-zinc-400">{role.shortTitle}</p>
                       <h3 className="mt-1 text-lg font-semibold text-white">{role.title}</h3>
                     </div>
-                    <span className="rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[10px] uppercase tracking-wide text-zinc-200">
-                      CV
+                    <span
+                      className={`rounded-none border px-2.5 py-1 text-[10px] uppercase tracking-wide ${
+                        index === 0 ? "border-white/40 bg-white/15 text-white" : "border-white/20 bg-black/30 text-zinc-200"
+                      }`}
+                    >
+                      {index === 0 ? "Focus" : "CV"}
                     </span>
                   </div>
 
@@ -497,7 +510,7 @@ export default function Home() {
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     {role.highlights.map((item) => (
-                      <span key={item} className="rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[11px] text-zinc-200">
+                      <span key={item} className="rounded-none border border-white/20 bg-black/30 px-2.5 py-1 text-[11px] text-zinc-200">
                         {item}
                       </span>
                     ))}
@@ -506,7 +519,7 @@ export default function Home() {
                   <a
                     href={role.cvHref}
                     download
-                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium text-black transition hover:bg-zinc-200"
+                    className="pixel-btn mt-4 inline-flex items-center gap-2 rounded-none bg-white px-4 py-2.5 text-sm font-medium text-black transition hover:bg-zinc-200"
                   >
                     <Download size={15} /> Download {role.shortTitle} CV
                   </a>
@@ -515,7 +528,7 @@ export default function Home() {
             </div>
 
             <div className="mt-7 grid gap-5 md:grid-cols-2">
-              <article className="rounded-2xl border border-white/15 bg-white/5 p-5">
+              <article className="rounded-none border border-white/15 bg-white/5 p-5">
                 <h3 className="text-sm font-medium tracking-wide text-white uppercase">Tech Stack</h3>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {[
@@ -544,20 +557,20 @@ export default function Home() {
                     "LangGraph",
                     "TensorFlow",
                   ].map((item) => (
-                    <span key={item} className="rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[11px] text-zinc-200">
+                    <span key={item} className="rounded-none border border-white/20 bg-black/30 px-2.5 py-1 text-[11px] text-zinc-200">
                       {item}
                     </span>
                   ))}
                 </div>
               </article>
 
-              <article className="rounded-2xl border border-white/15 bg-white/5 p-5">
+              <article className="rounded-none border border-white/15 bg-white/5 p-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <h3 className="text-sm font-medium tracking-wide text-white uppercase">Learning + credibility</h3>
                   <a
                     href="/tracker"
                     onClick={(event) => event.stopPropagation()}
-                    className="inline-flex items-center gap-1 rounded-full border border-white/30 bg-black/25 px-2.5 py-1 text-[11px] text-zinc-100 transition hover:bg-white/10"
+                    className="inline-flex items-center gap-1 rounded-none border border-white/30 bg-black/25 px-2.5 py-1 text-[11px] text-zinc-100 transition hover:bg-white/10"
                   >
                     Open Tracker <ArrowUpRight size={13} />
                   </a>
@@ -565,21 +578,21 @@ export default function Home() {
                 <p className="mt-3 text-sm leading-relaxed text-zinc-300">
                   Ongoing structured upskilling across analytics, ML, product delivery, and Python workflows.
                 </p>
-                <p className="mt-2 rounded-lg border border-sky-300/25 bg-sky-300/10 px-3 py-2 text-xs text-sky-100">
+                <p className="mt-2 rounded-none border border-amber-300/30 bg-amber-300/12 px-3 py-2 text-xs text-amber-100">
                   Demo version on portfolio. The full tracker product is on the way, but this site is now optimized to convert clients.
                 </p>
                 <div className="mt-4 grid grid-cols-2 gap-2">
-                  <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">
+                  <div className="rounded-none border border-white/10 bg-black/20 px-3 py-2">
                     <p className="text-[10px] uppercase tracking-wide text-zinc-400">Completed</p>
                     <p className="mt-0.5 text-lg font-semibold text-white">{trackerSummary.completed}</p>
                   </div>
-                  <div className="rounded-lg border border-white/10 bg-black/20 px-3 py-2">
+                  <div className="rounded-none border border-white/10 bg-black/20 px-3 py-2">
                     <p className="text-[10px] uppercase tracking-wide text-zinc-400">In Progress</p>
                     <p className="mt-0.5 text-lg font-semibold text-white">{trackerSummary.inProgress}</p>
                   </div>
                 </div>
                 {latestCompleted && (
-                  <div className="mt-4 rounded-lg border border-white/10 bg-black/20 p-3">
+                  <div className="mt-4 rounded-none border border-white/10 bg-black/20 p-3">
                     <p className="text-[10px] uppercase tracking-wide text-zinc-400">Latest Completed</p>
                     <p className="mt-1 text-sm font-medium text-white">{latestCompleted.title}</p>
                     <p className="mt-0.5 text-[11px] text-zinc-400">{latestCompleted.category}</p>
@@ -589,11 +602,11 @@ export default function Home() {
             </div>
 
             {pinnedSkills.length > 0 && (
-              <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-5">
+              <div className="mt-6 rounded-none border border-white/15 bg-white/5 p-5">
                 <h3 className="text-sm font-medium tracking-wide text-white uppercase">Pinned Learnings</h3>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {pinnedSkills.map((skill) => (
-                    <span key={skill.id} className="rounded-full border border-white/20 bg-black/30 px-3 py-1 text-[11px] text-zinc-200">
+                    <span key={skill.id} className="rounded-none border border-white/20 bg-black/30 px-3 py-1 text-[11px] text-zinc-200">
                       {skill.title}
                     </span>
                   ))}
@@ -603,31 +616,31 @@ export default function Home() {
 
             <div className="mt-7 flex flex-wrap gap-3">
               <a
+                href="/resume/MidhatRatibCV_DS.pdf"
+                download
+                className="pixel-btn inline-flex items-center gap-2 rounded-none bg-white px-5 py-3 text-sm font-medium text-black transition hover:bg-zinc-200"
+              >
+                <Download size={16} /> Download DS CV
+              </a>
+              <a
                 href="/resume/MidhatRatibCV_AE.pdf"
                 download
-                className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-black transition hover:bg-zinc-200"
+                className="pixel-btn inline-flex items-center gap-2 rounded-none border border-white/25 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
               >
                 <Download size={16} /> Download AE CV
               </a>
               <a
                 href="/resume/MidhatRatibCV_FS.pdf"
                 download
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
+                className="pixel-btn inline-flex items-center gap-2 rounded-none border border-white/25 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
               >
                 <Download size={16} /> Download FS CV
-              </a>
-              <a
-                href="/resume/MidhatRatibCV_DA.pdf"
-                download
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
-              >
-                <Download size={16} /> Download DA CV
               </a>
               <a
                 href="https://github.com/son1cleo"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
+                className="pixel-btn inline-flex items-center gap-2 rounded-none border border-white/25 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
               >
                 <Github size={16} /> GitHub
               </a>
@@ -652,21 +665,21 @@ export default function Home() {
         >
           <div className="panel">
             <p className="text-xs tracking-[0.22em] text-white/60 uppercase">Projects and Contributions</p>
-            <article className="mt-5 rounded-2xl border border-white/15 bg-white/5 p-5">
+            <article className="mt-5 rounded-none border border-white/15 bg-white/5 p-5">
               <h3 className="text-base font-semibold text-white">Selected work that supports client trust</h3>
               <div className="mt-4 space-y-4">
                 {workItems.map((item) => (
-                  <div key={item.title} className="rounded-xl border border-white/10 bg-black/20 p-4">
+                  <div key={item.title} className="rounded-none border border-white/10 bg-black/20 p-4">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <h4 className="text-sm font-medium text-white">{item.title}</h4>
-                      <span className="rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] text-zinc-200">
+                      <span className="rounded-none border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] text-zinc-200">
                         {item.tag}
                       </span>
                     </div>
                     <p className="mt-2 text-sm leading-relaxed text-zinc-300">{item.summary}</p>
                     <div className="mt-2 flex flex-wrap gap-2">
                       {item.stack.map((tech) => (
-                        <span key={tech} className="rounded-full border border-white/20 bg-black/30 px-2 py-0.5 text-[10px] text-zinc-300">
+                        <span key={tech} className="rounded-none border border-white/20 bg-black/30 px-2 py-0.5 text-[10px] text-zinc-300">
                           {tech}
                         </span>
                       ))}
@@ -711,14 +724,14 @@ export default function Home() {
               <div>
                 <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Let&apos;s build something that gets hired</h2>
                 <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-300">
-                  If you need AI implementation, a full-stack product, or data analysis support, send me the brief and I&apos;ll reply with the best-fit CV and next steps.
+                  If you need data science work, an AI implementation, or a full-stack product, send me the brief and I&apos;ll reply with the best-fit CV and next steps.
                 </p>
                 <div className="mt-5 flex flex-wrap gap-3">
                   <a
                     href="https://github.com/son1cleo"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
+                    className="pixel-btn inline-flex items-center gap-2 rounded-none border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
                   >
                     <Github size={16} /> GitHub
                   </a>
@@ -726,13 +739,13 @@ export default function Home() {
                     href="https://linkedin.com/in/midhat-ratib-khan-9969012bb"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
+                    className="pixel-btn inline-flex items-center gap-2 rounded-none border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
                   >
                     <Linkedin size={16} /> LinkedIn
                   </a>
                   <a
                     href={mailtoLink}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
+                    className="pixel-btn inline-flex items-center gap-2 rounded-none border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
                   >
                     <Mail size={16} /> Email
                   </a>
@@ -745,7 +758,7 @@ export default function Home() {
                   <input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
-                    className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-white/35"
+                    className="rounded-none border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-white/35"
                     placeholder="Name"
                   />
                 </label>
@@ -754,7 +767,7 @@ export default function Home() {
                   <input
                     value={subject}
                     onChange={(event) => setSubject(event.target.value)}
-                    className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-white/35"
+                    className="rounded-none border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-white/35"
                     placeholder="Subject"
                   />
                 </label>
@@ -764,7 +777,7 @@ export default function Home() {
                     rows={5}
                     value={message}
                     onChange={(event) => setMessage(event.target.value)}
-                    className="rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-white/35"
+                    className="rounded-none border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-white/35"
                     placeholder="I visited your portfolio and would like to connect."
                   />
                 </label>
@@ -772,7 +785,7 @@ export default function Home() {
                 <div className="mt-2 flex flex-wrap gap-3">
                   <a
                     href={mailtoLink}
-                    className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium text-black transition hover:bg-zinc-200"
+                    className="pixel-btn inline-flex items-center gap-2 rounded-none bg-white px-4 py-2.5 text-sm font-medium text-black transition hover:bg-zinc-200"
                   >
                     <Mail size={15} /> Start a Project
                   </a>
