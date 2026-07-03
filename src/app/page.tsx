@@ -498,7 +498,7 @@ export default function Home() {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="relative z-10 min-h-[1em] px-4 text-center text-4xl font-extrabold tracking-tight text-white sm:text-6xl"
+            className="relative z-10 min-h-[1em] px-4 text-center font-serif text-4xl font-bold tracking-tight text-white sm:text-6xl"
             style={{ textShadow: "0 0 34px rgba(45, 212, 191, 0.4), 0 2px 12px rgba(0, 0, 0, 0.75)" }}
           >
             {typedIntro}
@@ -604,7 +604,7 @@ export default function Home() {
             <GhostHeading
               text="About"
               as="h2"
-              className="text-3xl font-bold tracking-tight text-white sm:text-4xl"
+              className="font-serif text-3xl font-bold tracking-tight text-white sm:text-4xl"
             />
             <p className="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
               Computer Science graduate primarily focused on data science and AI engineering, backed by full-stack delivery experience. I present the portfolio in role-specific tracks so clients can quickly match needs to the right CV.
@@ -772,7 +772,7 @@ export default function Home() {
             <GhostHeading
               text="Work"
               as="h2"
-              className="text-3xl font-bold tracking-tight text-white sm:text-4xl"
+              className="font-serif text-3xl font-bold tracking-tight text-white sm:text-4xl"
             />
             <div className="mt-7 space-y-3">
               {workItems.map((item, index) => (
@@ -836,7 +836,7 @@ export default function Home() {
             <GhostHeading
               text="Contact"
               as="h2"
-              className="text-3xl font-bold tracking-tight text-white sm:text-4xl"
+              className="font-serif text-3xl font-bold tracking-tight text-white sm:text-4xl"
             />
             <div className="mt-6 grid gap-8 md:grid-cols-[1.1fr_1fr]">
               <div>
