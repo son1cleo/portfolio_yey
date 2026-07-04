@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-// Deterministic PRNG (mulberry32) so particle placement is pure and stable across renders.
+// Deterministic PRNG (mulberry32) so node placement is pure and stable across renders.
 function createRng(seed: number) {
   let state = seed;
   return () => {
@@ -16,73 +16,105 @@ function createRng(seed: number) {
   };
 }
 
-const INSIDE_COLOR = new THREE.Color("#99f6e4");
-const OUTSIDE_COLOR = new THREE.Color("#0f3d38");
+// Build a plexus: nodes distributed in an annulus (open center) plus the line
+// segments connecting nearby nodes into a triangulated web.
+function buildPlexus(
+  nodeCount: number,
+  rInner: number,
+  rOuter: number,
+  thickness: number,
+  linkDist: number,
+  maxLinks: number
+) {
+  const rng = createRng(7);
+  const nodes: THREE.Vector3[] = [];
 
-function buildSpiral(count: number, arms: number, spin: number, randomness: number, maxRadius: number) {
-  const rng = createRng(2024);
-  const positions = new Float32Array(count * 3);
-  const colors = new Float32Array(count * 3);
-
-  for (let i = 0; i < count; i++) {
-    const radius = rng() * maxRadius;
-    const armAngle = ((i % arms) / arms) * Math.PI * 2;
-    const spinAngle = radius * spin;
-    const angle = armAngle + spinAngle;
-
-    const spread = randomness * radius;
-    const randX = (rng() - 0.5) * spread;
-    const randY = (rng() - 0.5) * spread * 0.3;
-    const randZ = (rng() - 0.5) * spread;
-
-    positions[i * 3] = Math.cos(angle) * radius + randX;
-    positions[i * 3 + 1] = randY;
-    positions[i * 3 + 2] = Math.sin(angle) * radius + randZ;
-
-    const mixed = INSIDE_COLOR.clone().lerp(OUTSIDE_COLOR, radius / maxRadius);
-    colors[i * 3] = mixed.r;
-    colors[i * 3 + 1] = mixed.g;
-    colors[i * 3 + 2] = mixed.b;
+  for (let i = 0; i < nodeCount; i++) {
+    const theta = rng() * Math.PI * 2;
+    const r = rInner + rng() * (rOuter - rInner);
+    const nx = (rng() - 0.5) * thickness;
+    const ny = (rng() - 0.5) * thickness;
+    const nz = (rng() - 0.5) * thickness * 1.6;
+    const x = Math.cos(theta) * r + nx;
+    const y = Math.sin(theta) * r + ny;
+    const z = nz + Math.sin(theta * 2) * 0.5;
+    nodes.push(new THREE.Vector3(x, y, z));
   }
 
-  return { positions, colors };
+  const nodePositions = new Float32Array(nodeCount * 3);
+  nodes.forEach((v, i) => {
+    nodePositions[i * 3] = v.x;
+    nodePositions[i * 3 + 1] = v.y;
+    nodePositions[i * 3 + 2] = v.z;
+  });
+
+  const linePts: number[] = [];
+  const linkCount = new Array(nodeCount).fill(0);
+  for (let i = 0; i < nodeCount; i++) {
+    for (let j = i + 1; j < nodeCount; j++) {
+      if (linkCount[i] >= maxLinks || linkCount[j] >= maxLinks) continue;
+      if (nodes[i].distanceTo(nodes[j]) < linkDist) {
+        linePts.push(nodes[i].x, nodes[i].y, nodes[i].z, nodes[j].x, nodes[j].y, nodes[j].z);
+        linkCount[i]++;
+        linkCount[j]++;
+      }
+    }
+  }
+
+  return { nodePositions, linePositions: new Float32Array(linePts) };
 }
 
-function Spiral({ interactive }: { interactive: boolean }) {
-  const groupRef = useRef<THREE.Group>(null);
-  const pointsRef = useRef<THREE.Points>(null);
+function Plexus({ interactive }: { interactive: boolean }) {
+  const outerRef = useRef<THREE.Group>(null);
+  const innerRef = useRef<THREE.Group>(null);
 
-  const { positions, colors } = useMemo(() => buildSpiral(2200, 4, 1.9, 0.28, 2.3), []);
+  const { nodePositions, linePositions } = useMemo(
+    () => buildPlexus(340, 1.7, 3.6, 0.7, 0.92, 5),
+    []
+  );
 
   useFrame((state, delta) => {
-    if (pointsRef.current) {
-      pointsRef.current.rotation.y += delta * 0.09;
+    if (innerRef.current) {
+      innerRef.current.rotation.z += delta * 0.04;
     }
-    if (groupRef.current && interactive) {
-      const targetY = state.pointer.x * 0.25;
-      const targetX = -0.62 - state.pointer.y * 0.12;
-      groupRef.current.rotation.y += (targetY - groupRef.current.rotation.y) * 0.03;
-      groupRef.current.rotation.x += (targetX - groupRef.current.rotation.x) * 0.03;
+    if (outerRef.current && interactive) {
+      const targetX = -0.5 - state.pointer.y * 0.12;
+      const targetY = state.pointer.x * 0.18;
+      outerRef.current.rotation.x += (targetX - outerRef.current.rotation.x) * 0.03;
+      outerRef.current.rotation.y += (targetY - outerRef.current.rotation.y) * 0.03;
     }
   });
 
   return (
-    <group ref={groupRef} position={[0, -0.9, 0]} rotation={[-0.62, 0, 0.08]}>
-      <points ref={pointsRef}>
-        <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-          <bufferAttribute attach="attributes-color" args={[colors, 3]} />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.045}
-          sizeAttenuation
-          vertexColors
-          transparent
-          opacity={0.85}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </points>
+    <group ref={outerRef} rotation={[-0.5, 0, 0]}>
+      <group ref={innerRef} scale={[1.55, 1, 1]}>
+        <lineSegments>
+          <bufferGeometry>
+            <bufferAttribute attach="attributes-position" args={[linePositions, 3]} />
+          </bufferGeometry>
+          <lineBasicMaterial
+            color="#2dd4bf"
+            transparent
+            opacity={0.2}
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
+          />
+        </lineSegments>
+        <points>
+          <bufferGeometry>
+            <bufferAttribute attach="attributes-position" args={[nodePositions, 3]} />
+          </bufferGeometry>
+          <pointsMaterial
+            color="#5eead4"
+            size={0.055}
+            sizeAttenuation
+            transparent
+            opacity={0.9}
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
+          />
+        </points>
+      </group>
     </group>
   );
 }
@@ -90,12 +122,12 @@ function Spiral({ interactive }: { interactive: boolean }) {
 export default function HeroScene({ interactive = true }: { interactive?: boolean }) {
   return (
     <Canvas
-      camera={{ position: [0, 0.4, 7.6], fov: 42 }}
+      camera={{ position: [0, 0, 7], fov: 45 }}
       dpr={[1, 1.6]}
       gl={{ antialias: true, alpha: true }}
       style={{ width: "100%", height: "100%" }}
     >
-      <Spiral interactive={interactive} />
+      <Plexus interactive={interactive} />
     </Canvas>
   );
 }
