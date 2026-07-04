@@ -134,7 +134,57 @@ const workItems: ProjectItem[] = [
   },
 ];
 
-const heroRoleSequence = ["Data Scientist", "AI Engineer", "Full Stack Dev"] as const;
+const HERO_NAME = "Midhat Ratib Khan";
+const HERO_SENTENCE = "A Data Scientist who builds software";
+const HERO_SENTENCE_HIGHLIGHT_START = HERO_SENTENCE.indexOf("Data Scientist");
+const HERO_SENTENCE_HIGHLIGHT_END = HERO_SENTENCE_HIGHLIGHT_START + "Data Scientist".length;
+const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz▓▒░";
+
+function useScrambleReveal(text: string, start: boolean, prefersReducedMotion: boolean) {
+  const [display, setDisplay] = useState("");
+
+  useEffect(() => {
+    if (!start) {
+      const reset = window.setTimeout(() => setDisplay(""), 0);
+      return () => window.clearTimeout(reset);
+    }
+
+    if (prefersReducedMotion) {
+      const immediate = window.setTimeout(() => setDisplay(text), 0);
+      return () => window.clearTimeout(immediate);
+    }
+
+    let frame = 0;
+    const totalFrames = text.length * 3;
+
+    const timer = window.setInterval(() => {
+      frame += 1;
+      const revealCount = Math.floor((frame / totalFrames) * text.length);
+
+      let next = "";
+      for (let i = 0; i < text.length; i++) {
+        if (text[i] === " ") {
+          next += " ";
+        } else if (i < revealCount) {
+          next += text[i];
+        } else {
+          next += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        }
+      }
+
+      setDisplay(next);
+
+      if (revealCount >= text.length) {
+        setDisplay(text);
+        window.clearInterval(timer);
+      }
+    }, 32);
+
+    return () => window.clearInterval(timer);
+  }, [text, start, prefersReducedMotion]);
+
+  return display;
+}
 
 function SidebarLogo({ size, failed, onError }: { size: number; failed: boolean; onError: () => void }) {
   if (failed) {
@@ -228,11 +278,9 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
   const [currentViewSection, setCurrentViewSection] = useState<SectionKey | null>(null);
   const [showScrollIcon, setShowScrollIcon] = useState(true);
-  const [heroLine, setHeroLine] = useState("");
-  const [heroLineIndex, setHeroLineIndex] = useState(0);
-  const [heroIsDeleting, setHeroIsDeleting] = useState(false);
+  const [typedName, setTypedName] = useState("");
+  const [sentenceStart, setSentenceStart] = useState(false);
   const [logoPhotoFailed, setLogoPhotoFailed] = useState(false);
-  const heroTimerRef = useRef<number | undefined>(undefined);
   const isDesktop = useSyncExternalStore(subscribeToDesktopQuery, getDesktopSnapshot, getDesktopServerSnapshot);
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("Portfolio inquiry");
@@ -270,43 +318,34 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (heroTimerRef.current) {
-      window.clearTimeout(heroTimerRef.current);
-    }
-
     if (!introDone) return;
 
     if (prefersReducedMotion) {
-      const immediate = window.setTimeout(() => setHeroLine(heroRoleSequence[0]), 0);
+      const immediate = window.setTimeout(() => setTypedName(HERO_NAME), 0);
       return () => window.clearTimeout(immediate);
     }
 
-    const currentRole = heroRoleSequence[heroLineIndex];
-    const typingSpeed = heroIsDeleting ? 36 : 55;
+    let index = 0;
+    const timer = window.setInterval(() => {
+      index += 1;
+      setTypedName(HERO_NAME.slice(0, index));
+      if (index >= HERO_NAME.length) {
+        window.clearInterval(timer);
+      }
+    }, 55);
 
-    if (!heroIsDeleting && heroLine === currentRole) {
-      heroTimerRef.current = window.setTimeout(() => {
-        setHeroIsDeleting(true);
-      }, 1300);
-      return () => window.clearTimeout(heroTimerRef.current);
-    }
+    return () => window.clearInterval(timer);
+  }, [introDone, prefersReducedMotion]);
 
-    if (heroIsDeleting && heroLine === "") {
-      heroTimerRef.current = window.setTimeout(() => {
-        setHeroIsDeleting(false);
-        setHeroLineIndex((current) => (current + 1) % heroRoleSequence.length);
-      }, 260);
-      return () => window.clearTimeout(heroTimerRef.current);
-    }
+  useEffect(() => {
+    const nameTypingDone = typedName.length >= HERO_NAME.length;
+    if (!nameTypingDone) return;
 
-    heroTimerRef.current = window.setTimeout(() => {
-      setHeroLine((current) =>
-        heroIsDeleting ? current.slice(0, -1) : currentRole.slice(0, current.length + 1)
-      );
-    }, typingSpeed);
+    const timer = window.setTimeout(() => setSentenceStart(true), 300);
+    return () => window.clearTimeout(timer);
+  }, [typedName]);
 
-    return () => window.clearTimeout(heroTimerRef.current);
-  }, [introDone, heroLine, heroLineIndex, heroIsDeleting, prefersReducedMotion]);
+  const sentenceDisplay = useScrambleReveal(HERO_SENTENCE, sentenceStart, Boolean(prefersReducedMotion));
 
   useEffect(() => {
     const aboutElement = document.getElementById("section-about");
@@ -500,10 +539,11 @@ export default function Home() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-10 px-4 text-center font-serif text-5xl font-bold tracking-tight text-white sm:text-7xl"
+          className="relative z-10 min-h-[1em] px-4 text-center font-serif text-5xl font-bold tracking-tight text-white sm:text-7xl"
           style={{ textShadow: "0 0 34px rgba(45, 212, 191, 0.4), 0 2px 12px rgba(0, 0, 0, 0.75)" }}
         >
-          Midhat Ratib Khan
+          {typedName}
+          {typedName.length < HERO_NAME.length && <span className="animate-pulse text-teal-300">|</span>}
         </motion.h1>
 
         <motion.p
@@ -512,8 +552,12 @@ export default function Home() {
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
           className="relative z-10 mt-5 min-h-[1.6em] text-center text-lg font-medium text-zinc-200 sm:text-2xl"
         >
-          I&apos;m a <span className="text-teal-300">{heroLine}</span>
-          <span className="animate-pulse text-teal-300">|</span>
+          {sentenceDisplay.slice(0, HERO_SENTENCE_HIGHLIGHT_START)}
+          <span className="text-teal-300">{sentenceDisplay.slice(HERO_SENTENCE_HIGHLIGHT_START, HERO_SENTENCE_HIGHLIGHT_END)}</span>
+          {sentenceDisplay.slice(HERO_SENTENCE_HIGHLIGHT_END)}
+          {sentenceStart && sentenceDisplay.length < HERO_SENTENCE.length && (
+            <span className="animate-pulse text-teal-300">|</span>
+          )}
         </motion.p>
 
         <motion.div
