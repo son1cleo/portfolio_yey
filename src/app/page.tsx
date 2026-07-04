@@ -135,56 +135,10 @@ const workItems: ProjectItem[] = [
 ];
 
 const HERO_NAME = "Midhat Ratib Khan";
-const HERO_SENTENCE = "A Data Scientist who builds software";
+const HERO_SENTENCE = "A Data Scientist who ships software";
 const HERO_SENTENCE_HIGHLIGHT_START = HERO_SENTENCE.indexOf("Data Scientist");
 const HERO_SENTENCE_HIGHLIGHT_END = HERO_SENTENCE_HIGHLIGHT_START + "Data Scientist".length;
-const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz▓▒░";
-
-function useScrambleReveal(text: string, start: boolean, prefersReducedMotion: boolean) {
-  const [display, setDisplay] = useState("");
-
-  useEffect(() => {
-    if (!start) {
-      const reset = window.setTimeout(() => setDisplay(""), 0);
-      return () => window.clearTimeout(reset);
-    }
-
-    if (prefersReducedMotion) {
-      const immediate = window.setTimeout(() => setDisplay(text), 0);
-      return () => window.clearTimeout(immediate);
-    }
-
-    let frame = 0;
-    const totalFrames = text.length * 3;
-
-    const timer = window.setInterval(() => {
-      frame += 1;
-      const revealCount = Math.floor((frame / totalFrames) * text.length);
-
-      let next = "";
-      for (let i = 0; i < text.length; i++) {
-        if (text[i] === " ") {
-          next += " ";
-        } else if (i < revealCount) {
-          next += text[i];
-        } else {
-          next += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-        }
-      }
-
-      setDisplay(next);
-
-      if (revealCount >= text.length) {
-        setDisplay(text);
-        window.clearInterval(timer);
-      }
-    }, 32);
-
-    return () => window.clearInterval(timer);
-  }, [text, start, prefersReducedMotion]);
-
-  return display;
-}
+const HERO_SENTENCE_CHARS = Array.from(HERO_SENTENCE);
 
 function SidebarLogo({ size, failed, onError }: { size: number; failed: boolean; onError: () => void }) {
   if (failed) {
@@ -344,8 +298,6 @@ export default function Home() {
     const timer = window.setTimeout(() => setSentenceStart(true), 300);
     return () => window.clearTimeout(timer);
   }, [typedName]);
-
-  const sentenceDisplay = useScrambleReveal(HERO_SENTENCE, sentenceStart, Boolean(prefersReducedMotion));
 
   useEffect(() => {
     const aboutElement = document.getElementById("section-about");
@@ -539,26 +491,33 @@ export default function Home() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-10 min-h-[1em] px-4 text-center font-serif text-5xl font-bold tracking-tight text-white sm:text-7xl"
+          className="relative z-10 min-h-[1em] px-4 text-center font-serif text-6xl font-bold tracking-tight text-white sm:text-8xl"
           style={{ textShadow: "0 0 34px rgba(45, 212, 191, 0.4), 0 2px 12px rgba(0, 0, 0, 0.75)" }}
         >
           {typedName}
           {typedName.length < HERO_NAME.length && <span className="animate-pulse text-teal-300">|</span>}
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
+        <p
           className="relative z-10 mt-5 min-h-[1.6em] text-center text-lg font-medium text-zinc-200 sm:text-2xl"
+          style={{ textShadow: "0 0 34px rgba(45, 212, 191, 0.4), 0 2px 12px rgba(0, 0, 0, 0.75)" }}
         >
-          {sentenceDisplay.slice(0, HERO_SENTENCE_HIGHLIGHT_START)}
-          <span className="text-teal-300">{sentenceDisplay.slice(HERO_SENTENCE_HIGHLIGHT_START, HERO_SENTENCE_HIGHLIGHT_END)}</span>
-          {sentenceDisplay.slice(HERO_SENTENCE_HIGHLIGHT_END)}
-          {sentenceStart && sentenceDisplay.length < HERO_SENTENCE.length && (
-            <span className="animate-pulse text-teal-300">|</span>
-          )}
-        </motion.p>
+          {sentenceStart &&
+            HERO_SENTENCE_CHARS.map((char, index) => {
+              const isHighlight = index >= HERO_SENTENCE_HIGHLIGHT_START && index < HERO_SENTENCE_HIGHLIGHT_END;
+              return (
+                <motion.span
+                  key={index}
+                  initial={prefersReducedMotion ? undefined : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: prefersReducedMotion ? 0 : index * 0.025, ease: "easeOut" }}
+                  className={isHighlight ? "text-teal-300" : undefined}
+                >
+                  {char}
+                </motion.span>
+              );
+            })}
+        </p>
 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
