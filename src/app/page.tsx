@@ -134,7 +134,7 @@ const workItems: ProjectItem[] = [
   },
 ];
 
-const HERO_NAME = "Midhat Ratib Khan";
+const HERO_NAME = "Hi, I'm Midhat Ratib Khan";
 const HERO_SENTENCE = "A Data Scientist who ships software";
 const HERO_SENTENCE_HIGHLIGHT_START = HERO_SENTENCE.indexOf("Data Scientist");
 const HERO_SENTENCE_HIGHLIGHT_END = HERO_SENTENCE_HIGHLIGHT_START + "Data Scientist".length;
@@ -491,7 +491,7 @@ export default function Home() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-10 min-h-[1em] px-4 text-center font-serif text-lg font-bold tracking-tight text-white sm:text-2xl"
+          className="relative z-10 min-h-[1em] px-4 text-center font-serif text-xl font-bold tracking-tight text-white sm:text-3xl"
           style={{ textShadow: "0 0 34px rgba(45, 212, 191, 0.4), 0 2px 12px rgba(0, 0, 0, 0.75)" }}
         >
           {typedName}
