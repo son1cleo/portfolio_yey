@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import { Sora, JetBrains_Mono, Playfair_Display } from "next/font/google";
+import { Fira_Code, Open_Sans } from "next/font/google";
+import { Navbar } from "../components/Navbar";
 import "./globals.css";
 
-const sora = Sora({
-  variable: "--font-sora",
+const firaCode = Fira_Code({
+  variable: "--font-fira-code",
   subsets: ["latin"],
 });
 
-const jetBrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains",
-  subsets: ["latin"],
-});
-
-const playfairDisplay = Playfair_Display({
-  variable: "--font-serif-display",
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin"],
 });
 
@@ -30,7 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sora.variable} ${jetBrainsMono.variable} ${playfairDisplay.variable} antialiased`}>
+      <body className={`${firaCode.variable} ${openSans.variable} antialiased`}>
+        <Navbar />
         {children}
       </body>
     </html>
