@@ -39,9 +39,7 @@ import {
 } from "../data/tracker-store";
 import { Preloader } from "../components/Preloader";
 import { GhostHeading } from "../components/GhostHeading";
-import { ProjectCard, type ProjectItem } from "../components/ProjectCard";
 import { FocusGrid } from "../components/FocusGrid";
-import { GithubActivity } from "../components/GithubActivity";
 
 const HeroScene = dynamic(() => import("../components/HeroScene"), { ssr: false });
 
@@ -61,6 +59,15 @@ function getDesktopServerSnapshot() {
 
 type SectionKey = "about" | "projects" | "connect";
 
+type ProjectItem = {
+  title: string;
+  summary: string;
+  tag: "Project" | "Contribution";
+  stack: string[];
+  repoUrl?: string;
+  liveUrl?: string;
+};
+
 type RoleProfile = {
   key: "ds" | "ae" | "fs";
   title: string;
@@ -77,7 +84,6 @@ const workItems: ProjectItem[] = [
       "Production SaaS that turns raw CSV/Excel datasets into narrative analytical reports (PDF, DOCX, PPTX) with a 6-type statistical analysis engine, question-aware column selection, and LLM-generated narration. Async infrastructure with multi-tenant row-level security and fallback template narration for LLM outages.",
     tag: "Project",
     stack: ["FastAPI", "Celery", "Redis", "PostgreSQL", "LLM Narration", "Docker"],
-    image: "/projects/databrief.webp",
     liveUrl: "https://databrief-six.vercel.app/",
   },
   {
@@ -86,7 +92,6 @@ const workItems: ProjectItem[] = [
       "My personal portfolio website featuring modern motion UI, interactive sections, and project showcases.",
     tag: "Project",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    image: "/projects/ratibbuilds.webp",
     liveUrl: "https://ratibbuilds.vercel.app/",
     repoUrl: "https://github.com/son1cleo/portfolio_yey",
   },
@@ -96,7 +101,6 @@ const workItems: ProjectItem[] = [
       "An offline-first, browser-based IDE with local AI support, in-browser runtime execution, workspace persistence, and terminal-driven Git and GitHub flows.",
     tag: "Project",
     stack: ["React", "Vite", "Monaco", "WebContainers", "WebLLM", "IndexedDB"],
-    image: "/projects/southforge.webp",
     liveUrl: "https://offlineide.vercel.app/",
     repoUrl: "https://github.com/son1cleo/offlineide",
   },
@@ -105,7 +109,6 @@ const workItems: ProjectItem[] = [
     summary: "A Flutter-based web app built for streamlined scheduling and planning workflows.",
     tag: "Project",
     stack: ["Flutter", "Dart", "Web App"],
-    image: "/projects/schedulease.webp",
     repoUrl: "https://github.com/son1cleo/SchedulEase",
   },
   {
@@ -131,7 +134,57 @@ const workItems: ProjectItem[] = [
   },
 ];
 
-const heroRoleSequence = ["Data Scientist", "AI Engineer", "Full Stack Dev"] as const;
+const HERO_NAME = "Midhat Ratib Khan";
+const HERO_SENTENCE = "A Data Scientist who builds software";
+const HERO_SENTENCE_HIGHLIGHT_START = HERO_SENTENCE.indexOf("Data Scientist");
+const HERO_SENTENCE_HIGHLIGHT_END = HERO_SENTENCE_HIGHLIGHT_START + "Data Scientist".length;
+const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz▓▒░";
+
+function useScrambleReveal(text: string, start: boolean, prefersReducedMotion: boolean) {
+  const [display, setDisplay] = useState("");
+
+  useEffect(() => {
+    if (!start) {
+      const reset = window.setTimeout(() => setDisplay(""), 0);
+      return () => window.clearTimeout(reset);
+    }
+
+    if (prefersReducedMotion) {
+      const immediate = window.setTimeout(() => setDisplay(text), 0);
+      return () => window.clearTimeout(immediate);
+    }
+
+    let frame = 0;
+    const totalFrames = text.length * 3;
+
+    const timer = window.setInterval(() => {
+      frame += 1;
+      const revealCount = Math.floor((frame / totalFrames) * text.length);
+
+      let next = "";
+      for (let i = 0; i < text.length; i++) {
+        if (text[i] === " ") {
+          next += " ";
+        } else if (i < revealCount) {
+          next += text[i];
+        } else {
+          next += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        }
+      }
+
+      setDisplay(next);
+
+      if (revealCount >= text.length) {
+        setDisplay(text);
+        window.clearInterval(timer);
+      }
+    }, 32);
+
+    return () => window.clearInterval(timer);
+  }, [text, start, prefersReducedMotion]);
+
+  return display;
+}
 
 function SidebarLogo({ size, failed, onError }: { size: number; failed: boolean; onError: () => void }) {
   if (failed) {
@@ -225,11 +278,9 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
   const [currentViewSection, setCurrentViewSection] = useState<SectionKey | null>(null);
   const [showScrollIcon, setShowScrollIcon] = useState(true);
-  const [heroLine, setHeroLine] = useState("");
-  const [heroLineIndex, setHeroLineIndex] = useState(0);
-  const [heroIsDeleting, setHeroIsDeleting] = useState(false);
+  const [typedName, setTypedName] = useState("");
+  const [sentenceStart, setSentenceStart] = useState(false);
   const [logoPhotoFailed, setLogoPhotoFailed] = useState(false);
-  const heroTimerRef = useRef<number | undefined>(undefined);
   const isDesktop = useSyncExternalStore(subscribeToDesktopQuery, getDesktopSnapshot, getDesktopServerSnapshot);
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("Portfolio inquiry");
@@ -267,43 +318,34 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (heroTimerRef.current) {
-      window.clearTimeout(heroTimerRef.current);
-    }
-
     if (!introDone) return;
 
     if (prefersReducedMotion) {
-      const immediate = window.setTimeout(() => setHeroLine(heroRoleSequence[0]), 0);
+      const immediate = window.setTimeout(() => setTypedName(HERO_NAME), 0);
       return () => window.clearTimeout(immediate);
     }
 
-    const currentRole = heroRoleSequence[heroLineIndex];
-    const typingSpeed = heroIsDeleting ? 36 : 55;
+    let index = 0;
+    const timer = window.setInterval(() => {
+      index += 1;
+      setTypedName(HERO_NAME.slice(0, index));
+      if (index >= HERO_NAME.length) {
+        window.clearInterval(timer);
+      }
+    }, 55);
 
-    if (!heroIsDeleting && heroLine === currentRole) {
-      heroTimerRef.current = window.setTimeout(() => {
-        setHeroIsDeleting(true);
-      }, 1300);
-      return () => window.clearTimeout(heroTimerRef.current);
-    }
+    return () => window.clearInterval(timer);
+  }, [introDone, prefersReducedMotion]);
 
-    if (heroIsDeleting && heroLine === "") {
-      heroTimerRef.current = window.setTimeout(() => {
-        setHeroIsDeleting(false);
-        setHeroLineIndex((current) => (current + 1) % heroRoleSequence.length);
-      }, 260);
-      return () => window.clearTimeout(heroTimerRef.current);
-    }
+  useEffect(() => {
+    const nameTypingDone = typedName.length >= HERO_NAME.length;
+    if (!nameTypingDone) return;
 
-    heroTimerRef.current = window.setTimeout(() => {
-      setHeroLine((current) =>
-        heroIsDeleting ? current.slice(0, -1) : currentRole.slice(0, current.length + 1)
-      );
-    }, typingSpeed);
+    const timer = window.setTimeout(() => setSentenceStart(true), 300);
+    return () => window.clearTimeout(timer);
+  }, [typedName]);
 
-    return () => window.clearTimeout(heroTimerRef.current);
-  }, [introDone, heroLine, heroLineIndex, heroIsDeleting, prefersReducedMotion]);
+  const sentenceDisplay = useScrambleReveal(HERO_SENTENCE, sentenceStart, Boolean(prefersReducedMotion));
 
   useEffect(() => {
     const aboutElement = document.getElementById("section-about");
@@ -497,10 +539,11 @@ export default function Home() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-10 px-4 text-center font-serif text-5xl font-bold tracking-tight text-white sm:text-7xl"
+          className="relative z-10 min-h-[1em] px-4 text-center font-serif text-5xl font-bold tracking-tight text-white sm:text-7xl"
           style={{ textShadow: "0 0 34px rgba(45, 212, 191, 0.4), 0 2px 12px rgba(0, 0, 0, 0.75)" }}
         >
-          Midhat Ratib Khan
+          {typedName}
+          {typedName.length < HERO_NAME.length && <span className="animate-pulse text-teal-300">|</span>}
         </motion.h1>
 
         <motion.p
@@ -509,8 +552,12 @@ export default function Home() {
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
           className="relative z-10 mt-5 min-h-[1.6em] text-center text-lg font-medium text-zinc-200 sm:text-2xl"
         >
-          I&apos;m a <span className="text-teal-300">{heroLine}</span>
-          <span className="animate-pulse text-teal-300">|</span>
+          {sentenceDisplay.slice(0, HERO_SENTENCE_HIGHLIGHT_START)}
+          <span className="text-teal-300">{sentenceDisplay.slice(HERO_SENTENCE_HIGHLIGHT_START, HERO_SENTENCE_HIGHLIGHT_END)}</span>
+          {sentenceDisplay.slice(HERO_SENTENCE_HIGHLIGHT_END)}
+          {sentenceStart && sentenceDisplay.length < HERO_SENTENCE.length && (
+            <span className="animate-pulse text-teal-300">|</span>
+          )}
         </motion.p>
 
         <motion.div
@@ -759,31 +806,46 @@ export default function Home() {
               as="h2"
               className="font-serif text-3xl font-bold tracking-tight text-white sm:text-4xl"
             />
-            <div className="mt-7 grid gap-4 sm:grid-cols-2">
+            <div className="mt-7 space-y-3">
               {workItems.map((item, index) => (
-                <ProjectCard key={item.title} item={item} index={index} />
+                <div key={item.title} className="flex gap-4 rounded-xl border border-white/10 bg-black/20 p-4 sm:gap-6 sm:p-5">
+                  <span
+                    className="mt-0.5 shrink-0 text-sm font-semibold text-teal-400"
+                    style={{ fontFamily: "var(--font-jetbrains), monospace" }}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <h4 className="text-sm font-medium text-white sm:text-base">{item.title}</h4>
+                      <span className="rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] text-zinc-200">
+                        {item.tag}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-zinc-300">{item.summary}</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {item.stack.map((tech) => (
+                        <span key={tech} className="rounded-full border border-white/20 bg-black/30 px-2 py-0.5 text-[10px] text-zinc-300">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-3">
+                      {item.liveUrl && (
+                        <a href={item.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-white/90 hover:text-white">
+                          Live <ArrowUpRight size={13} />
+                        </a>
+                      )}
+                      {item.repoUrl && (
+                        <a href={item.repoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-white/90 hover:text-white">
+                          Repo <ArrowUpRight size={13} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
-          </div>
-        </motion.section>
-
-        {/* GitHub Activity Section */}
-        <motion.section
-          id="section-activity"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          whileHover={sectionHoverMotion}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.45, ease: "easeOut" }}
-          className="floating-page"
-        >
-          <div className="panel">
-            <GhostHeading
-              text="Activity"
-              as="h2"
-              className="font-serif text-3xl font-bold tracking-tight text-white sm:text-4xl"
-            />
-            <GithubActivity />
           </div>
         </motion.section>
 
