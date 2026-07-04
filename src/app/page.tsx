@@ -491,7 +491,7 @@ export default function Home() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-10 min-h-[1em] px-4 text-center font-serif text-6xl font-bold tracking-tight text-white sm:text-8xl"
+          className="relative z-10 min-h-[1em] px-4 text-center font-serif text-lg font-bold tracking-tight text-white sm:text-2xl"
           style={{ textShadow: "0 0 34px rgba(45, 212, 191, 0.4), 0 2px 12px rgba(0, 0, 0, 0.75)" }}
         >
           {typedName}
