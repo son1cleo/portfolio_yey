@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fira_Code, Open_Sans } from "next/font/google";
 import { Navbar } from "../components/Navbar";
+import { PageTransition } from "../components/PageTransition";
 import "./globals.css";
 
 const firaCode = Fira_Code({
@@ -28,7 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${firaCode.variable} ${openSans.variable} antialiased`}>
         <Navbar />
-        {children}
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   );

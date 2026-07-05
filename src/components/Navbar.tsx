@@ -60,8 +60,8 @@ export function Navbar() {
       transition={{ duration: prefersReducedMotion ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
       className="fixed left-1/2 z-50 flex w-full -translate-x-1/2 items-center justify-between border backdrop-blur-md"
     >
-      <Link href="/" className="shrink-0 font-mono text-sm font-semibold tracking-tight text-white">
-        {"<MK />"}
+      <Link href="/" className="neon-brand shrink-0 font-mono text-sm font-semibold tracking-tight">
+        son1cleo
       </Link>
 
       <nav className="flex items-center gap-1 sm:gap-2">

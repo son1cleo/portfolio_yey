@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
@@ -9,73 +9,47 @@ const HERO_NAME = "Hi, I'm Midhat Ratib Khan";
 const HERO_SENTENCE = "A Data Scientist who ships software";
 const HERO_SENTENCE_HIGHLIGHT_START = HERO_SENTENCE.indexOf("Data Scientist");
 const HERO_SENTENCE_HIGHLIGHT_END = HERO_SENTENCE_HIGHLIGHT_START + "Data Scientist".length;
-const HERO_SENTENCE_CHARS = Array.from(HERO_SENTENCE);
 
 export default function Home() {
-  const [typedName, setTypedName] = useState("");
-  const [sentenceStart, setSentenceStart] = useState(false);
   const prefersReducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      const immediate = window.setTimeout(() => setTypedName(HERO_NAME), 0);
-      return () => window.clearTimeout(immediate);
-    }
-
-    let index = 0;
-    const timer = window.setInterval(() => {
-      index += 1;
-      setTypedName(HERO_NAME.slice(0, index));
-      if (index >= HERO_NAME.length) {
-        window.clearInterval(timer);
-      }
-    }, 55);
-
-    return () => window.clearInterval(timer);
-  }, [prefersReducedMotion]);
-
-  useEffect(() => {
-    const nameTypingDone = typedName.length >= HERO_NAME.length;
-    if (!nameTypingDone) return;
-
-    const timer = window.setTimeout(() => setSentenceStart(true), 300);
-    return () => window.clearTimeout(timer);
-  }, [typedName]);
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-x-clip px-4">
-      <motion.h1
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="min-h-[1.4em] px-4 text-center font-mono text-2xl font-bold tracking-tight text-white sm:text-4xl"
+      <motion.div
+        initial={prefersReducedMotion ? undefined : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="neon-frame relative aspect-[2/3] w-36 overflow-hidden rounded-xl sm:w-44"
       >
-        {typedName}
-        {typedName.length < HERO_NAME.length && <span className="animate-pulse text-white/60">|</span>}
+        <Image src="/profile2.jpg" alt="Midhat Ratib Khan" fill sizes="176px" className="object-cover" priority />
+      </motion.div>
+
+      <motion.h1
+        initial={prefersReducedMotion ? undefined : { opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+        className="mt-7 px-4 text-center font-mono text-2xl font-bold tracking-tight text-white sm:text-4xl"
+      >
+        {HERO_NAME}
       </motion.h1>
 
-      <p className="mt-5 min-h-[1.6em] text-center font-mono text-base text-zinc-300 sm:text-xl">
-        {sentenceStart &&
-          HERO_SENTENCE_CHARS.map((char, index) => {
-            const isHighlight = index >= HERO_SENTENCE_HIGHLIGHT_START && index < HERO_SENTENCE_HIGHLIGHT_END;
-            return (
-              <motion.span
-                key={index}
-                initial={prefersReducedMotion ? undefined : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4, delay: prefersReducedMotion ? 0 : index * 0.025, ease: "easeOut" }}
-                className={isHighlight ? "text-white" : "text-zinc-400"}
-              >
-                {char}
-              </motion.span>
-            );
-          })}
-      </p>
+      <motion.p
+        initial={prefersReducedMotion ? undefined : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+        className="mt-5 text-center font-mono text-base text-zinc-400 sm:text-xl"
+      >
+        {HERO_SENTENCE.slice(0, HERO_SENTENCE_HIGHLIGHT_START)}
+        <span className="text-white">
+          {HERO_SENTENCE.slice(HERO_SENTENCE_HIGHLIGHT_START, HERO_SENTENCE_HIGHLIGHT_END)}
+        </span>
+        {HERO_SENTENCE.slice(HERO_SENTENCE_HIGHLIGHT_END)}
+      </motion.p>
 
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.45 }}
         className="mt-9 flex flex-wrap items-center justify-center gap-3"
       >
         <Link
