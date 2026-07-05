@@ -73,7 +73,7 @@ export default function Home() {
               key={index}
               initial={prefersReducedMotion ? undefined : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: prefersReducedMotion ? 0 : index * 0.025, ease: "easeOut" }}
+              transition={{ duration: 0.08, delay: prefersReducedMotion ? 0 : index * 0.045, ease: "easeOut" }}
               className={isHighlighted(index) ? "text-white" : "text-zinc-400"}
             >
               {char}
