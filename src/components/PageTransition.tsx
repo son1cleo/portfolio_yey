@@ -3,13 +3,7 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-
-const ROUTE_ORDER = ["/", "/about", "/projects", "/contact"];
-
-function getRouteIndex(pathname: string) {
-  const index = ROUTE_ORDER.indexOf(pathname);
-  return index === -1 ? ROUTE_ORDER.length : index;
-}
+import { getRouteIndex } from "../lib/routeOrder";
 
 const slideVariants = {
   initial: (direction: number) => ({ opacity: 0, x: direction * 48 }),
