@@ -95,7 +95,7 @@ export default function ProjectsPage() {
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h4 className="text-sm font-medium text-white sm:text-base">{item.title}</h4>
+                  <h2 className="text-sm font-medium text-white sm:text-base">{item.title}</h2>
                   <span className="rounded-full border border-white/20 bg-white/10 px-2 py-0.5 font-mono text-[10px] text-zinc-200">
                     {item.tag}
                   </span>

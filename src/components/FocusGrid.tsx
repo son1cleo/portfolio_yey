@@ -43,7 +43,7 @@ export function FocusGrid() {
           className="group rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition duration-200 hover:-translate-y-1 hover:border-white/30 sm:p-5"
         >
           <Icon size={22} className="text-white transition group-hover:text-white/80" />
-          <h3 className="mt-3 font-mono text-sm font-semibold text-white">{title}</h3>
+          <h2 className="mt-3 font-mono text-sm font-semibold text-white">{title}</h2>
           <p className="mt-1.5 text-xs leading-relaxed text-zinc-400">{blurb}</p>
         </div>
       ))}
