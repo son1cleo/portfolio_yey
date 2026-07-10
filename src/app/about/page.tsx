@@ -162,7 +162,7 @@ export default function AboutPage() {
                   <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400">
                     {role.shortTitle}
                   </p>
-                  <h3 className="mt-1 text-lg font-semibold text-white">{role.title}</h3>
+                  <h2 className="mt-1 text-lg font-semibold text-white">{role.title}</h2>
                 </div>
                 <span
                   className={`rounded-full border px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide ${
@@ -200,19 +200,21 @@ export default function AboutPage() {
         </div>
 
         <div className="mt-7 rounded-2xl border border-white/15 bg-white/5 p-5">
-          <h3 className="font-mono text-sm font-medium tracking-wide text-white uppercase">Tech Stack</h3>
+          <h2 className="font-mono text-sm font-medium tracking-wide text-white uppercase">Tech Stack</h2>
           <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {techCategories.map((category) => (
               <div key={category.label}>
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-500">{category.label}</p>
+                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-400">{category.label}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {category.items.map(({ name, Icon }) => (
                     <span
                       key={name}
                       title={name}
+                      role="img"
+                      aria-label={name}
                       className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 bg-black/30 text-zinc-300 transition hover:border-white/40 hover:text-white"
                     >
-                      <Icon size={17} />
+                      <Icon size={17} aria-hidden="true" />
                     </span>
                   ))}
                 </div>
