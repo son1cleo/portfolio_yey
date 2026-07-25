@@ -3,6 +3,7 @@ import { Fira_Code, Open_Sans } from "next/font/google";
 import { Navbar } from "../components/Navbar";
 import { PageTransition } from "../components/PageTransition";
 import { ScrollNavigator } from "../components/ScrollNavigator";
+import { ParticleNetwork } from "../components/ui/particle-network";
 import "./globals.css";
 
 const firaCode = Fira_Code({
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${firaCode.variable} ${openSans.variable} antialiased`}>
+        <ParticleNetwork />
         <Navbar />
         <ScrollNavigator />
         <PageTransition>{children}</PageTransition>
