@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight, Zap } from "lucide-react";
+import { Preloader } from "../components/Preloader";
 
 const HERO_SENTENCE = "A Data Scientist who ships Software";
 const HIGHLIGHT_TERMS = ["Data Scientist", "Software"];
@@ -39,13 +40,23 @@ export default function Home() {
 
   return (
     <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-center gap-12 overflow-x-clip px-4 py-24 lg:flex-row lg:gap-16 lg:px-8">
+      <Preloader />
+
       <motion.div
         initial={prefersReducedMotion ? undefined : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="neon-frame relative aspect-[2/3] w-48 shrink-0 overflow-hidden rounded-xl sm:w-56 lg:w-64"
       >
-        <Image src="/profile2.jpg" alt="Midhat Ratib Khan" fill sizes="256px" className="object-cover" priority />
+        <Image
+          src="/profile2.jpg"
+          alt="Midhat Ratib Khan"
+          fill
+          sizes="(min-width: 1024px) 256px, (min-width: 640px) 224px, 192px"
+          quality={95}
+          className="object-cover"
+          priority
+        />
       </motion.div>
 
       <div className="max-w-xl text-center lg:text-left">
