@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { EnergyBeam } from "../components/ui/energy-beam";
 
 const HERO_NAME = "Hi, I'm Midhat Ratib Khan";
 const HERO_SENTENCE = "A Data Scientist who ships Software";
@@ -52,6 +53,8 @@ export default function Home() {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-x-clip px-4">
+      {!prefersReducedMotion && <EnergyBeam />}
+
       <motion.div
         initial={prefersReducedMotion ? undefined : { opacity: 0 }}
         animate={{ opacity: 1 }}
