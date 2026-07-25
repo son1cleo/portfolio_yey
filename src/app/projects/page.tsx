@@ -80,9 +80,6 @@ export default function ProjectsPage() {
         className="panel"
       >
         <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/50">Projects</p>
-        <h1 className="mt-3 font-mono text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          Selected work that supports client trust
-        </h1>
 
         <div className="mt-7 space-y-3">
           {workItems.map((item, index) => (
