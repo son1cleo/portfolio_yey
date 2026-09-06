@@ -2,6 +2,124 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { CaseStudyCard, type CaseStudy } from "../../components/CaseStudyCard";
+
+const caseStudies: CaseStudy[] = [
+  {
+    id: "databrief",
+    windowLabel: "databrief — landing",
+    screenshotAlt: "DataBrief landing page showing an analysis engine finding an unexpected revenue drop",
+    headline: "Your data knows something you don't.",
+    headlineAccent: "you don't.",
+    description:
+      "Upload a spreadsheet, PDF or document — DataBrief finds what's statistically surprising in it and writes the finding up as a report.",
+    meta: [
+      { label: "Stack", value: "FastAPI · Celery · Redis · multi-tenant row-level security" },
+      { label: "Status", value: "Production build — not yet publicly hosted, code on GitHub" },
+    ],
+    href: "https://github.com/son1cleo/databrief",
+    linkLabel: "github.com/son1cleo/databrief",
+    theme: {
+      background: "#0b1220",
+      panel: "#111a2e",
+      foreground: "#ffffff",
+      muted: "#8ea0c0",
+      accent: "#4d8dff",
+      border: "rgba(255,255,255,0.08)",
+      headlineFont: "font-sans",
+    },
+  },
+  {
+    id: "msn",
+    eyebrow: "case file — dhaka, bangladesh",
+    indexLabel: "01 / 04",
+    windowLabel: "msn-bd.org",
+    screenshotAlt: "Media Support Network homepage with the headline 'For a free, safe and independent media'",
+    headline: "Media Support Network",
+    description:
+      "A production website for Bangladesh's press-freedom advocacy body — built to read as credible to journalists, funders and government stakeholders in the same breath.",
+    meta: [{ label: "Role", value: "Full-stack build — Next.js / TypeScript" }],
+    href: "https://www.msn-bd.org",
+    linkLabel: "msn-bd.org",
+    theme: {
+      background: "#0c1c2e",
+      panel: "#0f2438",
+      foreground: "#f5f2e9",
+      muted: "#93a5bd",
+      accent: "#f2565b",
+      border: "rgba(255,255,255,0.08)",
+      headlineFont: "font-serif",
+    },
+  },
+  {
+    id: "neel-foring",
+    eyebrow: "Neel Foring Foundation",
+    indexLabel: "01 / 04",
+    windowLabel: "neel-foring.vercel.app",
+    screenshotAlt: "Neel Foring Foundation homepage with the headline 'Youth-led energy meets systemic change'",
+    headline: "Youth-led energy, systemic change.",
+    headlineAccent: "systemic change.",
+    description:
+      "A website for a Dhaka-based foundation equipping young people to lead on climate, technology and human rights.",
+    meta: [{ label: "Role", value: "Full-stack build — Next.js" }],
+    href: "https://neel-foring.vercel.app",
+    linkLabel: "neel-foring.vercel.app",
+    theme: {
+      background: "#16241c",
+      panel: "#1c2f24",
+      foreground: "#f4ede1",
+      muted: "#9db2a3",
+      accent: "#e2823c",
+      border: "rgba(255,255,255,0.08)",
+      headlineFont: "font-sans",
+    },
+  },
+  {
+    id: "voice-of-time",
+    indexLabel: "01 / 04",
+    windowLabel: "newsvault-zeta.vercel.app",
+    screenshotAlt: "Voice of Time bilingual news archive homepage",
+    headline: "Voice of Time",
+    subheadline: "সময়কণ্ঠ — a bilingual news archive",
+    description:
+      "Built around one editorial rule: a story published today but dated years ago never shows up as \"latest\" — it files into the historical record.",
+    meta: [{ label: "Role", value: "Full-stack build — client turnaround: 2 days" }],
+    href: "https://newsvault-zeta.vercel.app",
+    linkLabel: "newsvault-zeta.vercel.app · bilingual archive, EN / BN",
+    theme: {
+      background: "#efe8d8",
+      panel: "#e4dcc8",
+      foreground: "#1f2a3d",
+      muted: "#6b6455",
+      accent: "#7a5216",
+      border: "rgba(0,0,0,0.1)",
+      headlineFont: "font-serif",
+    },
+  },
+  {
+    id: "joblesscoders",
+    windowLabel: "~/joblesscoders/README.md",
+    indexLabel: "01/04",
+    screenshotAlt: "JoblessCoders studio site homepage with the '<JoblessCoders/>' logo",
+    headline: "<JoblessCoders/>",
+    headlineAccent: "less",
+    subheadline: "Six devs' own studio site.",
+    description:
+      "The site a Dhaka dev collective uses to pitch clients directly — services, live workflow, and the team behind it.",
+    meta: [{ label: "Credited role", value: "Data Analyst & Cloud Engineer — @son1cleo · team of six" }],
+    href: "https://joblesscoders.github.io",
+    linkLabel: "joblesscoders.github.io",
+    theme: {
+      background: "#0a0e1a",
+      panel: "#111627",
+      foreground: "#ffffff",
+      muted: "#8890a8",
+      accent: "#7c6df2",
+      border: "rgba(255,255,255,0.08)",
+      headlineFont: "font-mono",
+    },
+  },
+];
 
 type ProjectItem = {
   title: string;
@@ -13,14 +131,6 @@ type ProjectItem = {
 };
 
 const workItems: ProjectItem[] = [
-  {
-    title: "DataBrief",
-    summary:
-      "Production SaaS that turns raw CSV/Excel datasets into narrative analytical reports (PDF, DOCX, PPTX) with a 6-type statistical analysis engine, question-aware column selection, and LLM-generated narration. Async infrastructure with multi-tenant row-level security and fallback template narration for LLM outages.",
-    tag: "Project",
-    stack: ["FastAPI", "Celery", "Redis", "PostgreSQL", "LLM Narration", "Docker"],
-    liveUrl: "https://databrief-six.vercel.app/",
-  },
   {
     title: "RatibBuilds Portfolio",
     summary:
@@ -79,7 +189,22 @@ export default function ProjectsPage() {
         transition={{ duration: 0.45, ease: "easeOut" }}
         className="panel"
       >
-        <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/50">Projects</p>
+        <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/50">Case Studies</p>
+      </motion.section>
+
+      <div className="flex flex-col gap-6">
+        {caseStudies.map((study, index) => (
+          <CaseStudyCard key={study.id} study={study} index={index} />
+        ))}
+      </div>
+
+      <motion.section
+        initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        className="panel"
+      >
+        <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/50">More work</p>
 
         <div className="mt-7 space-y-3">
           {workItems.map((item, index) => (
