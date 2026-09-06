@@ -8,6 +8,7 @@ const caseStudies: CaseStudy[] = [
   {
     id: "databrief",
     windowLabel: "databrief — landing",
+    screenshotSrc: "/projects/databrief.png",
     screenshotAlt: "DataBrief landing page showing an analysis engine finding an unexpected revenue drop",
     headline: "Your data knows something you don't.",
     headlineAccent: "you don't.",
@@ -34,6 +35,7 @@ const caseStudies: CaseStudy[] = [
     eyebrow: "case file — dhaka, bangladesh",
     indexLabel: "01 / 04",
     windowLabel: "msn-bd.org",
+    screenshotSrc: "/projects/msn.png",
     screenshotAlt: "Media Support Network homepage with the headline 'For a free, safe and independent media'",
     headline: "Media Support Network",
     description:
@@ -56,6 +58,7 @@ const caseStudies: CaseStudy[] = [
     eyebrow: "Neel Foring Foundation",
     indexLabel: "01 / 04",
     windowLabel: "neel-foring.vercel.app",
+    screenshotSrc: "/projects/neel-foring.png",
     screenshotAlt: "Neel Foring Foundation homepage with the headline 'Youth-led energy meets systemic change'",
     headline: "Youth-led energy, systemic change.",
     headlineAccent: "systemic change.",
@@ -78,6 +81,7 @@ const caseStudies: CaseStudy[] = [
     id: "voice-of-time",
     indexLabel: "01 / 04",
     windowLabel: "newsvault-zeta.vercel.app",
+    screenshotSrc: "/projects/voice-of-time.png",
     screenshotAlt: "Voice of Time bilingual news archive homepage",
     headline: "Voice of Time",
     subheadline: "সময়কণ্ঠ — a bilingual news archive",
@@ -94,29 +98,6 @@ const caseStudies: CaseStudy[] = [
       accent: "#7a5216",
       border: "rgba(0,0,0,0.1)",
       headlineFont: "font-serif",
-    },
-  },
-  {
-    id: "joblesscoders",
-    windowLabel: "~/joblesscoders/README.md",
-    indexLabel: "01/04",
-    screenshotAlt: "JoblessCoders studio site homepage with the '<JoblessCoders/>' logo",
-    headline: "<JoblessCoders/>",
-    headlineAccent: "less",
-    subheadline: "Six devs' own studio site.",
-    description:
-      "The site a Dhaka dev collective uses to pitch clients directly — services, live workflow, and the team behind it.",
-    meta: [{ label: "Credited role", value: "Data Analyst & Cloud Engineer — @son1cleo · team of six" }],
-    href: "https://joblesscoders.github.io",
-    linkLabel: "joblesscoders.github.io",
-    theme: {
-      background: "#0a0e1a",
-      panel: "#111627",
-      foreground: "#ffffff",
-      muted: "#8890a8",
-      accent: "#7c6df2",
-      border: "rgba(255,255,255,0.08)",
-      headlineFont: "font-mono",
     },
   },
 ];
@@ -193,9 +174,13 @@ export default function ProjectsPage() {
       </motion.section>
 
       <div className="flex flex-col gap-6">
-        {caseStudies.map((study, index) => (
-          <CaseStudyCard key={study.id} study={study} index={index} />
-        ))}
+        <CaseStudyCard study={caseStudies[0]} index={0} />
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {caseStudies.slice(1).map((study, index) => (
+            <CaseStudyCard key={study.id} study={study} index={index + 1} />
+          ))}
+        </div>
       </div>
 
       <motion.section
