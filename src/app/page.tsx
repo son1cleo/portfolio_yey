@@ -11,10 +11,10 @@ export default function Home() {
           <p className="text-sm font-medium text-[var(--neon-green)]">Midhat Ratib Khan</p>
           <h1 className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
             Data scientist who ships production software
-            <span className="mt-3 block text-xl font-normal leading-relaxed tracking-normal text-zinc-300 sm:text-2xl">— analysis, LLM systems, and the apps around them.</span>
+            <span className="mt-3 block text-xl font-normal leading-relaxed tracking-normal text-zinc-300 sm:text-2xl">Analysis, LLM systems, and the apps around them.</span>
           </h1>
           <a href="/resume/MidhatRatibCV_DS.pdf" download className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white underline decoration-white/40 underline-offset-4 hover:decoration-[var(--neon-green)]">
-            Download data science CV <ArrowRight size={16} aria-hidden="true" />
+            Download Data science CV <ArrowRight size={16} aria-hidden="true" />
           </a>
         </div>
         <Image src="/profile2.jpg" alt="Midhat Ratib Khan" width={120} height={160} priority className="hidden h-40 w-30 shrink-0 rounded-xl object-cover sm:block" />

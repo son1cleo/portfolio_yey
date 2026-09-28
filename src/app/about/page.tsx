@@ -3,9 +3,12 @@ import { Download } from "lucide-react";
 
 export const metadata: Metadata = { title: "About | Midhat Ratib Khan" };
 const stack = [
-  { label: "Analysis & evaluation", tools: "Python, statistical analysis, EDA, GSM8K, spaCy" },
-  { label: "LLM systems", tools: "LangChain, LangGraph, TensorFlow" },
-  { label: "Production software", tools: "FastAPI, Celery, Redis, PostgreSQL, Next.js, TypeScript" },
+  { label: "Data Science & Analysis", tools: "pandas, NumPy, SciPy, scikit-learn, statistical analysis, EDA, matplotlib, seaborn, Jupyter" },
+  { label: "Languages", tools: "Python, JavaScript, TypeScript, SQL (PostgreSQL, MySQL), Go, C, C++, Java, Dart, HTML/CSS" },
+  { label: "Frontend", tools: "Next.js, React, Flutter, TailwindCSS, Framer Motion" },
+  { label: "Databases & Deployment", tools: "MySQL, PostgreSQL, MongoDB, Supabase, Git/GitHub, Railway, Vercel, Linux (Ubuntu)" },
+  { label: "AI & Evaluation", tools: "LangChain, LangGraph, TensorFlow, GSM8K, spaCy" },
+  { label: "Backend", tools: "FastAPI, Celery, Redis" },
 ];
 
 export default function AboutPage() {
@@ -15,7 +18,7 @@ export default function AboutPage() {
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300">
         I’m Midhat Ratib Khan, a Computer Science graduate focused on data science.
         I work on statistical analysis, LLM evaluation, and reporting systems, and build
-        the software around them—from data pipelines to the interfaces people use.
+        the software around them, from data pipelines to the interfaces people use.
         My work includes DataBrief, mathematical reasoning evaluation for PorteHobe AI,
         and a physics chatbot evaluated across 6,000+ questions.
       </p>
@@ -33,7 +36,7 @@ export default function AboutPage() {
       <section className="mt-10 border-t border-white/15 pt-7" aria-labelledby="cv-heading">
         <h2 id="cv-heading" className="text-xl font-semibold">My CV</h2>
         <a href="/resume/MidhatRatibCV_DS.pdf" download className="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black hover:bg-zinc-200">
-          <Download size={16} aria-hidden="true" /> Download data science CV
+          <Download size={16} aria-hidden="true" /> Download Data science CV
         </a>
         <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-zinc-300">
           <span>Also available:</span>

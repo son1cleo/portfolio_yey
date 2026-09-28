@@ -6,14 +6,14 @@ import { CaseStudyCard, type CaseStudy } from "../../components/CaseStudyCard";
 const caseStudies: CaseStudy[] = [
   {
     id: "msn",
-    eyebrow: "case file — dhaka, bangladesh",
+    eyebrow: "case file: dhaka, bangladesh",
     windowLabel: "msn-bd.org",
     screenshotSrc: "/projects/msn.png",
     screenshotAlt: "Media Support Network homepage with the headline 'For a free, safe and independent media'",
     headline: "Media Support Network",
     description:
-      "A production website for Bangladesh's press-freedom advocacy body — built to read as credible to journalists, funders and government stakeholders in the same breath.",
-    meta: [{ label: "Role", value: "Full-stack build — Next.js / TypeScript" }],
+      "A production website for Bangladesh's press-freedom advocacy body, built to read as credible to journalists, funders and government stakeholders in the same breath.",
+    meta: [{ label: "Role", value: "Full-stack build: Next.js / TypeScript" }],
     href: "https://www.msn-bd.org",
     linkLabel: "msn-bd.org",
     theme: {
@@ -36,7 +36,7 @@ const caseStudies: CaseStudy[] = [
     headlineAccent: "systemic change.",
     description:
       "A website for a Dhaka-based foundation equipping young people to lead on climate, technology and human rights.",
-    meta: [{ label: "Role", value: "Full-stack build — Next.js" }],
+    meta: [{ label: "Role", value: "Full-stack build: Next.js" }],
     href: "https://neel-foring.vercel.app",
     linkLabel: "neel-foring.vercel.app",
     theme: {
@@ -55,10 +55,10 @@ const caseStudies: CaseStudy[] = [
     screenshotSrc: "/projects/voice-of-time.png",
     screenshotAlt: "Voice of Time bilingual news archive homepage",
     headline: "Voice of Time",
-    subheadline: "সময়কণ্ঠ — a bilingual news archive",
+    subheadline: "সময়কণ্ঠ: a bilingual news archive",
     description:
-      "Built around one editorial rule: a story published today but dated years ago never shows up as \"latest\" — it files into the historical record.",
-    meta: [{ label: "Role", value: "Full-stack build — client turnaround: 2 days" }],
+      "Built around one editorial rule: a story published today but dated years ago never shows up as \"latest\". It files into the historical record.",
+    meta: [{ label: "Role", value: "Full-stack build; client turnaround: 2 days" }],
     href: "https://newsvault-zeta.vercel.app",
     linkLabel: "newsvault-zeta.vercel.app · bilingual archive, EN / BN",
     theme: {

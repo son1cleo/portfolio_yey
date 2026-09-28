@@ -20,7 +20,7 @@ const openSans = Open_Sans({
 export const metadata: Metadata = {
   title: "Midhat Ratib Khan | Portfolio",
   description:
-    "Data scientist who ships production software — analysis, LLM systems, and the apps around them.",
+    "Data scientist who ships production software. Analysis, LLM systems, and the apps around them.",
 };
 
 export default function RootLayout({
