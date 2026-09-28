@@ -54,10 +54,10 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
       whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.05 }}
-      className="overflow-hidden rounded-2xl border"
+      className="min-w-0 overflow-hidden rounded-2xl border"
       style={{ background: theme.background, borderColor: theme.border }}
     >
-      <div className="p-6 sm:p-8">
+      <div className="p-5 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <p className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: theme.muted }}>
             {study.eyebrow ?? study.windowLabel}
@@ -91,7 +91,7 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
                 src={study.screenshotSrc}
                 alt={study.screenshotAlt}
                 fill
-                sizes="(min-width: 1024px) 900px, 100vw"
+                sizes="(min-width: 1024px) 256px, (min-width: 640px) calc(100vw - 128px), calc(100vw - 80px)"
                 className="object-cover object-top"
               />
             ) : (
@@ -108,9 +108,9 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
           </div>
         </div>
 
-        <h2 className={`mt-8 text-3xl font-bold tracking-tight sm:text-4xl ${theme.headlineFont}`} style={{ color: theme.foreground }}>
+        <h3 className={`mt-6 text-2xl font-bold tracking-tight ${theme.headlineFont}`} style={{ color: theme.foreground }}>
           {renderHeadline(study.headline, study.headlineAccent, theme.accent)}
-        </h2>
+        </h3>
 
         {study.subheadline && (
           <p className={`mt-2 text-lg italic ${theme.headlineFont}`} style={{ color: theme.muted }}>
@@ -122,7 +122,7 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
           {study.description}
         </p>
 
-        <div className="mt-6 grid gap-4 border-t pt-5 sm:grid-cols-2" style={{ borderColor: theme.border }}>
+        <div className="mt-6 grid gap-4 border-t pt-5" style={{ borderColor: theme.border }}>
           {study.meta.map((row) => (
             <div key={row.label}>
               <p className="font-mono text-xs uppercase tracking-wide" style={{ color: theme.accent }}>
@@ -139,7 +139,7 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
           href={study.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-6 inline-flex items-center gap-1.5 font-mono text-sm font-medium transition hover:opacity-80"
+          className="mt-6 inline-flex max-w-full items-center gap-1.5 break-all font-mono text-sm font-medium transition hover:opacity-80"
           style={{ color: theme.accent }}
         >
           {study.linkLabel} <ArrowUpRight size={14} />

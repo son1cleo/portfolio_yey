@@ -1,260 +1,46 @@
-"use client";
+﻿import type { Metadata } from "next";
+import { Download } from "lucide-react";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { Download, Github } from "lucide-react";
-import {
-  SiPython,
-  SiC,
-  SiCplusplus,
-  SiDart,
-  SiGo,
-  SiJavascript,
-  SiTypescript,
-  SiNextdotjs,
-  SiReact,
-  SiNodedotjs,
-  SiExpress,
-  SiDjango,
-  SiFlask,
-  SiFlutter,
-  SiTailwindcss,
-  SiFramer,
-  SiMysql,
-  SiPostgresql,
-  SiMongodb,
-  SiSupabase,
-  SiLangchain,
-  SiLanggraph,
-  SiTensorflow,
-} from "react-icons/si";
-import { FaJava } from "react-icons/fa6";
-import { FocusGrid } from "../../components/FocusGrid";
-
-type RoleProfile = {
-  key: "ds" | "ae" | "fs";
-  title: string;
-  shortTitle: string;
-  summary: string;
-  highlights: string[];
-  cvHref: string;
-};
-
-const roleProfiles: RoleProfile[] = [
-  {
-    key: "ds",
-    title: "Data Scientist",
-    shortTitle: "DS",
-    summary:
-      "Turn messy, raw datasets into statistically-grounded insight and production analytics systems — from EDA and hypothesis testing to LLM-powered reporting pipelines.",
-    highlights: ["Statistical analysis & EDA", "Production data pipelines", "LLM-narrated reporting"],
-    cvHref: "/resume/MidhatRatibCV_DS.pdf",
-  },
-  {
-    key: "ae",
-    title: "AI Engineer",
-    shortTitle: "AE",
-    summary:
-      "Build AI products, evaluation pipelines, and decision support systems that turn messy data into usable intelligence.",
-    highlights: ["LLM workflows", "Model evaluation", "Automation with real outcomes"],
-    cvHref: "/resume/MidhatRatibCV_AE.pdf",
-  },
-  {
-    key: "fs",
-    title: "Full Stack Dev",
-    shortTitle: "FS",
-    summary:
-      "Design and ship polished websites and web apps from frontend motion to backend integration and deployment.",
-    highlights: ["Next.js products", "Client portals", "Clean delivery under deadlines"],
-    cvHref: "/resume/MidhatRatibCV_FS.pdf",
-  },
-];
-
-const techCategories = [
-  {
-    label: "Languages",
-    items: [
-      { name: "Python", Icon: SiPython },
-      { name: "C", Icon: SiC },
-      { name: "C++", Icon: SiCplusplus },
-      { name: "Java", Icon: FaJava },
-      { name: "Dart", Icon: SiDart },
-      { name: "Go", Icon: SiGo },
-      { name: "JavaScript", Icon: SiJavascript },
-      { name: "TypeScript", Icon: SiTypescript },
-    ],
-  },
-  {
-    label: "Frontend",
-    items: [
-      { name: "React", Icon: SiReact },
-      { name: "Next.js", Icon: SiNextdotjs },
-      { name: "TailwindCSS", Icon: SiTailwindcss },
-      { name: "Framer Motion", Icon: SiFramer },
-    ],
-  },
-  {
-    label: "Backend",
-    items: [
-      { name: "Node.js", Icon: SiNodedotjs },
-      { name: "Express", Icon: SiExpress },
-      { name: "Django", Icon: SiDjango },
-      { name: "Flask", Icon: SiFlask },
-    ],
-  },
-  {
-    label: "Databases",
-    items: [
-      { name: "MySQL", Icon: SiMysql },
-      { name: "PostgreSQL", Icon: SiPostgresql },
-      { name: "MongoDB", Icon: SiMongodb },
-      { name: "Supabase", Icon: SiSupabase },
-    ],
-  },
-  {
-    label: "AI & LLM",
-    items: [
-      { name: "LangChain", Icon: SiLangchain },
-      { name: "LangGraph", Icon: SiLanggraph },
-      { name: "TensorFlow", Icon: SiTensorflow },
-    ],
-  },
-  {
-    label: "Mobile",
-    items: [{ name: "Flutter", Icon: SiFlutter }],
-  },
+export const metadata: Metadata = { title: "About | Midhat Ratib Khan" };
+const stack = [
+  { label: "Analysis & evaluation", tools: "Python, statistical analysis, EDA, GSM8K, spaCy" },
+  { label: "LLM systems", tools: "LangChain, LangGraph, TensorFlow" },
+  { label: "Production software", tools: "FastAPI, Celery, Redis, PostgreSQL, Next.js, TypeScript" },
 ];
 
 export default function AboutPage() {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 pb-20 pt-32 sm:px-8 sm:pt-36">
-      <motion.section
-        initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: "easeOut" }}
-        className="panel"
-      >
-        <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/50">About</p>
-        <h1 className="mt-3 font-mono text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          Data science-led, engineering-backed
-        </h1>
-        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-300 sm:text-base">
-          Computer Science graduate primarily focused on data science and AI engineering, backed by full-stack
-          delivery experience. I present the portfolio in role-specific tracks so clients can quickly match needs to
-          the right CV.
-        </p>
-
-        <div className="mt-7">
-          <FocusGrid />
-        </div>
-
-        <div className="mt-7 grid gap-4 lg:grid-cols-3">
-          {roleProfiles.map((role, index) => (
-            <article
-              key={role.key}
-              className={`rounded-2xl border p-5 transition hover:-translate-y-1 ${
-                index === 0 ? "border-white/40 bg-white/[0.07]" : "border-white/15 bg-white/5"
-              }`}
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400">
-                    {role.shortTitle}
-                  </p>
-                  <h2 className="mt-1 text-lg font-semibold text-white">{role.title}</h2>
-                </div>
-                <span
-                  className={`rounded-full border px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide ${
-                    index === 0
-                      ? "border-white/40 bg-white/15 text-white"
-                      : "border-white/20 bg-black/30 text-zinc-200"
-                  }`}
-                >
-                  {index === 0 ? "Focus" : "CV"}
-                </span>
-              </div>
-
-              <p className="mt-3 text-sm leading-relaxed text-zinc-300">{role.summary}</p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {role.highlights.map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[11px] text-zinc-200"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-
-              <a
-                href={role.cvHref}
-                download
-                className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 font-mono text-sm font-medium text-black transition hover:-translate-y-0.5 hover:bg-zinc-200"
-              >
-                <Download size={15} /> Download {role.shortTitle} CV
-              </a>
-            </article>
+    <main className="page-shell max-w-4xl">
+      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">About me</h1>
+      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300">
+        I’m Midhat Ratib Khan, a Computer Science graduate focused on data science.
+        I work on statistical analysis, LLM evaluation, and reporting systems, and build
+        the software around them—from data pipelines to the interfaces people use.
+        My work includes DataBrief, mathematical reasoning evaluation for PorteHobe AI,
+        and a physics chatbot evaluated across 6,000+ questions.
+      </p>
+      <section className="mt-10 border-t border-white/15 pt-7" aria-labelledby="stack-heading">
+        <h2 id="stack-heading" className="text-xl font-semibold">Tools I work with</h2>
+        <dl className="mt-5 space-y-5">
+          {stack.map((group) => (
+            <div key={group.label} className="sm:grid sm:grid-cols-[190px_1fr] sm:gap-6">
+              <dt className="text-sm font-medium text-white">{group.label}</dt>
+              <dd className="mt-1 text-sm leading-relaxed text-zinc-300 sm:mt-0">{group.tools}</dd>
+            </div>
           ))}
+        </dl>
+      </section>
+      <section className="mt-10 border-t border-white/15 pt-7" aria-labelledby="cv-heading">
+        <h2 id="cv-heading" className="text-xl font-semibold">My CV</h2>
+        <a href="/resume/MidhatRatibCV_DS.pdf" download className="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black hover:bg-zinc-200">
+          <Download size={16} aria-hidden="true" /> Download data science CV
+        </a>
+        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-zinc-300">
+          <span>Also available:</span>
+          <a href="/resume/MidhatRatibCV_AE.pdf" download className="underline underline-offset-4 hover:text-white">AI engineering CV</a>
+          <a href="/resume/MidhatRatibCV_FS.pdf" download className="underline underline-offset-4 hover:text-white">Full-stack CV</a>
         </div>
-
-        <div className="mt-7 rounded-2xl border border-white/15 bg-white/5 p-5">
-          <h2 className="font-mono text-sm font-medium tracking-wide text-white uppercase">Tech Stack</h2>
-          <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {techCategories.map((category) => (
-              <div key={category.label}>
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-400">{category.label}</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {category.items.map(({ name, Icon }) => (
-                    <span
-                      key={name}
-                      title={name}
-                      role="img"
-                      aria-label={name}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 bg-black/30 text-zinc-300 transition hover:border-white/40 hover:text-white"
-                    >
-                      <Icon size={17} aria-hidden="true" />
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-7 flex flex-wrap gap-3">
-          <a
-            href="/resume/MidhatRatibCV_DS.pdf"
-            download
-            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 font-mono text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:bg-zinc-200"
-          >
-            <Download size={16} /> Download DS CV
-          </a>
-          <a
-            href="/resume/MidhatRatibCV_AE.pdf"
-            download
-            className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-5 py-3 font-mono text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-white/10"
-          >
-            <Download size={16} /> Download AE CV
-          </a>
-          <a
-            href="/resume/MidhatRatibCV_FS.pdf"
-            download
-            className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-5 py-3 font-mono text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-white/10"
-          >
-            <Download size={16} /> Download FS CV
-          </a>
-          <a
-            href="https://github.com/son1cleo"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-5 py-3 font-mono text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-white/10"
-          >
-            <Github size={16} /> GitHub
-          </a>
-        </div>
-      </motion.section>
+      </section>
     </main>
   );
 }

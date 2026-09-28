@@ -34,7 +34,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
         animate="animate"
         exit="exit"
         transition={{ duration: prefersReducedMotion ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="overflow-x-clip"
+        className="min-w-0 flex-1 overflow-x-clip"
       >
         {children}
       </motion.div>

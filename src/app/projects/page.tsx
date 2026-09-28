@@ -1,39 +1,12 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
+import { DataBriefCaseStudy } from "../../components/DataBriefCaseStudy";
+import { selectedWork } from "../../data/selected-work";
 import { ArrowUpRight } from "lucide-react";
 import { CaseStudyCard, type CaseStudy } from "../../components/CaseStudyCard";
 
 const caseStudies: CaseStudy[] = [
   {
-    id: "databrief",
-    windowLabel: "databrief — landing",
-    screenshotSrc: "/projects/databrief.png",
-    screenshotAlt: "DataBrief landing page showing an analysis engine finding an unexpected revenue drop",
-    headline: "Your data knows something you don't.",
-    headlineAccent: "you don't.",
-    description:
-      "Upload a spreadsheet, PDF or document — DataBrief finds what's statistically surprising in it and writes the finding up as a report.",
-    meta: [
-      { label: "Stack", value: "FastAPI · Celery · Redis · multi-tenant row-level security" },
-      { label: "Status", value: "Production build — not yet publicly hosted, code on GitHub" },
-    ],
-    href: "https://github.com/son1cleo/databrief",
-    linkLabel: "github.com/son1cleo/databrief",
-    theme: {
-      background: "#0b1220",
-      panel: "#111a2e",
-      foreground: "#ffffff",
-      muted: "#8ea0c0",
-      accent: "#4d8dff",
-      border: "rgba(255,255,255,0.08)",
-      headlineFont: "font-sans",
-    },
-  },
-  {
     id: "msn",
     eyebrow: "case file — dhaka, bangladesh",
-    indexLabel: "01 / 04",
     windowLabel: "msn-bd.org",
     screenshotSrc: "/projects/msn.png",
     screenshotAlt: "Media Support Network homepage with the headline 'For a free, safe and independent media'",
@@ -56,7 +29,6 @@ const caseStudies: CaseStudy[] = [
   {
     id: "neel-foring",
     eyebrow: "Neel Foring Foundation",
-    indexLabel: "01 / 04",
     windowLabel: "neel-foring.vercel.app",
     screenshotSrc: "/projects/neel-foring.png",
     screenshotAlt: "Neel Foring Foundation homepage with the headline 'Youth-led energy meets systemic change'",
@@ -79,7 +51,6 @@ const caseStudies: CaseStudy[] = [
   },
   {
     id: "voice-of-time",
-    indexLabel: "01 / 04",
     windowLabel: "newsvault-zeta.vercel.app",
     screenshotSrc: "/projects/voice-of-time.png",
     screenshotAlt: "Voice of Time bilingual news archive homepage",
@@ -113,15 +84,6 @@ type ProjectItem = {
 
 const workItems: ProjectItem[] = [
   {
-    title: "RatibBuilds Portfolio",
-    summary:
-      "My personal portfolio website featuring modern motion UI, interactive sections, and project showcases.",
-    tag: "Project",
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    liveUrl: "https://ratibbuilds.vercel.app/",
-    repoUrl: "https://github.com/son1cleo/portfolio_yey",
-  },
-  {
     title: "SouthForge",
     summary:
       "An offline-first, browser-based IDE with local AI support, in-browser runtime execution, workspace persistence, and terminal-driven Git and GitHub flows.",
@@ -144,52 +106,43 @@ const workItems: ProjectItem[] = [
     tag: "Project",
     stack: ["Django", "Python", "Automation", "Web Infrastructure"],
   },
-  {
-    title: "PorteHobe AI",
-    summary:
-      "After evaluation and refinement, improved mathematical reasoning accuracy by 15% through GSM8K benchmarking against Mathstral and Gemini.",
-    tag: "Contribution",
-    stack: ["LLM Evaluation", "GSM8K", "Reasoning", "Model Benchmarking"],
-  },
-  {
-    title: "Physics Chatbot",
-    summary: "After evaluating 6,000+ questions and applying targeted refinements, improved overall chatbot accuracy.",
-    tag: "Contribution",
-    stack: ["spaCy", "Evaluation", "Data Analysis"],
-  },
 ];
 
 export default function ProjectsPage() {
-  const prefersReducedMotion = useReducedMotion();
 
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 pb-20 pt-32 sm:px-8 sm:pt-36">
-      <motion.section
-        initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: "easeOut" }}
-        className="panel"
-      >
-        <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/50">Case Studies</p>
-      </motion.section>
+    <main className="page-shell flex max-w-5xl flex-col gap-8 sm:gap-10">
+      <header>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Selected projects</h1>
+        <p className="mt-3 max-w-2xl text-zinc-300">Analysis, model evaluation, and the software that makes them useful.</p>
+      </header>
+      <DataBriefCaseStudy />
+      <section aria-label="AI evaluation work" className="grid gap-6 sm:grid-cols-2">
+        {selectedWork.slice(1).map((project) => (
+          <article id={project.id} key={project.id} className="scroll-mt-36 rounded-xl border border-white/15 bg-white/[0.03] p-6">
+            <p className="text-sm font-medium text-[var(--neon-green)]">{project.evidence}</p>
+            <h2 className="mt-2 text-2xl font-semibold">{project.title}</h2>
+            <p className="mt-3 text-sm leading-relaxed text-zinc-300">{project.summary}</p>
+            <dl className="mt-5 space-y-4 text-sm">
+              <div><dt className="font-medium">My contribution</dt><dd className="mt-1 leading-relaxed text-zinc-300">{project.id === "portehobe-ai" ? "Benchmarked mathematical reasoning against Mathstral and Gemini, evaluated responses, and refined performance." : "Evaluated 6,000+ physics questions and applied targeted refinements to improve answer accuracy."}</dd></div>
+              <div><dt className="font-medium">Tools & methods</dt><dd className="mt-1 text-zinc-300">{project.id === "portehobe-ai" ? "GSM8K · LLM evaluation · model benchmarking" : "spaCy · question-level evaluation · data analysis"}</dd></div>
+            </dl>
+          </article>
+        ))}
+      </section>
 
-      <div className="flex flex-col gap-6">
-        <CaseStudyCard study={caseStudies[0]} index={0} />
+      <section aria-labelledby="shipped-sites" className="flex flex-col gap-6">
+        <div><h2 id="shipped-sites" className="text-2xl font-semibold">Shipped websites</h2><p className="mt-2 text-sm text-zinc-300">Production delivery alongside my data science work.</p></div>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {caseStudies.slice(1).map((study, index) => (
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
+          {caseStudies.map((study, index) => (
             <CaseStudyCard key={study.id} study={study} index={index + 1} />
           ))}
         </div>
-      </div>
+      </section>
 
-      <motion.section
-        initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: "easeOut" }}
-        className="panel"
-      >
-        <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/50">More work</p>
+      <section className="border-t border-white/15 pt-8">
+        <h2 className="text-2xl font-semibold">More engineering work</h2>
 
         <div className="mt-7 space-y-3">
           {workItems.map((item, index) => (
@@ -202,7 +155,7 @@ export default function ProjectsPage() {
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h2 className="text-sm font-medium text-white sm:text-base">{item.title}</h2>
+                  <h3 className="text-sm font-medium text-white sm:text-base">{item.title}</h3>
                   <span className="rounded-full border border-white/20 bg-white/10 px-2 py-0.5 font-mono text-[10px] text-zinc-200">
                     {item.tag}
                   </span>
@@ -244,7 +197,7 @@ export default function ProjectsPage() {
             </div>
           ))}
         </div>
-      </motion.section>
+      </section>
     </main>
   );
 }

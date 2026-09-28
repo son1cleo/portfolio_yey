@@ -122,7 +122,7 @@ export default function TrackerPage() {
   };
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-6xl px-4 pb-20 pt-7 sm:px-8 sm:pt-8 md:px-10">
+    <main className="page-shell max-w-6xl">
       <div className="panel">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
@@ -200,7 +200,7 @@ export default function TrackerPage() {
           </div>
         ) : null}
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div className="rounded-xl border border-white/10 bg-black/25 p-4">
             <p className="text-[11px] uppercase tracking-wide text-zinc-400">Total Skills</p>
             <p className="mt-1 text-2xl font-semibold text-white">{summary.total}</p>
@@ -219,18 +219,18 @@ export default function TrackerPage() {
           </div>
         </div>
 
-        <form className="mt-6 grid gap-3 rounded-xl border border-white/10 bg-black/25 p-4 md:grid-cols-[1fr_180px_auto]" onSubmit={handleAddSkill}>
+        <form className="mt-6 grid gap-3 rounded-xl border border-white/10 bg-black/25 p-4 lg:grid-cols-[minmax(0,1fr)_180px_auto]" onSubmit={handleAddSkill}>
           <input
             value={title}
             onChange={(event) => setTitle(event.target.value)}
             placeholder="Skill title (e.g., Public Speaking, Rust, Cycling)"
-            className="rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-white/30"
+            className="min-w-0 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-white/30"
           />
           <input
             value={category}
             onChange={(event) => setCategory(event.target.value)}
             placeholder="Category"
-            className="rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-white/30"
+            className="min-w-0 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-white/30"
           />
           <div className="flex flex-wrap items-center gap-2">
             <label className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-xs text-zinc-200">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fira_Code, Open_Sans } from "next/font/google";
 import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
 import { ScrollNavigator } from "../components/ScrollNavigator";
 import { ParticleNetwork } from "../components/ui/particle-network";
@@ -19,7 +20,7 @@ const openSans = Open_Sans({
 export const metadata: Metadata = {
   title: "Midhat Ratib Khan | Portfolio",
   description:
-    "Portfolio of Midhat Ratib Khan - Data Scientist and AI Engineer turning messy data into shipped systems.",
+    "Data scientist who ships production software — analysis, LLM systems, and the apps around them.",
 };
 
 export default function RootLayout({
@@ -34,6 +35,7 @@ export default function RootLayout({
         <Navbar />
         <ScrollNavigator />
         <PageTransition>{children}</PageTransition>
+        <Footer />
       </body>
     </html>
   );
