@@ -8,8 +8,7 @@ export default function Home() {
     <main className="page-shell max-w-6xl">
       <section className="flex items-start justify-between gap-8 border-b border-white/15 pb-8 sm:pb-10">
         <div className="min-w-0 max-w-3xl">
-          <p className="text-sm font-medium text-[var(--neon-green)]">Midhat Ratib Khan</p>
-          <h1 className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+          <h1 className="text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
             Data scientist who ships production software
             <span className="mt-3 block text-xl font-normal leading-relaxed tracking-normal text-zinc-300 sm:text-2xl">Analysis, LLM systems, and the apps around them.</span>
           </h1>

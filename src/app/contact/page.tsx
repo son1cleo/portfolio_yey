@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
+import { CONTACT_EMAIL } from "../../data/contact";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
@@ -17,7 +18,7 @@ export default function ContactPage() {
       name ? `Sender: ${name}` : "",
     ].join("\n");
 
-    return `mailto:midhat.ratib@gmail.com?subject=${encodeURIComponent(
+    return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
       subject || "Portfolio inquiry"
     )}&body=${encodeURIComponent(body)}`;
   }, [message, name, subject]);
@@ -34,11 +35,14 @@ export default function ContactPage() {
         <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
           <div>
             <h1 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">
-              Let&apos;s talk data
+              Email me with the brief
             </h1>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-300">
               For data science roles, LLM evaluation, or a product built around data, send me a note.
             </p>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="mt-4 inline-block break-all text-base text-white underline underline-offset-4">
+              {CONTACT_EMAIL}
+            </a>
             <div className="mt-5 flex flex-wrap gap-3">
               <a
                 href="https://github.com/son1cleo"
@@ -55,12 +59,6 @@ export default function ContactPage() {
                 className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2.5 font-mono text-sm font-medium text-white transition hover:bg-white/10"
               >
                 <Linkedin size={16} /> LinkedIn
-              </a>
-              <a
-                href={mailtoLink}
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2.5 font-mono text-sm font-medium text-white transition hover:bg-white/10"
-              >
-                <Mail size={16} className="shrink-0" /> <span className="break-all">midhat.ratib@gmail.com</span>
               </a>
             </div>
           </div>

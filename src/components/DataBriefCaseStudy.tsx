@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { DataBriefEvidence } from "./DataBriefEvidence";
 
 export function DataBriefCaseStudy() {
   return (
@@ -23,6 +24,7 @@ export function DataBriefCaseStudy() {
         <div><h3 className="font-semibold">Statistic</h3><p className="mt-2 text-sm leading-relaxed text-zinc-300">The captured report gives a mean of 0.64 goals and a standard deviation of 1.09, putting 10 goals roughly 8.6 standard deviations above the mean.</p></div>
         <div><h3 className="font-semibold">Interpretation</h3><p className="mt-2 text-sm leading-relaxed text-zinc-300">An unusual result is a prompt to investigate. Check dataset scope and player records before treating an outlier as evidence of performance.</p><p className="mt-2 text-xs text-zinc-400">Portfolio commentary, not a quoted report recommendation.</p></div>
       </div>
+      <DataBriefEvidence />
       <details className="mt-7 border-t border-white/15 pt-5">
         <summary className="cursor-pointer text-sm font-medium">See the upload interface</summary>
         <figure className="mt-4">

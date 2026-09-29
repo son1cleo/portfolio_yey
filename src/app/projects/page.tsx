@@ -1,5 +1,6 @@
 import { DataBriefCaseStudy } from "../../components/DataBriefCaseStudy";
 import { selectedWork } from "../../data/selected-work";
+import { evaluationWork } from "../../data/evaluation-work";
 import { ArrowUpRight } from "lucide-react";
 import { CaseStudyCard, type CaseStudy } from "../../components/CaseStudyCard";
 
@@ -117,22 +118,28 @@ export default function ProjectsPage() {
         <p className="mt-3 max-w-2xl text-zinc-300">Analysis, model evaluation, and the software that makes them useful.</p>
       </header>
       <DataBriefCaseStudy />
-      <section aria-label="AI evaluation work" className="grid gap-6 sm:grid-cols-2">
-        {selectedWork.slice(1).map((project) => (
+      <section aria-label="AI evaluation work" className="grid gap-6">
+        {evaluationWork.map((study) => {
+          const project = selectedWork.find((item) => item.id === study.id)!;
+          return (
           <article id={project.id} key={project.id} className="scroll-mt-36 rounded-xl border border-white/15 bg-white/[0.03] p-6">
             <p className="text-sm font-medium text-[var(--neon-green)]">{project.evidence}</p>
             <h2 className="mt-2 text-2xl font-semibold">{project.title}</h2>
             <p className="mt-3 text-sm leading-relaxed text-zinc-300">{project.summary}</p>
-            <dl className="mt-5 space-y-4 text-sm">
-              <div><dt className="font-medium">My contribution</dt><dd className="mt-1 leading-relaxed text-zinc-300">{project.id === "portehobe-ai" ? "Benchmarked mathematical reasoning against Mathstral and Gemini, evaluated responses, and refined performance." : "Evaluated 6,000+ physics questions and applied targeted refinements to improve answer accuracy."}</dd></div>
-              <div><dt className="font-medium">Tools & methods</dt><dd className="mt-1 text-zinc-300">{project.id === "portehobe-ai" ? "GSM8K · LLM evaluation · model benchmarking" : "spaCy · question-level evaluation · data analysis"}</dd></div>
+            <dl className="mt-5 grid gap-5 text-sm sm:grid-cols-2">
+              <div><dt className="font-medium">Problem</dt><dd className="mt-1 leading-relaxed text-zinc-300">{study.problem}</dd></div>
+              <div><dt className="font-medium">My contribution</dt><dd className="mt-1 leading-relaxed text-zinc-300">{study.contribution}</dd></div>
+              <div><dt className="font-medium">Evaluation approach</dt><dd className="mt-1 leading-relaxed text-zinc-300">{study.method}</dd></div>
+              <div><dt className="font-medium">Outcome</dt><dd className="mt-1 leading-relaxed text-zinc-300">{study.outcome}</dd></div>
+              <div className="sm:col-span-2"><dt className="font-medium">Tools & methods</dt><dd className="mt-1 text-zinc-300">{study.tools}</dd></div>
             </dl>
           </article>
-        ))}
+          );
+        })}
       </section>
 
       <section aria-labelledby="shipped-sites" className="flex flex-col gap-6">
-        <div><h2 id="shipped-sites" className="text-2xl font-semibold">Shipped websites</h2><p className="mt-2 text-sm text-zinc-300">Production delivery alongside my data science work.</p></div>
+        <div><h2 id="shipped-sites" className="text-2xl font-semibold">Shipped for clients</h2><p className="mt-2 text-sm text-zinc-300">Production delivery alongside my data science work.</p></div>
 
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
           {caseStudies.map((study, index) => (
