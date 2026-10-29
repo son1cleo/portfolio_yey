@@ -1,1 +1,1 @@
-export const CONTACT_EMAIL = "midhat.ratib@gmail.com";
+export { EMAIL as CONTACT_EMAIL } from "./content";

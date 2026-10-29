@@ -1,5 +1,4 @@
 ﻿import type { Metadata } from "next";
-import { Download } from "lucide-react";
 
 export const metadata: Metadata = { title: "About | Midhat Ratib Khan" };
 const stack = [
@@ -32,17 +31,6 @@ export default function AboutPage() {
             </div>
           ))}
         </dl>
-      </section>
-      <section className="mt-10 border-t border-white/15 pt-7" aria-labelledby="cv-heading">
-        <h2 id="cv-heading" className="text-xl font-semibold">My CV</h2>
-        <a href="/resume/MidhatRatibCV_DS.pdf" download className="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black hover:bg-zinc-200">
-          <Download size={16} aria-hidden="true" /> Download Data science CV
-        </a>
-        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-zinc-300">
-          <span>Also available:</span>
-          <a href="/resume/MidhatRatibCV_AE.pdf" download className="underline underline-offset-4 hover:text-white">AI engineering CV</a>
-          <a href="/resume/MidhatRatibCV_FS.pdf" download className="underline underline-offset-4 hover:text-white">Full-stack CV</a>
-        </div>
       </section>
     </main>
   );
