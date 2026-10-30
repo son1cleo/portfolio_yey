@@ -14,9 +14,7 @@ const caseStudies: CaseStudy[] = [
     headline: "Media Support Network",
     description:
       "A production website for Bangladesh's press-freedom advocacy body, built to read as credible to journalists, funders and government stakeholders in the same breath.",
-    meta: [{ label: "Role", value: "Full-stack build: Next.js / TypeScript" }],
     href: "https://www.msn-bd.org",
-    linkLabel: "msn-bd.org",
     theme: {
       background: "#0c1c2e",
       panel: "#0f2438",
@@ -37,9 +35,7 @@ const caseStudies: CaseStudy[] = [
     headlineAccent: "systemic change.",
     description:
       "A website for a Dhaka-based foundation equipping young people to lead on climate, technology and human rights.",
-    meta: [{ label: "Role", value: "Full-stack build: Next.js" }],
     href: "https://neel-foring.vercel.app",
-    linkLabel: "neel-foring.vercel.app",
     theme: {
       background: "#16241c",
       panel: "#1c2f24",
@@ -59,9 +55,7 @@ const caseStudies: CaseStudy[] = [
     subheadline: "সময়কণ্ঠ: a bilingual news archive",
     description:
       "Built around one editorial rule: a story published today but dated years ago never shows up as \"latest\". It files into the historical record.",
-    meta: [{ label: "Role", value: "Full-stack build; client turnaround: 2 days" }],
     href: "https://newsvault-zeta.vercel.app",
-    linkLabel: "newsvault-zeta.vercel.app · bilingual archive, EN / BN",
     theme: {
       background: "#efe8d8",
       panel: "#e4dcc8",
@@ -112,7 +106,7 @@ const workItems: ProjectItem[] = [
 export default function ProjectsPage() {
 
   return (
-    <main className="page-shell flex max-w-5xl flex-col gap-8 sm:gap-10">
+    <main className="page-shell flex max-w-[1600px] flex-col gap-8 sm:gap-10">
       <header>
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Selected projects</h1>
         <p className="mt-3 max-w-2xl text-zinc-300">Analysis, model evaluation, and the software that makes them useful.</p>
@@ -141,7 +135,7 @@ export default function ProjectsPage() {
       <section aria-labelledby="shipped-sites" className="flex flex-col gap-6">
         <div><h2 id="shipped-sites" className="text-2xl font-semibold">Shipped for clients</h2><p className="mt-2 text-sm text-zinc-300">Production delivery alongside my data science work.</p></div>
 
-        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
           {caseStudies.map((study, index) => (
             <CaseStudyCard key={study.id} study={study} index={index + 1} />
           ))}

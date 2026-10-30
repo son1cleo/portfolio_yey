@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, ImageOff } from "lucide-react";
+import { ImageOff } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 
 export type CaseStudyTheme = {
@@ -25,9 +25,7 @@ export type CaseStudy = {
   headlineAccent?: string;
   subheadline?: string;
   description: string;
-  meta: { label: string; value: string }[];
   href: string;
-  linkLabel: string;
   theme: CaseStudyTheme;
 };
 
@@ -49,15 +47,19 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
   const { theme } = study;
 
   return (
-    <motion.article
+    <motion.a
+      href={study.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Visit ${study.headline}`}
       initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
       whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.05 }}
-      className="min-w-0 overflow-hidden rounded-2xl border"
+      className="group block h-full min-w-0 overflow-hidden rounded-2xl border transition-[transform,filter] duration-300 hover:-translate-y-1 hover:brightness-110 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-[var(--neon-green)]"
       style={{ background: theme.background, borderColor: theme.border }}
     >
-      <div className="p-5 sm:p-6">
+      <div className="flex h-full flex-col p-5 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <p className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: theme.muted }}>
             {study.eyebrow ?? study.windowLabel}
@@ -92,7 +94,7 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
                 alt={study.screenshotAlt}
                 fill
                 sizes="(min-width: 1024px) 256px, (min-width: 640px) calc(100vw - 128px), calc(100vw - 80px)"
-                className="object-cover object-top"
+                className="object-cover object-top transition-transform duration-500 motion-safe:group-hover:scale-[1.02]"
               />
             ) : (
               <div
@@ -122,29 +124,7 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
           {study.description}
         </p>
 
-        <div className="mt-6 grid gap-4 border-t pt-5" style={{ borderColor: theme.border }}>
-          {study.meta.map((row) => (
-            <div key={row.label}>
-              <p className="font-mono text-xs uppercase tracking-wide" style={{ color: theme.accent }}>
-                {row.label}
-              </p>
-              <p className="mt-1 text-sm" style={{ color: theme.foreground }}>
-                {row.value}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <a
-          href={study.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 inline-flex max-w-full items-center gap-1.5 break-all font-mono text-sm font-medium transition hover:opacity-80"
-          style={{ color: theme.accent }}
-        >
-          {study.linkLabel} <ArrowUpRight size={14} />
-        </a>
       </div>
-    </motion.article>
+    </motion.a>
   );
 }
