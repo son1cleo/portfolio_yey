@@ -22,7 +22,14 @@ export const metadata: Metadata = {
     description: "Data scientist who ships production software. Analysis, LLM systems, and the apps around them.",
     url: SITE_URL,
     type: "website",
-    images: [{ url: "/work/provetale.png", width: 1906, height: 903, alt: "Midhat Ratib Khan portfolio featuring Provetale" }],
+    siteName: "RatibBuilds",
+    images: [{ url: "/portfolio-social-preview.png", width: 1906, height: 902, alt: "Midhat Ratib Khan portfolio homepage" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Midhat Ratib Khan | Portfolio",
+    description: "Data scientist who ships production software. Analysis, LLM systems, and the apps around them.",
+    images: [{ url: "/portfolio-social-preview.png", alt: "Midhat Ratib Khan portfolio homepage" }],
   },
 };
 
