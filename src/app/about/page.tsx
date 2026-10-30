@@ -18,7 +18,7 @@ export default function AboutPage() {
         I’m Midhat Ratib Khan, a Computer Science graduate focused on data science.
         I work on statistical analysis, LLM evaluation, and reporting systems, and build
         the software around them, from data pipelines to the interfaces people use.
-        My work includes DataBrief, mathematical reasoning evaluation for PorteHobe AI,
+        My work includes Provetale (originally DataBrief), mathematical reasoning evaluation for PorteHobe AI,
         and a physics chatbot evaluated across 6,000+ questions.
       </p>
       <section className="mt-10 border-t border-white/15 pt-7" aria-labelledby="stack-heading">
