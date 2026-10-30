@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
 import { CONTACT_EMAIL } from "../../data/contact";
+import { CONTACT_DESCRIPTION } from "../../data/content";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
@@ -34,11 +35,11 @@ export default function ContactPage() {
         <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/50">Contact</p>
         <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
           <div>
-            <h1 className="font-mono text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            <h1 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
               Email me with the brief
             </h1>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-300">
-              For data science roles, LLM evaluation, or a product built around data, send me a note.
+              {CONTACT_DESCRIPTION}
             </p>
             <a href={`mailto:${CONTACT_EMAIL}`} className="mt-4 inline-block break-all text-base text-white underline underline-offset-4">
               {CONTACT_EMAIL}

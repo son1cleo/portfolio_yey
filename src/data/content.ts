@@ -1,5 +1,6 @@
 export const SITE_URL = "https://www.ratibbuilds.com/";
 export const EMAIL = "ratib@ratibbuilds.com";
+export const CONTACT_DESCRIPTION = "For building systems, developing websites, and products built around data.";
 export const EMAIL_FALLBACK = "midhat.ratib@gmail.com";
 export const PROVETALE_URL = "https://provetale.com";
 export const INSTAGRAM_URL = "https://www.instagram.com/ratibbuilds/";
@@ -9,13 +10,6 @@ export const LINKEDIN_URL = "https://www.linkedin.com/in/midhat-ratib-khan-99690
 export const MSN_URL = "https://msn-bd.org";
 export const NEEL_URL = "https://neel-foring.vercel.app";
 export const VOT_URL = "https://newsvault-zeta.vercel.app";
-
-export const proofPoints = [
-  { value: "Founder", label: "of Provetale" },
-  { value: "3", label: "client sites in production", countTo: 3 },
-  { value: "2 days", label: "fastest turnaround" },
-  { value: "+15%", label: "LLM reasoning accuracy", countTo: 15, prefix: "+", suffix: "%" },
-];
 
 export const clientWork = [
   {
@@ -48,7 +42,7 @@ export const clientWork = [
     image: "/work/voice-of-time.png",
     alt: "Voice of Time bilingual news archive homepage",
     outcome: "Bilingual news archive",
-    description: "Built around one editorial rule: a story published today but dated years ago never shows up as ‘latest’ — it files into the historical record.",
+    description: "Built around one editorial rule: a story published today but dated years ago never shows up as ‘latest’; it files into the historical record.",
     chips: ["Delivered in 2 days"],
   },
 ];
@@ -68,7 +62,7 @@ export const timeline = [
 
 export const pageIndex = [
   { id: "provetale", number: "01", label: "Provetale", blurb: "My own product, in production." },
-  { id: "work", number: "02", label: "Client work", blurb: "Sites for real organizations." },
+  { id: "work", number: "02", label: "Web projects", blurb: "Sites for real organizations." },
   { id: "edits", number: "03", label: "Edits", blurb: "Short-form reels, cut for pacing." },
   { id: "data", number: "04", label: "Data & AI", blurb: "LLM evaluation and analysis." },
 ];

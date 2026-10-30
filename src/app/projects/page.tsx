@@ -133,7 +133,7 @@ export default function ProjectsPage() {
       </section>
 
       <section aria-labelledby="shipped-sites" className="flex flex-col gap-6">
-        <div><h2 id="shipped-sites" className="text-2xl font-semibold">Shipped for clients</h2><p className="mt-2 text-sm text-zinc-300">Production delivery alongside my data science work.</p></div>
+        <div><h2 id="shipped-sites" className="text-2xl font-semibold">Web projects</h2><p className="mt-2 text-sm text-zinc-300">Websites built for real organizations.</p></div>
 
         <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
           {caseStudies.map((study, index) => (
