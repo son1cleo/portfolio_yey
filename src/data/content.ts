@@ -56,8 +56,8 @@ export const clientWork = [
 export const edits = [
   { title: "The nights nobody sees", mp4: "/edits/reel-1.mp4", poster: "/edits/reel-1.jpg", duration: "00:26", instagramUrl: INSTAGRAM_URL },
   { title: "The vision you refuse to drop", mp4: "/edits/reel-2.mp4", poster: "/edits/reel-2.jpg", duration: "00:18", instagramUrl: INSTAGRAM_URL },
-  { title: "Build log: after hours", mp4: "/edits/reel-3.mp4", poster: "/edits/reel-3.jpg", duration: "00:21", instagramUrl: INSTAGRAM_URL },
-  { title: "Back to building", mp4: "/edits/reel-4.mp4", poster: "/edits/reel-4.jpg", duration: "00:24", instagramUrl: INSTAGRAM_URL },
+  { title: "Let’s go for a ride", mp4: "/edits/reel-3.mp4", poster: "/edits/reel-3.png", duration: "00:21", instagramUrl: INSTAGRAM_URL },
+  { title: "Build without a clue", mp4: "/edits/reel-4.mp4", poster: "/edits/reel-4.png", duration: "00:24", instagramUrl: INSTAGRAM_URL },
 ];
 
 export const timeline = [
