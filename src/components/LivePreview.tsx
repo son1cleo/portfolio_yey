@@ -76,7 +76,7 @@ function LivePreview({ site, onClose, returnFocus }: { site: PreviewSite; onClos
             <div className="relative aspect-[16/10] min-h-0 w-full bg-zinc-950">
               {!loaded && <Image src={site.image} alt={site.alt} fill sizes="100vw" className="object-cover" />}
               {!timedOut && <iframe src={site.url} title={`Live preview of ${site.name}`} loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" referrerPolicy="no-referrer" onLoad={() => setLoaded(true)} className={`absolute inset-0 h-full w-full bg-white transition-opacity ${loaded ? "opacity-100" : "opacity-0"}`} />}
-              {timedOut && !loaded && <div className="absolute inset-x-4 bottom-4 rounded-xl border border-white/15 bg-[#0a0a0a]/95 p-4 text-sm text-zinc-300">This site can&apos;t be previewed here — <a href={site.url} target="_blank" rel="noopener noreferrer" className="text-white underline decoration-[var(--neon-green)] underline-offset-4">open it in a new tab <ArrowUpRight className="inline" size={14} /></a></div>}
+              {timedOut && !loaded && <div className="absolute inset-x-4 bottom-4 rounded-xl border border-white/15 bg-[#0a0a0a]/95 p-4 text-sm text-zinc-300">This site can&apos;t be previewed here. <a href={site.url} target="_blank" rel="noopener noreferrer" className="text-white underline decoration-[var(--neon-green)] underline-offset-4">open it in a new tab <ArrowUpRight className="inline" size={14} /></a></div>}
             </div>
           </motion.div>
         </motion.div>
