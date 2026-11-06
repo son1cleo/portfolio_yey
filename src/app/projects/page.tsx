@@ -7,13 +7,13 @@ import { CaseStudyCard, type CaseStudy } from "../../components/CaseStudyCard";
 const caseStudies: CaseStudy[] = [
   {
     id: "msn",
-    eyebrow: "case file: dhaka, bangladesh",
+    eyebrow: "Previous web work · [OWNER TO CONFIRM: year]",
     windowLabel: "msn-bd.org",
     screenshotSrc: "/projects/msn.png",
     screenshotAlt: "Media Support Network homepage with the headline 'For a free, safe and independent media'",
     headline: "Media Support Network",
     description:
-      "A production website for Bangladesh's press-freedom advocacy body, built to read as credible to journalists, funders and government stakeholders in the same breath.",
+      "A bilingual website for a press-freedom advocacy organization in Bangladesh.",
     href: "https://www.msn-bd.org",
     theme: {
       background: "#0c1c2e",
@@ -27,7 +27,7 @@ const caseStudies: CaseStudy[] = [
   },
   {
     id: "neel-foring",
-    eyebrow: "Neel Foring Foundation",
+    eyebrow: "Previous web work · [OWNER TO CONFIRM: year]",
     windowLabel: "neel-foring.vercel.app",
     screenshotSrc: "/projects/neel-foring.png",
     screenshotAlt: "Neel Foring Foundation homepage with the headline 'Youth-led energy meets systemic change'",
@@ -48,6 +48,7 @@ const caseStudies: CaseStudy[] = [
   },
   {
     id: "voice-of-time",
+    eyebrow: "Previous web work · [OWNER TO CONFIRM: year]",
     windowLabel: "newsvault-zeta.vercel.app",
     screenshotSrc: "/projects/voice-of-time.png",
     screenshotAlt: "Voice of Time bilingual news archive homepage",
@@ -133,7 +134,7 @@ export default function ProjectsPage() {
       </section>
 
       <section aria-labelledby="shipped-sites" className="flex flex-col gap-6">
-        <div><h2 id="shipped-sites" className="text-2xl font-semibold">Web projects</h2><p className="mt-2 text-sm text-zinc-300">Websites built for real organizations.</p></div>
+        <div><h2 id="shipped-sites" className="text-2xl font-semibold">Previous web work</h2><p className="mt-2 text-zinc-300">Past websites shown with their purpose and stack.</p></div>
 
         <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
           {caseStudies.map((study, index) => (
