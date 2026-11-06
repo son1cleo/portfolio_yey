@@ -3,7 +3,6 @@ import { Belleza } from "next/font/google";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
-import { ScrollNavigator } from "../components/ScrollNavigator";
 import { GITHUB_URL, INSTAGRAM_URL, LINKEDIN_URL, SITE_URL, X_URL } from "../data/content";
 import "./globals.css";
 
@@ -37,7 +36,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={`${belleza.variable} antialiased`}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
         <Navbar />
-        <ScrollNavigator />
         <PageTransition>{children}</PageTransition>
         <Footer />
       </body>
