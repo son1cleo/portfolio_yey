@@ -7,7 +7,7 @@ import { ArrowDown, ArrowUpRight, ChevronDown, Github, Instagram, Linkedin } fro
 import { PreviewButton } from "./LivePreview";
 import { selectedWork } from "../data/selected-work";
 import {
-  EMAIL, GITHUB_URL, INSTAGRAM_URL, LINKEDIN_URL, PROVETALE_SHOWCASE_URL, X_URL,
+  EMAIL, GITHUB_URL, INSTAGRAM_URL, LINKEDIN_URL, PROVETALE_URL, X_URL,
   previousWebWork, edits, pageIndex, timeline,
 } from "../data/content";
 
@@ -112,15 +112,15 @@ export function HomeExperience() {
           </motion.h1>
           <motion.p className="mt-5 max-w-xl text-lg leading-relaxed text-zinc-300" initial={reduced ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduced ? 0 : .12, duration: .2 }}>Developer working across Data, AI and Software.</motion.p>
           <div className="mt-8 flex flex-wrap items-center gap-5"><a href="#provetale" className="primary-action inline-flex min-h-12 items-center gap-2 rounded-full bg-[#f5f5f5] px-6 font-mono text-xs uppercase tracking-[.08em] text-black">See personal project <ArrowDown size={15} /></a><a href={`mailto:${EMAIL}`} className={externalClass}>Get in touch <ArrowUpRight size={15} /></a></div>
-          <p className="mt-10 border-y border-white/15 py-5 text-base text-zinc-300">Personal project: <span className="text-[var(--neon-green)]">Provetale · currently paused</span></p>
+          <p className="mt-10 border-y border-white/15 py-5 text-base text-zinc-300">Personal project: <span className="text-[var(--neon-green)]">Provetale · sample reports are live; the app is not running</span></p>
         </div>
         <motion.div initial={reduced ? false : { opacity: 0, scale: 1.02 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: reduced ? 0 : .24, ease }} className="relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-2xl border border-white/15"><Image src="/profile2-mobile.webp" alt="Midhat Ratib Khan" fill fetchPriority="high" unoptimized sizes="(max-width: 768px) 90vw, 35vw" className="object-cover" /></motion.div>
       </section>
 
       <section id="provetale" className="scroll-mt-28 border-b border-white/15 py-20 md:py-28">
         <motion.div className="mb-12 h-px origin-left bg-[var(--neon-green)]" initial={reduced ? false : { scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true, amount: .8 }} transition={{ duration: reduced ? 0 : .6, ease }} />
-        <div className="grid gap-8 lg:grid-cols-[.65fr_1.35fr] lg:items-end"><div><p className="section-index">Personal project</p><h2>Provetale</h2><p className="mt-4 max-w-md text-xl text-zinc-300">A personal project I designed and built. Currently paused.</p><p className="mt-5 max-w-md leading-relaxed text-zinc-400">The engineering work includes evidence-linked reports and an independent security review.</p><div className="mt-6 flex flex-wrap gap-2"><span className="chip">Evidence-linked reports</span><span className="chip">Independent security review</span></div></div><Reveal delay={.08}><BrowserFrame image="/work/provetale.png" alt="Provetale project interface" url="Personal project · currently paused" priority terminalFallback /></Reveal></div>
-        <div className="mt-8 flex flex-wrap items-center gap-4"><span className={pillClass} aria-disabled="true">Explore sample reports <ArrowUpRight size={14} /></span><span className="owner-confirmation">{PROVETALE_SHOWCASE_URL}</span></div>
+        <div className="grid gap-8 lg:grid-cols-[.65fr_1.35fr] lg:items-end"><div><p className="section-index">Personal project</p><h2>Provetale</h2><p className="mt-4 max-w-md text-xl text-zinc-300">A personal project I designed and built. The sample reports are live and the app itself is not running.</p><p className="mt-5 max-w-md leading-relaxed text-zinc-400">The engineering work includes evidence-linked reports.</p><div className="mt-6 flex flex-wrap gap-2"><span className="chip">Evidence-linked reports</span></div></div><Reveal delay={.08}><BrowserFrame image="/work/provetale.png" alt="Provetale project interface" url="Sample reports live · app not running" priority terminalFallback /></Reveal></div>
+        <div className="mt-8 flex flex-wrap items-center gap-4"><a href={PROVETALE_URL} target="_blank" rel="noopener noreferrer" className={pillClass}>Explore sample reports <ArrowUpRight size={14} /></a></div>
       </section>
 
       <section id="work" className="scroll-mt-28 border-b border-white/15 py-20 md:py-28"><Reveal><p className="section-index">Past work</p><h2>Previous web work</h2><p className="mt-4 max-w-2xl text-zinc-400">Websites built previously for organizations, shown here as portfolio records.</p></Reveal><div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_.8fr]">{previousWebWork.map((site, index) => <Reveal key={site.id} className={index === 0 ? "lg:row-span-2" : ""} delay={index * .04}><article className="h-full border-t border-white/15 pt-5"><BrowserFrame image={site.image} alt={site.alt} url={site.urlLabel} /><p className="mt-5 font-mono text-xs text-[var(--neon-green)]">{site.outcome}</p><h3 className="mt-2">{site.name}</h3><p className="mt-3 max-w-2xl leading-relaxed text-zinc-400">{site.description}</p><div className="mt-4 flex flex-wrap gap-2">{site.chips.map((chip) => <span className="chip" key={chip}>{chip}</span>)}</div><div className="mt-5 flex flex-wrap gap-4"><PreviewButton site={site} className={externalClass} /><a href={site.url} target="_blank" rel="noopener noreferrer" className={externalClass}>View website <ArrowUpRight size={14} /></a></div></article></Reveal>)}</div></section>

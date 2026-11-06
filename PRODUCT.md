@@ -12,7 +12,7 @@ Visitors reviewing Midhat Ratib Khan's current student/developer portfolio, incl
 
 ## Product Purpose
 
-Present truthful, current portfolio information: Midhat is a student and developer; the site documents real previous work, personal technical work, and a personal project that is currently paused.
+Present truthful, current portfolio information: Midhat is a student and developer; the site documents real previous work, personal technical work, and a personal project whose sample reports are live while the app itself is not running.
 
 ## Positioning
 
@@ -21,13 +21,13 @@ A personal record of engineering, data, AI, web, and editing work, supported by 
 ## Capabilities and Constraints
 
 - This is a personal portfolio, not a services or booking site.
-- Provetale is a personal project designed and built by Midhat and is currently paused.
+- Provetale is a personal project designed and built by Midhat. Its sample reports are live and the app itself is not running.
 - Previous web work must be clearly labeled as past work.
 - Do not claim current users, revenue, customers, a company, or availability for paid work.
 - Do not add pricing, service offers, testimonials, client logos, ads, donations, or booking/enquiry forms.
 - Keep Instagram, X, GitHub, and LinkedIn links.
 - Do not deploy or change domain/DNS configuration as part of this work.
-- The hero wording, Provetale showcase URL, and project years are explicitly undecided and must remain visible owner-confirmation placeholders.
+- Project years are explicitly undecided and must not be shown until the owner supplies them.
 
 ## Brand Commitments
 
@@ -39,7 +39,7 @@ A personal record of engineering, data, AI, web, and editing work, supported by 
 
 - Existing portfolio screenshots and project imagery under `public/work`, `public/projects`, and `public/edits`.
 - Existing project descriptions and technical stack information in `src/data` and the project pages.
-- Provetale engineering facts supplied by the owner: evidence-linked reports and an independent security review.
+- Provetale engineering fact supplied by the owner: evidence-linked reports.
 - No evidence should be inferred for users, revenue, customers, company status, availability, missing project years, or a public showcase URL.
 
 ## Product Principles
