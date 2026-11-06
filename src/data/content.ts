@@ -9,6 +9,7 @@ export const LINKEDIN_URL = "https://www.linkedin.com/in/midhat-ratib-khan-99690
 export const MSN_URL = "https://msn-bd.org";
 export const NEEL_URL = "https://neel-foring.vercel.app";
 export const VOT_URL = "https://newsvault-zeta.vercel.app";
+export const REVIVE_FIBER_URL = "https://www.revivefiberco.com/";
 
 export const previousWebWork = [
   {
@@ -43,6 +44,17 @@ export const previousWebWork = [
     outcome: "Bilingual news archive",
     description: "Built around one editorial rule: a story published today but dated years ago never shows up as ‘latest’; it files into the historical record.",
     chips: ["News archive"],
+  },
+  {
+    id: "revive-fiber",
+    name: "Revive Fiber Co.",
+    url: REVIVE_FIBER_URL,
+    urlLabel: "revivefiberco.com",
+    image: "/work/revive-fiber.webp",
+    alt: "Revive Fiber Co. homepage presenting premium recycled cotton fiber",
+    outcome: "Recycled cotton fiber website",
+    description: "A website presenting recycled cotton fiber and its applications.",
+    chips: ["Next.js"],
   },
 ];
 
