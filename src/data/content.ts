@@ -1,8 +1,7 @@
 export const SITE_URL = "https://www.ratibbuilds.com/";
 export const EMAIL = "ratib@ratibbuilds.com";
-export const CONTACT_DESCRIPTION = "For building systems, developing websites, and products built around data.";
 export const EMAIL_FALLBACK = "midhat.ratib@gmail.com";
-export const PROVETALE_URL = "https://provetale.com";
+export const PROVETALE_SHOWCASE_URL = "[OWNER TO CONFIRM: showcase URL]";
 export const INSTAGRAM_URL = "https://www.instagram.com/ratibbuilds/";
 export const X_URL = "https://x.com/ratibmidhat_";
 export const GITHUB_URL = "https://github.com/son1cleo";
@@ -11,7 +10,7 @@ export const MSN_URL = "https://msn-bd.org";
 export const NEEL_URL = "https://neel-foring.vercel.app";
 export const VOT_URL = "https://newsvault-zeta.vercel.app";
 
-export const clientWork = [
+export const previousWebWork = [
   {
     id: "msn",
     name: "Media Support Network",
@@ -19,9 +18,9 @@ export const clientWork = [
     urlLabel: "msn-bd.org",
     image: "/work/msn.png",
     alt: "Media Support Network homepage for press-freedom advocacy",
-    outcome: "Press-freedom advocacy · Bangladesh",
-    description: "A production website built to read as credible to journalists, funders and government stakeholders in the same breath.",
-    chips: ["Next.js", "TypeScript", "EN/BN"],
+    outcome: "Press-freedom advocacy website · Bangladesh",
+    description: "A bilingual website for a press-freedom advocacy organization.",
+    chips: ["Next.js", "TypeScript", "EN/BN", "[OWNER TO CONFIRM: year]"],
   },
   {
     id: "neel",
@@ -32,7 +31,7 @@ export const clientWork = [
     alt: "Neel Foring Foundation homepage featuring its youth-led mission",
     outcome: "Youth-led foundation · Dhaka",
     description: "A website for a Dhaka-based foundation equipping young people to lead on climate, technology and human rights.",
-    chips: ["Next.js"],
+    chips: ["Next.js", "[OWNER TO CONFIRM: year]"],
   },
   {
     id: "voice",
@@ -43,15 +42,15 @@ export const clientWork = [
     alt: "Voice of Time bilingual news archive homepage",
     outcome: "Bilingual news archive",
     description: "Built around one editorial rule: a story published today but dated years ago never shows up as ‘latest’; it files into the historical record.",
-    chips: ["Delivered in 2 days"],
+    chips: ["News archive", "[OWNER TO CONFIRM: year]"],
   },
 ];
 
 export const edits = [
   { title: "The nights nobody sees", mp4: "/edits/reel-1.mp4", poster: "/edits/reel-1.jpg", duration: "00:26", instagramUrl: INSTAGRAM_URL },
   { title: "The vision you refuse to drop", mp4: "/edits/reel-2.mp4", poster: "/edits/reel-2.jpg", duration: "00:18", instagramUrl: INSTAGRAM_URL },
-  { title: "Let’s go for a ride", mp4: "/edits/reel-3.mp4", poster: "/edits/reel-3.png", duration: "00:21", instagramUrl: INSTAGRAM_URL },
-  { title: "Build without a clue", mp4: "/edits/reel-4.mp4", poster: "/edits/reel-4.png", duration: "00:24", instagramUrl: INSTAGRAM_URL },
+  { title: "Let’s go for a ride", mp4: "/edits/reel-3.mp4", poster: "/edits/reel-3.webp", duration: "00:21", instagramUrl: INSTAGRAM_URL },
+  { title: "Build without a clue", mp4: "/edits/reel-4.mp4", poster: "/edits/reel-4.webp", duration: "00:24", instagramUrl: INSTAGRAM_URL },
 ];
 
 export const timeline = [
@@ -61,8 +60,8 @@ export const timeline = [
 ];
 
 export const pageIndex = [
-  { id: "provetale", number: "01", label: "Provetale", blurb: "My own product, in production." },
-  { id: "work", number: "02", label: "Web projects", blurb: "Sites for real organizations." },
+  { id: "provetale", number: "01", label: "Provetale", blurb: "Personal project · currently paused." },
+  { id: "work", number: "02", label: "Previous web work", blurb: "Past websites and their stacks." },
   { id: "edits", number: "03", label: "Edits", blurb: "Short-form reels, cut for pacing." },
   { id: "data", number: "04", label: "Data & AI", blurb: "LLM evaluation and analysis." },
 ];

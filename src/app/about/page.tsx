@@ -15,7 +15,7 @@ export default function AboutPage() {
     <main className="page-shell max-w-4xl">
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">About me</h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300">
-        I’m Midhat Ratib Khan, a Computer Science graduate focused on data science.
+        I’m Midhat Ratib Khan. [OWNER TO CONFIRM: current course and student status].
         I work on statistical analysis, LLM evaluation, and reporting systems, and build
         the software around them, from data pipelines to the interfaces people use.
         My work includes Provetale (originally DataBrief), mathematical reasoning evaluation for PorteHobe AI,

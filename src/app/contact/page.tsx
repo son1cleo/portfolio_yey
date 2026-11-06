@@ -1,110 +1,21 @@
-"use client";
-
-import { useMemo, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { Github, Linkedin, Mail } from "lucide-react";
-import { CONTACT_EMAIL } from "../../data/contact";
-import { CONTACT_DESCRIPTION } from "../../data/content";
+import { Github, Instagram, Linkedin } from "lucide-react";
+import { EMAIL, GITHUB_URL, INSTAGRAM_URL, LINKEDIN_URL, X_URL } from "../../data/content";
 
 export default function ContactPage() {
-  const [name, setName] = useState("");
-  const [subject, setSubject] = useState("Portfolio inquiry");
-  const [message, setMessage] = useState("");
-  const prefersReducedMotion = useReducedMotion();
-
-  const mailtoLink = useMemo(() => {
-    const body = [
-      message || "I visited your portfolio and would like to connect.",
-      "",
-      name ? `Sender: ${name}` : "",
-    ].join("\n");
-
-    return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-      subject || "Portfolio inquiry"
-    )}&body=${encodeURIComponent(body)}`;
-  }, [message, name, subject]);
+  const linkClass = "inline-flex min-h-11 items-center gap-2 rounded-full border border-white/15 px-4 text-sm text-zinc-200 transition-colors duration-200 hover:border-white/35 hover:text-white";
 
   return (
     <main className="page-shell max-w-5xl">
-      <motion.section
-        initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: "easeOut" }}
-        className="panel"
-      >
-        <p className="font-mono text-xs uppercase tracking-[0.22em] text-white/50">Contact</p>
-        <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-          <div>
-            <h1 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
-              Email me with the brief
-            </h1>
-            <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-300">
-              {CONTACT_DESCRIPTION}
-            </p>
-            <a href={`mailto:${CONTACT_EMAIL}`} className="mt-4 inline-block break-all text-base text-white underline underline-offset-4">
-              {CONTACT_EMAIL}
-            </a>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <a
-                href="https://github.com/son1cleo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2.5 font-mono text-sm font-medium text-white transition hover:bg-white/10"
-              >
-                <Github size={16} /> GitHub
-              </a>
-              <a
-                href="https://linkedin.com/in/midhat-ratib-khan-9969012bb"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2.5 font-mono text-sm font-medium text-white transition hover:bg-white/10"
-              >
-                <Linkedin size={16} /> LinkedIn
-              </a>
-            </div>
-          </div>
-
-          <form className="grid gap-3" onSubmit={(event) => event.preventDefault()}>
-            <label className="grid gap-1 font-mono text-xs tracking-wide text-zinc-300 uppercase">
-              Your Name
-              <input
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                className="min-w-0 w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-white/50"
-                placeholder="Name"
-              />
-            </label>
-            <label className="grid gap-1 font-mono text-xs tracking-wide text-zinc-300 uppercase">
-              Subject
-              <input
-                value={subject}
-                onChange={(event) => setSubject(event.target.value)}
-                className="min-w-0 w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-white/50"
-                placeholder="Subject"
-              />
-            </label>
-            <label className="grid gap-1 font-mono text-xs tracking-wide text-zinc-300 uppercase">
-              Message
-              <textarea
-                rows={5}
-                value={message}
-                onChange={(event) => setMessage(event.target.value)}
-                className="min-w-0 w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-white/50"
-                placeholder="I visited your portfolio and would like to connect."
-              />
-            </label>
-
-            <div className="mt-2 flex flex-wrap gap-3">
-              <a
-                href={mailtoLink}
-                className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 font-mono text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:bg-zinc-200"
-              >
-                <Mail size={15} /> Compose email
-              </a>
-            </div>
-          </form>
+      <section className="border-y border-white/15 py-16 sm:py-24">
+        <h1 className="font-display text-[clamp(2.75rem,8vw,6rem)] leading-[.95] tracking-[-.03em] text-white">Get in touch</h1>
+        <a href={`mailto:${EMAIL}`} className="contact-email mt-8 inline-block min-h-11 break-all font-display text-[clamp(1.75rem,5vw,3.75rem)] leading-tight">{EMAIL}</a>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className={linkClass}><Instagram size={16} /> Instagram</a>
+          <a href={X_URL} target="_blank" rel="noopener noreferrer" className={linkClass}>X</a>
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className={linkClass}><Github size={16} /> GitHub</a>
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className={linkClass}><Linkedin size={16} /> LinkedIn</a>
         </div>
-      </motion.section>
+      </section>
     </main>
   );
 }
