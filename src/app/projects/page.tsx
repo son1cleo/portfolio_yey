@@ -67,6 +67,25 @@ const caseStudies: CaseStudy[] = [
       headlineFont: "font-serif",
     },
   },
+  {
+    id: "revive-fiber",
+    eyebrow: "Previous web work",
+    windowLabel: "revivefiberco.com",
+    screenshotSrc: "/work/revive-fiber.webp",
+    screenshotAlt: "Revive Fiber Co. homepage presenting premium recycled cotton fiber",
+    headline: "Revive Fiber Co.",
+    description: "A website presenting recycled cotton fiber and its applications.",
+    href: "https://www.revivefiberco.com/",
+    theme: {
+      background: "#e9efe8",
+      panel: "#f5f7f1",
+      foreground: "#173d2d",
+      muted: "#52695d",
+      accent: "#2f8058",
+      border: "rgba(23,61,45,0.14)",
+      headlineFont: "font-serif",
+    },
+  },
 ];
 
 type ProjectItem = {
@@ -136,7 +155,7 @@ export default function ProjectsPage() {
       <section aria-labelledby="shipped-sites" className="flex flex-col gap-6">
         <div><h2 id="shipped-sites" className="text-2xl font-semibold">Previous web work</h2><p className="mt-2 text-zinc-300">Past websites shown with their purpose and stack.</p></div>
 
-        <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-2 xl:grid-cols-4">
           {caseStudies.map((study, index) => (
             <CaseStudyCard key={study.id} study={study} index={index + 1} />
           ))}
