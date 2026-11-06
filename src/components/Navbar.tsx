@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Instagram } from "lucide-react";
@@ -18,7 +19,9 @@ export function Navbar() {
   }, []);
   return (
     <header className={`site-header sticky top-0 z-50 mx-auto flex w-full max-w-6xl items-center justify-between gap-3 border border-transparent backdrop-blur-md transition-colors ${isFloating ? "border-white/10 bg-[#0a0a0a]/95" : "bg-[#0a0a0a]/80"}`}>
-      <Link href="/" className="shrink-0 text-sm font-semibold tracking-tight text-[var(--neon-green)]">Midhat Ratib Khan</Link>
+      <Link href="/" aria-label="Midhat Ratib Khan — home" className="grid size-11 shrink-0 place-items-center rounded-xl focus-visible:outline-offset-2">
+        <Image src="/logo.svg" alt="" width={36} height={36} priority className="size-9" />
+      </Link>
       <nav aria-label="Main navigation" className="hidden items-center justify-center gap-1 md:flex sm:gap-2">{navLinks.map((link) => <Link key={link.href} href={link.href} aria-current={pathname === link.href ? "page" : undefined} className={`inline-flex min-h-11 items-center rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-wide transition ${pathname === link.href ? "bg-white/12 text-white" : "text-white/55 hover:text-white"}`}>{link.label}</Link>)}</nav>
       <div className="flex items-center gap-1 sm:gap-2">
         <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid size-11 place-items-center rounded-full text-zinc-300 hover:text-white"><Instagram size={16} /></a>
