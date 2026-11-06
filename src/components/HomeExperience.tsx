@@ -108,9 +108,9 @@ export function HomeExperience() {
       <section id="hero" className="grid min-h-[calc(100svh-5rem)] items-center gap-10 border-b border-white/15 py-14 md:grid-cols-[minmax(0,1.25fr)_minmax(260px,.75fr)] md:py-20">
         <div>
           <motion.h1 className="max-w-3xl font-display text-[40px] leading-[1.08] tracking-[-.01em] sm:text-5xl lg:text-[64px]" initial={reduced ? false : "hidden"} animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: .08 } } }}>
-            {["Developer working across", "Data, AI and Software"].map((line) => <motion.span key={line} className="block" variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0, transition: { duration: .24, ease } } }}>{line}</motion.span>)}
+            {"Midhat Ratib Khan".split(" ").map((word) => <motion.span key={word} className="mr-[.22em] inline-block" variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0, transition: { duration: .24, ease } } }}>{word}</motion.span>)}
           </motion.h1>
-          <motion.p className="mt-5 max-w-xl text-lg leading-relaxed text-zinc-300" initial={reduced ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduced ? 0 : .12, duration: .2 }}>Student and developer working across data, AI, and software.</motion.p>
+          <motion.p className="mt-5 max-w-xl text-lg leading-relaxed text-zinc-300" initial={reduced ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduced ? 0 : .12, duration: .2 }}>Developer working across Data, AI and Software.</motion.p>
           <div className="mt-8 flex flex-wrap items-center gap-5"><a href="#provetale" className="primary-action inline-flex min-h-12 items-center gap-2 rounded-full bg-[#f5f5f5] px-6 font-mono text-xs uppercase tracking-[.08em] text-black">See personal project <ArrowDown size={15} /></a><a href={`mailto:${EMAIL}`} className={externalClass}>Get in touch <ArrowUpRight size={15} /></a></div>
           <p className="mt-10 border-y border-white/15 py-5 text-base text-zinc-300">Personal project: <span className="text-[var(--neon-green)]">Provetale · currently paused</span></p>
         </div>
