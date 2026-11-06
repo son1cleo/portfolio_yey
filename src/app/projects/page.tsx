@@ -7,7 +7,7 @@ import { CaseStudyCard, type CaseStudy } from "../../components/CaseStudyCard";
 const caseStudies: CaseStudy[] = [
   {
     id: "msn",
-    eyebrow: "Previous web work · [OWNER TO CONFIRM: year]",
+    eyebrow: "Previous web work",
     windowLabel: "msn-bd.org",
     screenshotSrc: "/projects/msn.png",
     screenshotAlt: "Media Support Network homepage with the headline 'For a free, safe and independent media'",
@@ -27,7 +27,7 @@ const caseStudies: CaseStudy[] = [
   },
   {
     id: "neel-foring",
-    eyebrow: "Previous web work · [OWNER TO CONFIRM: year]",
+    eyebrow: "Previous web work",
     windowLabel: "neel-foring.vercel.app",
     screenshotSrc: "/projects/neel-foring.png",
     screenshotAlt: "Neel Foring Foundation homepage with the headline 'Youth-led energy meets systemic change'",
@@ -48,7 +48,7 @@ const caseStudies: CaseStudy[] = [
   },
   {
     id: "voice-of-time",
-    eyebrow: "Previous web work · [OWNER TO CONFIRM: year]",
+    eyebrow: "Previous web work",
     windowLabel: "newsvault-zeta.vercel.app",
     screenshotSrc: "/projects/voice-of-time.png",
     screenshotAlt: "Voice of Time bilingual news archive homepage",
