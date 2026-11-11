@@ -4,7 +4,7 @@ export const evaluationWork = [
     problem:
       "Mathematical tutoring needed reliable reasoning across different question types. PorteHobe explored routing questions between specialist models and evaluating their answers.",
     contribution:
-      "Co-built a Router → Specialist → Judge architecture and led GSM8K evaluation across 6,000+ questions. The system used Qwen 2.5, Mathstral, Gemma3, and the Gemini API.",
+      "Co-built a Router → Specialist → Judge architecture and led GSM8K evaluation. The system used Qwen 2.5, Mathstral, Gemma3, and the Gemini API.",
     method:
       "Benchmarked mathematical reasoning against Mathstral and Gemini, then refined model routing and prompts using the evaluation results.",
     outcome:
@@ -15,7 +15,8 @@ export const evaluationWork = [
     id: "physics-chatbot",
     problem:
       "The physics chatbot produced plausible answers while repeatedly missing particular concepts. The evaluation focused on identifying those systematic weaknesses.",
-    contribution: "Evaluated question-answer pairs across 14 physics chapters.",
+    contribution:
+      "Evaluated 6,000+ question-answer pairs across 14 physics chapters.",
     method:
       "Used statistical and semantic evaluation to examine model responses, identify recurring weaknesses, and guide targeted refinements.",
     outcome:

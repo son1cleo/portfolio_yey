@@ -10,14 +10,14 @@ export const selectedWork = [
   {
     id: "portehobe-ai",
     title: "PorteHobe AI",
-    evidence: "+15% reasoning accuracy · 6,000+ questions evaluated",
+    evidence: "+15% reasoning accuracy",
     summary:
       "Co-built a model-routing system and evaluated mathematical reasoning against specialist models.",
   },
   {
     id: "physics-chatbot",
     title: "Physics chatbot",
-    evidence: "Statistical and semantic evaluation",
+    evidence: "6,000+ questions evaluated across 14 chapters",
     summary:
       "Evaluated answers across 14 physics chapters and used recurring errors to guide targeted refinements.",
   },
