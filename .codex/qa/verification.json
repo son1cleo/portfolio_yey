@@ -1,0 +1,408 @@
+{
+  "results": [
+    {
+      "width": 375,
+      "route": "/",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 375,
+      "route": "/projects",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 375,
+      "route": "/about",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 375,
+      "route": "/contact",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 390,
+      "route": "/",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 390,
+      "route": "/projects",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 390,
+      "route": "/about",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 390,
+      "route": "/contact",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 768,
+      "route": "/",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 768,
+      "route": "/projects",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 768,
+      "route": "/about",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 768,
+      "route": "/contact",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 820,
+      "route": "/",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 820,
+      "route": "/projects",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 820,
+      "route": "/about",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 820,
+      "route": "/contact",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 1024,
+      "route": "/",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 1024,
+      "route": "/projects",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 1024,
+      "route": "/about",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 1024,
+      "route": "/contact",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 1440,
+      "route": "/",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 1440,
+      "route": "/projects",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 1440,
+      "route": "/about",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    },
+    {
+      "width": 1440,
+      "route": "/contact",
+      "overflow": false,
+      "headerHeight": 62,
+      "titleBelowHeader": true,
+      "descriptions": [
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered.",
+        "Developer working across data, AI and software. Personal portfolio; no services offered."
+      ],
+      "brokenImages": [],
+      "cls": 0,
+      "emDash": false
+    }
+  ],
+  "accordion": {
+    "open": "true",
+    "width": 342,
+    "overflow": false,
+    "liveDots": 4
+  },
+  "keyboard": true,
+  "menu": {
+    "open": true,
+    "width": 390,
+    "height": 844,
+    "focusInside": true,
+    "bodyLocked": true
+  },
+  "escape": true,
+  "reduced": "none",
+  "tapTargets": [
+    {
+      "text": " Instagram",
+      "width": 165,
+      "height": 44
+    },
+    {
+      "text": "X",
+      "width": 165,
+      "height": 44
+    },
+    {
+      "text": " GitHub",
+      "width": 165,
+      "height": 44
+    },
+    {
+      "text": " LinkedIn",
+      "width": 165,
+      "height": 44
+    },
+    {
+      "text": "Instagram ↗",
+      "width": 79.890625,
+      "height": 44
+    }
+  ],
+  "errors": []
+}

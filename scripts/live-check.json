@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-11-11T10:22:46.641Z",
+  "results": [
+    {
+      "url": "https://msn-bd.org",
+      "status": 200,
+      "ok": true,
+      "title": "Media Support Network"
+    },
+    {
+      "url": "https://neel-foring.vercel.app",
+      "status": 200,
+      "ok": true,
+      "title": "Neel Foring Foundation — Youth-led action on climate, rights, and innovation"
+    },
+    {
+      "url": "https://newsvault-zeta.vercel.app",
+      "status": 200,
+      "ok": true,
+      "title": "Voice of Time | সময়কণ্ঠ"
+    },
+    {
+      "url": "https://www.revivefiberco.com",
+      "status": 200,
+      "ok": true,
+      "title": "Home | Revive Fiber Co"
+    }
+  ]
+}
