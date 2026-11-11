@@ -1,5 +1,24 @@
+export const PROVETALE_DESCRIPTION =
+  "DataBrief, later Provetale. A personal project I built and have since stopped. The app is not running; the sample reports remain online.";
 export const selectedWork = [
-  { id: "databrief", title: "DataBrief · now Provetale", evidence: "The prototype that became Provetale", summary: "Originally built as DataBrief, this analysis engine evolved into Provetale, a broader toolkit for turning data and engineering work into clear, evidence-backed narratives." },
-  { id: "portehobe-ai", title: "PorteHobe AI", evidence: "+15% reasoning accuracy", summary: "Evaluation and refinement using GSM8K, benchmarking against Mathstral and Gemini." },
-  { id: "physics-chatbot", title: "Physics chatbot", evidence: "6,000+ questions evaluated", summary: "Question-level evaluation and targeted refinements to improve chatbot accuracy." },
+  {
+    id: "databrief",
+    title: "DataBrief / Provetale",
+    evidence: "Data analysis · LLM reporting",
+    summary: PROVETALE_DESCRIPTION,
+  },
+  {
+    id: "portehobe-ai",
+    title: "PorteHobe AI",
+    evidence: "+15% reasoning accuracy",
+    summary:
+      "Co-built a model-routing system and evaluated mathematical reasoning against specialist models.",
+  },
+  {
+    id: "physics-chatbot",
+    title: "Physics chatbot",
+    evidence: "6,000+ questions evaluated across 14 chapters",
+    summary:
+      "Evaluated answers across 14 physics chapters and used recurring errors to guide targeted refinements.",
+  },
 ];
